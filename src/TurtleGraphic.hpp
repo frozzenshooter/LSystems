@@ -4,22 +4,26 @@
 class TurtleGraphic {
 
 public:
+    virtual ~TurtleGraphic(){};
 
-    TurtleGraphic(const int start_postion_x, const int start_postion_y, const int start_heading);
-
-    virtual ~TurtleGraphic() = 0;
-
+    // state functions
     virtual void save_state() = 0;
     virtual void pop_state() = 0;
 
-    virtual void set_line_width() = 0;
+    // configuration functions
+    virtual void set_line_width(float width) = 0;
+    virtual void set_line_length(float length) = 0;
+    virtual void set_short_line_length(float length) = 0;
+    virtual void set_turn_angle(float degree) = 0;
 
+    // drawing functions
     virtual void move_to(const int x, const int y) = 0;
 
     virtual void draw_line() = 0;
-    virtual void draw_line(const int lenght, const int degree) = 0;
+    virtual void draw_short_line() = 0;
 
-    virtual void rotate(const int degree) = 0;
+    virtual void turn_right() = 0;
+    virtual void turn_left() = 0;
 };
 
 #endif

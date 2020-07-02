@@ -4,7 +4,7 @@ void LSystem2D::CalculateNextGeneration() {
 
     std::string nextState;
 
-    for (int i = 0; i < currentState.size(); ++i) {
+    for (std::size_t i = 0; i < currentState.size(); ++i) {
 
         auto key = currentState[i];
 
@@ -31,6 +31,7 @@ LSystem2D::LSystem2D(const std::string& start_axiom): start_axiom(start_axiom), 
 void LSystem2D::add_Production_Rule(const char non_terminal, const std::string& production) {
         
     // TODO: validate rule (is already the same rule there + do i override a rule)
+    // remove empty whitespace
     production_rules.insert(std::pair(non_terminal, production));
 }
 
@@ -42,13 +43,13 @@ void LSystem2D::remove_Production_Rules() noexcept{
 * Calculates the resulting string of the given LSystem
 * <generation> how often the rules should be applied to the current state to get the result
 */
-const std::string& LSystem2D::get_result(const int generation) {
+const std::string& LSystem2D::get_result(const std::size_t generation) {
        
     currentState = start_axiom;
 
     if (production_rules.size() > 0) {
         
-        for (int i = 0; i < generation; ++i) {
+        for (std::size_t i = 0; i < generation; ++i) {
 
             CalculateNextGeneration();
         }

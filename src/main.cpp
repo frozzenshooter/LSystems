@@ -1,27 +1,24 @@
 #include <iostream>
 
 #include "LSystem2D.hpp"
-#include "TurtleGraphic.hpp"
+#include "TestTurtle.hpp"
+#include "Parser.hpp"
 
 
 int main() {
 
-    LSystem2D testLSystem{ "b" };
+    LSystem2D test{ "F" };
+    test.add_Production_Rule('F', "F+F--F+F");
 
-    testLSystem.add_Production_Rule('a', "ab");
-    testLSystem.add_Production_Rule('b', "a");
+    auto result = test.get_result(3);
 
-    for (int i = 0; i < 10; ++i) {
-        std::cout << testLSystem.get_result(i) << std::endl;
-    }
+    std::cout << result << std::endl;
 
-    LSystem2D test2{ "F" };
-    test2.add_Production_Rule('F', "F+F--F+F");
+    TestTurtle a{};
 
-    for (int i = 0; i < 3; ++i) {
-        std::cout << test2.get_result(i) << std::endl;
-    }
+    Parser p{a};
 
-    std::cin.get();
+    p.parse_and_draw(result);
+
     return 0;
 }
