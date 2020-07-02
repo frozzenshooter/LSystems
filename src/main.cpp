@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "LSystem2D.hpp"
+#include "TurtleGraphic.hpp"
 
 
 int main() {
@@ -20,8 +21,6 @@ int main() {
     for (int i = 0; i < 3; ++i) {
         std::cout << test2.get_result(i) << std::endl;
     }
-
-
 
     std::cin.get();
     return 0;

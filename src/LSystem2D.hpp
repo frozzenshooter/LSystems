@@ -10,17 +10,17 @@ private:
     void CalculateNextGeneration();
 
 public:
-    LSystem2D(const std::string& startaxiom);
+    LSystem2D(const std::string& start_axiom);
 
-    void add_Production_Rule(const char nonTerminal, const std::string& production);
+    void add_Production_Rule(const char non_terminal, const std::string& production);
     void remove_Production_Rules() noexcept;
     const std::string& get_result(const int generation);
 
 private:
     std::map<char, std::string> production_rules;
-    std::string startAxiom;
+    std::string start_axiom;
     std::string currentState;
 
-
 };
+
 #endif 

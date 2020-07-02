@@ -23,15 +23,15 @@ void LSystem2D::CalculateNextGeneration() {
     currentState = nextState;
 }
 
-LSystem2D::LSystem2D(const std::string& startaxiom): startAxiom(startaxiom), currentState("") {}
+LSystem2D::LSystem2D(const std::string& start_axiom): start_axiom(start_axiom), currentState("") {}
 
 /*
-*   Adds a production rule consiting of a nonTerminal which will be replaced with the production
+* Adds a production rule consiting of a nonTerminal which will be replaced with the production
 */
-void LSystem2D::add_Production_Rule(const char nonTerminal, const std::string& production) {
+void LSystem2D::add_Production_Rule(const char non_terminal, const std::string& production) {
         
     // TODO: validate rule (is already the same rule there + do i override a rule)
-    production_rules.insert(std::pair(nonTerminal, production));
+    production_rules.insert(std::pair(non_terminal, production));
 }
 
 void LSystem2D::remove_Production_Rules() noexcept{
@@ -40,13 +40,11 @@ void LSystem2D::remove_Production_Rules() noexcept{
 
 /*
 * Calculates the resulting string of the given LSystem
-*
-* generation: how often the rules should be applied to the current state to get the result
-*
+* <generation> how often the rules should be applied to the current state to get the result
 */
 const std::string& LSystem2D::get_result(const int generation) {
        
-    currentState = startAxiom;
+    currentState = start_axiom;
 
     if (production_rules.size() > 0) {
         
