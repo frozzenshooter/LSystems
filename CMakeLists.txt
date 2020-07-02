@@ -17,6 +17,7 @@ add_executable(
   src/LSystem2D.cpp
   src/Parser.cpp
   src/TestTurtle.cpp
+  src/CairoTurtle.cpp
 )
 
 link_directories(${Cairo_INCLUDE_DIRS})
@@ -38,3 +39,6 @@ if(WIN32)
             ${CMAKE_COMMAND} -E copy_if_different ${DLL} $<TARGET_FILE_DIR:l_systems>)
     endforeach()
 endif()
+
+
+#Source for cmake + dlls: https://github.com/preshing/CairoSample/blob/master/CMakeLists.txt
