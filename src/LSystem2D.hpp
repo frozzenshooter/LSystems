@@ -17,9 +17,9 @@ public:
     const std::string& get_result(const std::size_t generation);
 
 private:
-    std::map<char, std::string> _production_rules;
-    std::string _start_axiom;
-    std::string _currentState;
+    std::map<char, std::string> production_rules_;
+    std::string start_axiom_;
+    std::string currentState_;
 
 };
 

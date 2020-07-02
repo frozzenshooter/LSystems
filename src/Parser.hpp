@@ -16,12 +16,12 @@ private:
     void handle(char ch);
 
 public:
-    Parser(TurtleGraphic& turtle_graphic) : _turtle_graphic(turtle_graphic) {};
+    Parser(TurtleGraphic& turtle_graphic) : turtle_graphic_(turtle_graphic) {};
 
     void parse_and_draw(const std::string& l_system_result);
 
 private:
-    TurtleGraphic& _turtle_graphic;    
+    TurtleGraphic& turtle_graphic_;    
 };
 
 #endif
