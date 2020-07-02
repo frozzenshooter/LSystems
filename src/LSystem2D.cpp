@@ -4,11 +4,11 @@ void LSystem2D::CalculateNextGeneration() {
 
     std::string nextState;
 
-    for (std::size_t i = 0; i < currentState.size(); ++i) {
+    for (std::size_t i = 0; i < _currentState.size(); ++i) {
 
-        auto key = currentState[i];
+        auto key = _currentState[i];
 
-        auto production = production_rules[key];
+        auto production = _production_rules[key];
 
         // TODO: better way to append string/char ?
         if (!production.empty()) {
@@ -20,10 +20,10 @@ void LSystem2D::CalculateNextGeneration() {
         }
     }
 
-    currentState = nextState;
+    _currentState = nextState;
 }
 
-LSystem2D::LSystem2D(const std::string& start_axiom): start_axiom(start_axiom), currentState("") {}
+LSystem2D::LSystem2D(const std::string& start_axiom): _start_axiom(start_axiom), _currentState("") {}
 
 /*
 * Adds a production rule consiting of a nonTerminal which will be replaced with the production
@@ -32,11 +32,11 @@ void LSystem2D::add_Production_Rule(const char non_terminal, const std::string& 
         
     // TODO: validate rule (is already the same rule there + do i override a rule)
     // remove empty whitespace
-    production_rules.insert(std::pair(non_terminal, production));
+    _production_rules.insert(std::pair(non_terminal, production));
 }
 
 void LSystem2D::remove_Production_Rules() noexcept{
-    production_rules.clear();
+    _production_rules.clear();
 }
 
 /*
@@ -45,9 +45,9 @@ void LSystem2D::remove_Production_Rules() noexcept{
 */
 const std::string& LSystem2D::get_result(const std::size_t generation) {
        
-    currentState = start_axiom;
+    _currentState = _start_axiom;
 
-    if (production_rules.size() > 0) {
+    if (_production_rules.size() > 0) {
         
         for (std::size_t i = 0; i < generation; ++i) {
 
@@ -55,5 +55,5 @@ const std::string& LSystem2D::get_result(const std::size_t generation) {
         }
     }
 
-    return currentState;
+    return _currentState;
 }

@@ -50,22 +50,22 @@ void Parser::handle(char ch) {
     switch (ch)
     {
     case 'F':
-        turtle_graphic.draw_line();
+        _turtle_graphic.draw_line();
         break;
     case 'f':
-        turtle_graphic.draw_short_line();
+        _turtle_graphic.draw_short_line();
         break;
     case '-':
-        turtle_graphic.turn_right();
+        _turtle_graphic.turn_right();
         break;
     case '+':
-        turtle_graphic.turn_left();
+        _turtle_graphic.turn_left();
         break;
     case '[':
-        turtle_graphic.save_state();
+        _turtle_graphic.save_state();
         break;
     case ']':
-        turtle_graphic.pop_state();
+        _turtle_graphic.pop_state();
         break;
     default:
         // do nothing
