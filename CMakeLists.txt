@@ -9,6 +9,7 @@ project(l_systems)
 add_executable(
   l_systems
   src/main.cpp
+  src/LSystem2D.cpp
 )
 
 set_property(TARGET l_systems PROPERTY CXX_STANDARD 17)
