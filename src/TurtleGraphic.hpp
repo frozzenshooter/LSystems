@@ -5,7 +5,9 @@ class TurtleGraphic {
 
 public:
 
-    virtual TurtleGraphic(const int start_postion_x, const int start_postion_y, const int start_heading) = 0;
+    TurtleGraphic(const int start_postion_x, const int start_postion_y, const int start_heading);
+
+    virtual ~TurtleGraphic() = 0;
 
     virtual void save_state() = 0;
     virtual void pop_state() = 0;
