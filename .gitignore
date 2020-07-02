@@ -20,5 +20,3 @@ cmake_install.cmake
 [Dd]ebugPublic/
 [Rr]elease/
 [Rr]eleases/
-x64/
-x86/
