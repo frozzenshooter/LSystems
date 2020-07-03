@@ -30,8 +30,6 @@ private:
     std::string start_axiom_;
     std::string currentState_;
     std::map<char, std::string> production_rules_;
-
-
 };
 
 #endif 

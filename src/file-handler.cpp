@@ -16,26 +16,7 @@ bool FileHandler::is_file_successfully_parsed() {
 };
 
 // === l system initalisiation ==================================
-/*
-Configures the l system with the parsed data (can be used to configure multiple l systems with the same data)
-*/
-//template<typename LSystem>
-bool FileHandler::configure_l_system(LSystem2D& l_system) {
-    //TODO: concepts/sifnae um schnittstelle umzusetzen
 
-    if (file_successfully_parsed_) {
-
-        l_system.set_start_axiom(start_axiom_);
-
-        //TODO: is this efficient ? because of reference problems later on ?
-        for (auto& production_rule : production_rules) {
-            l_system.add_production_rule(production_rule);
-        }
-
-        return true;
-    }
-    return false;
-};
 
 /*
 Configures the tutrle which will draw the l system (can be used to configure multiple turtles with the same data)

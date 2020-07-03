@@ -20,8 +20,26 @@ public:
 
     // === l system initalisiation ==================================
     //TODO: concepts/sifnae um schnittstelle umzusetzen
-    //template<typename LSystem>
-    bool configure_l_system(LSystem2D& l_system);
+    /*
+    Configures the l system with the parsed data (can be used to configure multiple l systems with the same data)
+    */
+    template<typename LSystem>
+    bool configure_l_system(LSystem& l_system) {
+        //TODO: concepts/sifnae um schnittstelle umzusetzen
+
+        if (file_successfully_parsed_) {
+
+            l_system.set_start_axiom(start_axiom_);
+
+            //TODO: is this efficient ? because of reference problems later on ?
+            for (auto& production_rule : production_rules) {
+                l_system.add_production_rule(production_rule);
+            }
+
+            return true;
+        }
+        return false;
+    };
 
     bool configure_turtle_graphic(TurtleGraphic& turtle_graphic);
 

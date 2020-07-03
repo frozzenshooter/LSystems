@@ -31,6 +31,9 @@ int main() {
 
     FileHandler handler{ "lsystem.ls" };
 
+    // TODO: BETTER IDEA FOR FILE HANDLER - ONLY PARSES AND RETRUNS THE VALUES 
+    // ANOTHER CLASS WILL CONFIGURE THE TURTLE GRAPHIC / L_SYSTEM
+
     handler.parse_file();
 
     CairoTurtle a;
