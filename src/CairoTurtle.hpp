@@ -11,7 +11,6 @@
 class CairoTurtle : public TurtleGraphic {
 
 private:
-    double normalize_angle(double angle);
     State calculate_next_state(State current_state, double line_length);
 
 public:
@@ -39,6 +38,8 @@ public:
 
     void set_turn_angle(double degree) override;
 
+    void set_start_state(State start_state);
+
     // drawing functions
     void move_to(double x, double y) override;
 
@@ -62,6 +63,7 @@ private:
 
     // states
     State current_state_;
+    State start_state_;
     std::stack<State> states_;
 
     cairo_surface_t* surface_;

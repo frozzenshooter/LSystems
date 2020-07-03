@@ -1,4 +1,5 @@
 #include "LSystem2D.hpp"
+#include <iostream>
 
 void LSystem2D::CalculateNextGeneration() {
 
@@ -19,6 +20,8 @@ void LSystem2D::CalculateNextGeneration() {
             nextState.push_back(key);
         }
     }
+
+    std::cout << currentState_.size() << std::endl;
 
     currentState_ = nextState;
 }

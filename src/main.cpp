@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "LSystem2D.hpp"
+#include "CairoTurtle.hpp"
 #include "TestTurtle.hpp"
 #include "Parser.hpp"
 #include <cairo.h>
@@ -11,37 +12,31 @@
 
 int main() {
 
-    LSystem2D test{ "F" };
-    test.add_Production_Rule('F', "F+F--F+F");
+    //TODO: rename all files adn classes to small letters and underscores
 
-    auto result = test.get_result(3);
+    //TODO: Performance improvements: dont copy the string in the l2 system -> only work with the reference
 
-    std::cout << result << std::endl;
+    //TODO: move to the startpoint in cairo tutrle to fix useless line at the end
 
-    TestTurtle a{};
+    //TODO: exception handling
+
+    //TODO: validation rules
+
+    // Sierpinski
+    LSystem2D test{ "X" };
+    test.add_Production_Rule('X', "YF+XF+Y");
+    test.add_Production_Rule('Y', "XF-YF-X");
+
+    auto result = test.get_result(14);
+
+    CairoTurtle a{2000, 2000, "testfile.png"};
+    a.set_turn_angle(60.0);
+    a.set_line_length(3);
 
     Parser p{a};
 
     p.parse_and_draw(result);
 
-  /*  cairo_surface_t* surface = cairo_image_surface_create(CAIRO_FORMAT_RGB24, 400, 400);
-    cairo_t* cr = cairo_create(surface);
-    cairo_set_source_rgb(cr, 1, 1, 1);
-    cairo_paint(cr);
-    cairo_set_source_rgb(cr, 0, 0, 0);
-    for (int i = 0; i <= 10000; i++) {
-        double x = 200 + cos(2 * M_PI * i / 500) * 70 + cos(2 * M_PI * i / 10000) * 110;
-        double y = 200 + sin(2 * M_PI * i / 500) * 70 + sin(2 * M_PI * i / 10000) * 110;
-        if (i == 0)
-            cairo_move_to(cr, x, y);
-        else
-            cairo_line_to(cr, x, y);
-    }
-    cairo_close_path(cr);
-    cairo_stroke(cr);
-    cairo_surface_write_to_png(surface, "spiral.png");
-    cairo_destroy(cr);
-    cairo_surface_destroy(surface);*/
-
+    a.save_to_png();
     return 0;
 }
