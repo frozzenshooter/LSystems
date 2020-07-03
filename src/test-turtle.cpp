@@ -23,6 +23,10 @@ void TestTurtle::set_turn_angle(double degree) {
     std::cout << "set_turn_angle: " << degree << std::endl;
 };
 
+void TestTurtle::set_dimensions(int width, int height) {
+    std::cout << "set_dimensions: " << width << ", "<< height << std::endl;
+}
+
 // === state functions ==========================================
 void TestTurtle::save_state() {
     std::cout << "save_state" << std::endl;

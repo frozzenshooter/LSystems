@@ -17,6 +17,7 @@ public:
     virtual void set_line_length(double length) = 0;
     virtual void set_short_line_length(double length) = 0;
     virtual void set_turn_angle(double degree) = 0;
+    virtual void set_dimensions(int width, int height) = 0;
 
     // === state functions ==========================================
     virtual void save_state() = 0;

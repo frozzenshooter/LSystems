@@ -4,6 +4,7 @@
 #include "cairo-turtle.hpp"
 #include "test-turtle.hpp"
 #include "parser.hpp"
+#include "file-handler.hpp"
 #include <cairo.h>
 
 
@@ -19,21 +20,31 @@ int main() {
 
     //TODO: style des codes -> tabs /spaces beachtet ?
 
+    //PRODUCTION RULES PER COPY ÜBERGEBEN DAMIT MAN DIE REGELN FÜR MEHRERE VERWENDEN KANN
+
+    // alignments der einzelnen klassen in Ordnung ?
+
+    //TODO getter and setter inline if to do sth - if not the compiler will link them away
+
     // Sierpinski
-    LSystem2D test{ "X" };
-    test.add_production_rule('X', "YF+XF+Y");
-    test.add_production_rule('Y', "XF-YF-X");
+    LSystem2D test;
 
-    auto result = test.get_result(14);
+    FileHandler handler{ "lsystem.ls" };
 
-    CairoTurtle a{2000, 2000, "testfile.png"};
-    a.set_turn_angle(60.0);
-    a.set_line_length(3);
+    handler.parse_file();
 
-    Parser p{a};
+    CairoTurtle a;
 
-    p.parse_and_draw(result);
+    if (handler.configure_l_system(test) && handler.configure_turtle_graphic(a)) {
 
-    a.save_to_png();
+        auto result = test.get_result(14);
+
+        Parser p{ a };
+
+        p.parse_and_draw(result);
+
+        a.save_to_png();
+    }
+   
     return 0;
 }

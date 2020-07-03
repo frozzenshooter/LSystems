@@ -20,7 +20,7 @@ private:
 public:
 
     // === con/destructors ==========================================
-    CairoTurtle(int width, int height, const std::string& filename);
+    CairoTurtle();
     ~CairoTurtle();
 
     // === configuration functions ==================================
@@ -29,6 +29,7 @@ public:
     void set_line_length(double length) override;
     void set_short_line_length(double length) override;
     void set_turn_angle(double degree) override;
+    void set_dimensions(int width, int height) override;
 
     void set_start_state(State start_state);
 

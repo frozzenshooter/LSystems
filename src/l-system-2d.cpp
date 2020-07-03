@@ -1,20 +1,25 @@
 #include "l-system-2d.hpp"
 #include <iostream>
 
-// === constructor ==================================================
-LSystem2D::LSystem2D(const std::string& start_axiom) : start_axiom_(start_axiom), currentState_("") {}
-
+/*
+Set the start axiom of the l system
+*/
+void LSystem2D::set_start_axiom(const std::string& start_axiom) {
+    start_axiom_ = start_axiom;
+}
 
 // === production rules =============================================
 
 /*
-* Adds a production rule consiting of a nonTerminal which will be replaced with the production
+Adds a production rule consiting of a nonTerminal which will be replaced with the production
 */
-void LSystem2D::add_production_rule(const char non_terminal, const std::string& production) {
+void LSystem2D::add_production_rule(const ProductionRule& production_rule) {
         
     // TODO: validate rule (is already the same rule there + do i override a rule)
-    // remove empty whitespace
-    production_rules_.insert(std::pair(non_terminal, production));
+    // TODO: describe why this should be more efficient to just hold string now
+
+
+    production_rules_.insert(std::pair(production_rule.get_non_terminal(), production_rule.get_production_rule()));
 }
 
 void LSystem2D::remove_production_rules() noexcept{
@@ -24,7 +29,7 @@ void LSystem2D::remove_production_rules() noexcept{
 // === l system calculations ========================================
 
 /*
-* Calculates the next generation of the l system
+Calculates the next generation of the l system
 */
 void LSystem2D::CalculateNextGeneration() {
 
@@ -54,7 +59,7 @@ void LSystem2D::CalculateNextGeneration() {
 }
 
 /*
-* Calculates the resulting (generation) string of the given l system
+Calculates the resulting (generation) string of the given l system
 */
 const std::string& LSystem2D::get_result(const std::size_t generation) {
        

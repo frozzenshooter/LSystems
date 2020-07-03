@@ -18,6 +18,7 @@ add_executable(
   src/parser.cpp
   src/test-turtle.cpp
   src/cairo-turtle.cpp
+  src/file-handler.cpp
 
   src/l-system-2d.hpp
   src/parser.hpp
@@ -25,6 +26,8 @@ add_executable(
   src/turtle-graphic.hpp
   src/test-turtle.hpp
   src/cairo-turtle.hpp
+  src/file-handler.hpp
+  src/production-rule.hpp
 )
 
 link_directories(${Cairo_INCLUDE_DIRS})

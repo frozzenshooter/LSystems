@@ -6,6 +6,8 @@
 
 class Parser {
 
+    //TODO rename to l system 2d parser or sth like this - can only parse one special grammar
+
 private:
     // === char validation functions ================================
     bool is_terminal(char ch);

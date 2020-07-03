@@ -18,6 +18,7 @@ public:
     void set_line_length(double length) override;
     void set_short_line_length(double length) override;
     void set_turn_angle(double degree) override;
+    void set_dimensions(int width, int height) override;
 
     // === state functions ==========================================
     void save_state() override;

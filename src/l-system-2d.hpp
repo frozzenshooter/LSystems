@@ -3,6 +3,7 @@
 
 #include <map>
 #include <string>
+#include "production-rule.hpp"
 
 class LSystem2D{
 
@@ -11,11 +12,15 @@ private:
     void CalculateNextGeneration();
 
 public:
+
     // === constructor ==================================================
-    LSystem2D(const std::string& start_axiom);
+    LSystem2D::LSystem2D() : start_axiom_(""), currentState_("") {}
+
+    // === axiom ========================================================
+    void set_start_axiom(const std::string& start_axiom);
 
     // === production rules =============================================
-    void add_production_rule(const char non_terminal, const std::string& production);
+    void add_production_rule(const ProductionRule& production_rule);
     void remove_production_rules() noexcept;
 
     const std::string& get_result(const std::size_t generation);
