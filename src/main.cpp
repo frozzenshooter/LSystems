@@ -6,9 +6,6 @@
 #include "Parser.hpp"
 #include <cairo.h>
 
-#define _USE_MATH_DEFINES
-#include <math.h>
-
 
 int main() {
 
@@ -21,6 +18,8 @@ int main() {
     //TODO: exception handling
 
     //TODO: validation rules
+
+    //TODO: style des codes -> tabs /spaces beachtet ?
 
     // Sierpinski
     LSystem2D test{ "X" };
