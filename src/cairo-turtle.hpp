@@ -4,7 +4,7 @@
 #include <string>
 #include <stack>
 #include <cairo.h>
-#include "TurtleGraphic.hpp"
+#include "turtle-graphic.hpp"
 #include "State.hpp"
 
 

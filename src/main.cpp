@@ -1,9 +1,9 @@
 #include <iostream>
 
-#include "LSystem2D.hpp"
-#include "CairoTurtle.hpp"
-#include "TestTurtle.hpp"
-#include "Parser.hpp"
+#include "l-system-2d.hpp"
+#include "cairo-turtle.hpp"
+#include "test-turtle.hpp"
+#include "parser.hpp"
 #include <cairo.h>
 
 
@@ -28,7 +28,7 @@ int main() {
 
     auto result = test.get_result(14);
 
-    CairoTurtle a{2000, 2000, "testfile.png"};
+    CairoTurtle a{3000, 3000, "testfile.png"};
     a.set_turn_angle(60.0);
     a.set_line_length(3);
 

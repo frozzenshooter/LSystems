@@ -14,10 +14,10 @@ project(l_systems)
 add_executable(
   l_systems
   src/main.cpp
-  src/LSystem2D.cpp
-  src/Parser.cpp
-  src/TestTurtle.cpp
-  src/CairoTurtle.cpp
+  src/l-system-2d.cpp
+  src/parser.cpp
+  src/test-turtle.cpp
+  src/cairo-turtle.cpp
 )
 
 link_directories(${Cairo_INCLUDE_DIRS})

@@ -1,4 +1,4 @@
-#include "LSystem2D.hpp"
+#include "l-system-2d.hpp"
 #include <iostream>
 
 void LSystem2D::CalculateNextGeneration() {

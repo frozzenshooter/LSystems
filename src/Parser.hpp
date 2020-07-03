@@ -2,7 +2,7 @@
 #define PARSER_HPP
 
 #include <string>
-#include "TurtleGraphic.hpp"
+#include "turtle-graphic.hpp"
 
 class Parser {
 

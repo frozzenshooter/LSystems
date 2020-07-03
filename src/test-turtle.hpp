@@ -1,7 +1,7 @@
 #ifndef TEST_TUTRLE_HPP
 #define TEST_TUTRLE_HPP
 
-#include "TurtleGraphic.hpp"
+#include "turtle-graphic.hpp"
 
 /*
 * Class to test the trutle behaviour - it will output the called functions via std::out
