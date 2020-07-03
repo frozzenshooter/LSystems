@@ -1,13 +1,28 @@
 #ifndef CAIRO_TUTRLE_HPP
 #define CAIRO_TUTRLE_HPP
 
+#include <string>
+#include <stack>
+#include <cairo.h>
 #include "TurtleGraphic.hpp"
+#include "State.hpp"
+
 
 class CairoTurtle : public TurtleGraphic {
 
+private:
+    double normalize_angle(double angle);
+
 public:
 
-    ~CairoTurtle() {};
+    CairoTurtle(int width, int height, const std::string& filename);
+
+    ~CairoTurtle();
+
+    // configuration functions
+    void set_export_filename(std::string filename) override;
+
+    void save_to_png() override;
 
     // state functions
     void save_state() override;
@@ -15,16 +30,16 @@ public:
     void pop_state() override;
 
     // configuration functions
-    void set_line_width(float width) override;
+    void set_line_width(double width) override;
 
-    void set_line_length(float length) override;
+    void set_line_length(double length) override;
 
-    void set_short_line_length(float length) override;
+    void set_short_line_length(double length) override;
 
-    void set_turn_angle(float degree) override;
+    void set_turn_angle(double degree) override;
 
     // drawing functions
-    void move_to(const int x, const int y) override;
+    void move_to(double x, double y) override;
 
     void draw_line() override;
 
@@ -34,5 +49,21 @@ public:
 
     void turn_left() override;
 
+private:
+
+    // configuration data
+    int width_;
+    int height_;
+    double short_line_length_;
+    double line_length_;
+    double turn_angle_;
+    std::string filename_;
+
+    // states
+    State current_state_;
+    std::stack<State> states_;
+
+    cairo_surface_t* surface_;
+    cairo_t* cr_;
 };
 #endif

@@ -2,6 +2,15 @@
 
 #include <iostream>
 
+// configuration
+void TestTurtle::set_export_filename(std::string filename) {
+    std::cout << "set_export_filename" << std::endl;
+}
+
+void TestTurtle::save_to_png() {
+    std::cout << "save_to_png" << std::endl;
+}
+
 // state functions
 void TestTurtle::save_state() {
     std::cout << "save_state" << std::endl;
@@ -12,24 +21,24 @@ void TestTurtle::pop_state() {
 };
 
 // configuration functions
-void TestTurtle::set_line_width(float width) {
+void TestTurtle::set_line_width(double width) {
     std::cout << "set_line_width" << width << std::endl;
 };
 
-void TestTurtle::set_line_length(float length) {
+void TestTurtle::set_line_length(double length) {
     std::cout << "set_line_length: " << length << std::endl;
 };
 
-void TestTurtle::set_short_line_length(float length) {
+void TestTurtle::set_short_line_length(double length) {
     std::cout << "set_short_line_length: " << length << std::endl;
 };
 
-void TestTurtle::set_turn_angle(float degree) {
+void TestTurtle::set_turn_angle(double degree) {
     std::cout << "set_turn_angle: " << degree << std::endl;
 };
 
 // drawing functions
-void TestTurtle::move_to(const int x, const int y) {
+void TestTurtle::move_to(double x, double y) {
     std::cout << "move_to: (" << x << ", "<< y << " )" << std::endl;
 };
 
