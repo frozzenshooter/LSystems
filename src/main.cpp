@@ -28,7 +28,7 @@ int main() {
 
     auto result = test.get_result(14);
 
-    CairoTurtle a{3000, 3000, "testfile.png"};
+    CairoTurtle a{2000, 2000, "testfile.png"};
     a.set_turn_angle(60.0);
     a.set_line_length(3);
 
