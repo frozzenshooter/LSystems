@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-// configuration functions
+// === configuration functions ==================================
 void TestTurtle::set_export_filename(std::string filename) {
     std::cout << "set_export_filename" << std::endl;
 }
@@ -23,7 +23,7 @@ void TestTurtle::set_turn_angle(double degree) {
     std::cout << "set_turn_angle: " << degree << std::endl;
 };
 
-// state functions
+// === state functions ==========================================
 void TestTurtle::save_state() {
     std::cout << "save_state" << std::endl;
 };
@@ -32,7 +32,7 @@ void TestTurtle::pop_state() {
     std::cout << "pop_state" << std::endl;
 };
 
-// drawing functions
+// === drawing functions ========================================
 void TestTurtle::move_to(double x, double y) {
     std::cout << "move_to: (" << x << ", "<< y << " )" << std::endl;
 };
@@ -53,7 +53,7 @@ void TestTurtle::turn_left() {
     std::cout << "turn_left" << std::endl;
 };
 
-// output/saving
+// === output/saving ============================================
 void TestTurtle::save_to_png() {
     std::cout << "save_to_png" << std::endl;
 }

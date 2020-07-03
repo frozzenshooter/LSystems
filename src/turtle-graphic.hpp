@@ -6,23 +6,23 @@
 class TurtleGraphic {
 
 public:
+
+    //TODO why no pure virtual destructor?
+    // === destructor ===============================================
     virtual ~TurtleGraphic(){};
 
-    // configuration
+    // === configuration functions ==================================
     virtual void set_export_filename(std::string filename) = 0;
-    virtual void save_to_png() = 0;
-
-    // state functions
-    virtual void save_state() = 0;
-    virtual void pop_state() = 0;
-
-    // configuration functions
     virtual void set_line_width(double width) = 0;
     virtual void set_line_length(double length) = 0;
     virtual void set_short_line_length(double length) = 0;
     virtual void set_turn_angle(double degree) = 0;
 
-    // drawing functions
+    // === state functions ==========================================
+    virtual void save_state() = 0;
+    virtual void pop_state() = 0;
+
+    // === drawing functions ========================================
     virtual void move_to(double x, double y) = 0;
 
     virtual void draw_line() = 0;
@@ -30,6 +30,9 @@ public:
 
     virtual void turn_right() = 0;
     virtual void turn_left() = 0;
+
+    // === output/saving ============================================
+    virtual void save_to_png() = 0;
 };
 
 #endif

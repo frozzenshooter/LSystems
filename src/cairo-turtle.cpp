@@ -2,6 +2,8 @@
 #include <math.h> 
 #include <iostream>
 
+
+// === con/destructors ==============================================
 /*
 * Init cairo turtle with default values
 */
@@ -38,27 +40,13 @@ CairoTurtle::~CairoTurtle() {
     cairo_surface_destroy(surface_);
 }
 
+// === configuration functions ======================================
 /*
 * Sets the filename to export to
 */
 void CairoTurtle::set_export_filename(std::string filename) {
     filename_ = filename;
 }
-
-/*
-* Saves the current state
-*/
-void CairoTurtle::save_state() {
-    states_.push(current_state_);
-};
-
-/*
-* Sets the current sate to last saved state
-*/
-void CairoTurtle::pop_state() {
-    current_state_ = states_.top();
-    states_.pop();
-};
 
 /*
 * Set the width of a line
@@ -88,6 +76,30 @@ void CairoTurtle::set_turn_angle(double degree) {
     turn_angle_ = degree;
 };
 
+/*
+* Sets the start state so it will be possible to end the drawing without an extra line
+*/
+void CairoTurtle::set_start_state(State start_state) {
+    start_state_ = start_state_;
+}
+
+// === state functions ==============================================
+/*
+* Saves the current state
+*/
+void CairoTurtle::save_state() {
+    states_.push(current_state_);
+};
+
+/*
+* Sets the current sate to last saved state
+*/
+void CairoTurtle::pop_state() {
+    current_state_ = states_.top();
+    states_.pop();
+};
+
+// === drawing functions ============================================
 /*
 * Moves the current position without drawing a line
 */
@@ -145,6 +157,7 @@ void CairoTurtle::turn_left() {
     current_state_.set_angle(angle);
 };
 
+// === output/saving ============================================
 /*
 * Saves the current drawing state to a png
 */
@@ -155,6 +168,7 @@ void CairoTurtle::save_to_png() {
     cairo_surface_write_to_png(surface_, filename_.c_str());
 }
 
+// === calcualtions =============================================
 /*
 * Calculates the next state when drawing a line with the current state and defined line length
 */
@@ -169,10 +183,3 @@ State CairoTurtle::calculate_next_state(State current_state, double line_length)
 
     return {next_x, next_y, angle};
 };
-
-/*
-* Sets the start state so it will be possible to end the drawing without an extra line
-*/
-void CairoTurtle::set_start_state(State start_state) {
-    start_state_ = start_state_;
-}

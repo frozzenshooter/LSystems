@@ -1,26 +1,6 @@
 #include "parser.hpp"
 
-/*
-* Parses the string and draws the interpretation with the turtlegraphic
-*/
-void Parser::parse_and_draw(const std::string& l_system_result) {
-    
-    std::size_t current_index = 0;
-
-    while (current_index < l_system_result.size()) {
-
-        auto ch = l_system_result[current_index];
-
-        if (!ignore_char(ch)) {
-
-            // call turtle only for valid chars
-            handle(ch);
-        }
-        
-        ++current_index;
-    }
-}
-
+// === char validation functions ====================================
 /*
 * Checks if the next char has to be skipped
 */
@@ -42,6 +22,7 @@ bool Parser::is_terminal(char ch) {
     return ch == 'F' || ch == 'f' || ch == '-' || ch == '+' || ch == '[' || ch == ']';
 }
 
+// === function call handling =======================================
 /*
 * Handles the turtle function call for the char
 */
@@ -70,5 +51,26 @@ void Parser::handle(char ch) {
     default:
         // do nothing
         break;
+    }
+}
+
+/*
+* Parses the string and draws the interpretation with the turtlegraphic
+*/
+void Parser::parse_and_draw(const std::string& l_system_result) {
+
+    std::size_t current_index = 0;
+
+    while (current_index < l_system_result.size()) {
+
+        auto ch = l_system_result[current_index];
+
+        if (!ignore_char(ch)) {
+
+            // call turtle only for valid chars
+            handle(ch);
+        }
+
+        ++current_index;
     }
 }

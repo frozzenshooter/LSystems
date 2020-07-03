@@ -9,8 +9,6 @@
 
 int main() {
 
-    //TODO: rename all files adn classes to small letters and underscores
-
     //TODO: Performance improvements: dont copy the string in the l2 system -> only work with the reference
 
     //TODO: move to the startpoint in cairo tutrle to fix useless line at the end
@@ -23,8 +21,8 @@ int main() {
 
     // Sierpinski
     LSystem2D test{ "X" };
-    test.add_Production_Rule('X', "YF+XF+Y");
-    test.add_Production_Rule('Y', "XF-YF-X");
+    test.add_production_rule('X', "YF+XF+Y");
+    test.add_production_rule('Y', "XF-YF-X");
 
     auto result = test.get_result(14);
 
