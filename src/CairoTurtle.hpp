@@ -12,6 +12,7 @@ class CairoTurtle : public TurtleGraphic {
 
 private:
     double normalize_angle(double angle);
+    State calculate_next_state(State current_state, double line_length);
 
 public:
 

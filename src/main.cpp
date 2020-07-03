@@ -24,7 +24,7 @@ int main() {
 
     p.parse_and_draw(result);
 
-    cairo_surface_t* surface = cairo_image_surface_create(CAIRO_FORMAT_RGB24, 400, 400);
+  /*  cairo_surface_t* surface = cairo_image_surface_create(CAIRO_FORMAT_RGB24, 400, 400);
     cairo_t* cr = cairo_create(surface);
     cairo_set_source_rgb(cr, 1, 1, 1);
     cairo_paint(cr);
@@ -41,7 +41,7 @@ int main() {
     cairo_stroke(cr);
     cairo_surface_write_to_png(surface, "spiral.png");
     cairo_destroy(cr);
-    cairo_surface_destroy(surface);
+    cairo_surface_destroy(surface);*/
 
     return 0;
 }

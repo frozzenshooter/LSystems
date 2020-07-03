@@ -1,4 +1,5 @@
 #include "CairoTurtle.hpp"
+#include <math.h>  
 
 /*
 * Init cairo turtle with default values
@@ -99,17 +100,21 @@ void CairoTurtle::move_to(double x, double y) {
 */
 void CairoTurtle::draw_line() {
 
-    //TODO: calculate the next position to line to
+    auto next_state = calculate_next_state(current_state_, line_length_);
+    cairo_line_to(cr_, next_state.get_x(), next_state.get_y());
 
-    //TODO: draw line implementation
-
+    current_state_ = next_state;
 };
 
 /*
 * Draws a short line from the current position with the current direction
 */
 void CairoTurtle::draw_short_line() {
-    //TODO: draw line imlementation
+
+    auto next_state = calculate_next_state(current_state_, short_line_length_);
+    cairo_line_to(cr_, next_state.get_x(), next_state.get_y());
+
+    current_state_ = next_state;
 };
 
 /*
@@ -137,7 +142,7 @@ double CairoTurtle::normalize_angle(double angle) {
 void CairoTurtle::turn_right() {
     auto angle = current_state_.get_angle();
 
-    angle -= turn_angle_;
+    angle += turn_angle_;
 
     angle = normalize_angle(angle);
 
@@ -150,7 +155,7 @@ void CairoTurtle::turn_right() {
 void CairoTurtle::turn_left() {
     auto angle = current_state_.get_angle();
 
-    angle += turn_angle_;
+    angle -= turn_angle_;
 
     angle = normalize_angle(angle);
 
@@ -165,3 +170,18 @@ void CairoTurtle::save_to_png() {
     cairo_stroke(cr_);
     cairo_surface_write_to_png(surface_, filename_.c_str());
 }
+
+/*
+* Calculates the next state when drawing a line with the current state and defined line length
+*/
+State CairoTurtle::calculate_next_state(State current_state, double line_length) {
+
+    auto angle = current_state.get_angle();
+    auto x_diff = sin(angle) * line_length;
+    auto y_diff = cos(angle) * line_length;
+
+    auto next_x = current_state.get_x() + x_diff;
+    auto next_y = current_state.get_y() + y_diff;
+
+    return {next_x, next_y, angle};
+};
