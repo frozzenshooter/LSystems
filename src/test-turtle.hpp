@@ -30,7 +30,7 @@ public:
     void turn_left() override;
 
     // === output/saving ============================================
-    void save_to_png() override;
-    void view_result() override;
+    bool save_to_png() override;
+    bool view_result() override;
 };
 #endif

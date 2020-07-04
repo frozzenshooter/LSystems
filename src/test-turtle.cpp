@@ -42,10 +42,12 @@ void TestTurtle::turn_left() {
 };
 
 // === output/saving ============================================
-void TestTurtle::save_to_png() {
+bool TestTurtle::save_to_png() {
     std::cout << "save_to_png" << std::endl;
+    return true;
 }
 
-void TestTurtle::view_result() {
+bool TestTurtle::view_result() {
     std::cout << "view_result" << std::endl;
+    return true;
 }

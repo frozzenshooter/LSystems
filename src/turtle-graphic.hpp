@@ -29,8 +29,8 @@ public:
     virtual void turn_left() = 0;
 
     // === output/saving ============================================
-    virtual void save_to_png() = 0;
-    virtual void view_result() = 0;
+    virtual bool save_to_png() = 0;
+    virtual bool view_result() = 0;
 };
 
 #endif

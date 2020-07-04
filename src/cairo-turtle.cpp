@@ -31,6 +31,7 @@ CairoTurtle::~CairoTurtle() {
 // === configuration functions ======================================
 void CairoTurtle::configure(const Configuration& configuration) {
     configuration_ = configuration;
+    // possible to change configureation for each draw call
 }
 
 void CairoTurtle::init() {
@@ -39,6 +40,7 @@ void CairoTurtle::init() {
         // cleanup old turtle
         cairo_destroy(cr_);
         cairo_surface_destroy(surface_);
+        states_.empty();
     }
 
     // initalisie cairo for drawing
@@ -84,76 +86,89 @@ void CairoTurtle::pop_state() {
 Moves the current position without drawing a line
 */
 void CairoTurtle::move_to(double x, double y) {
-    current_state_.set_x(x);
-    current_state_.set_y(y);
+    if (is_initialised_) {
+        current_state_.set_x(x);
+        current_state_.set_y(y);
 
-    cairo_move_to(cr_, x, y);
+        cairo_move_to(cr_, x, y);
+    }
 };
 
 /*
 Draws a line from the current position with the current direction
 */
 void CairoTurtle::draw_line() {
+    if (is_initialised_) {
+        auto next_state = calculate_next_state(current_state_, configuration_.line_length_);
+        cairo_line_to(cr_, next_state.get_x(), next_state.get_y());
 
-    auto next_state = calculate_next_state(current_state_, configuration_.line_length_);
-    cairo_line_to(cr_, next_state.get_x(), next_state.get_y());
-
-    current_state_ = next_state;
+        current_state_ = next_state;
+    }
 };
 
 /*
 Draws a short line from the current position with the current direction
 */
 void CairoTurtle::draw_short_line() {
+    if (is_initialised_) {
+        auto next_state = calculate_next_state(current_state_, configuration_.short_line_length_);
+        cairo_line_to(cr_, next_state.get_x(), next_state.get_y());
 
-    auto next_state = calculate_next_state(current_state_, configuration_.short_line_length_);
-    cairo_line_to(cr_, next_state.get_x(), next_state.get_y());
-
-    current_state_ = next_state;
+        current_state_ = next_state;
+    }
 };
 
 /*
 Calculates a right turn and sets the current state to the new direction
 */
 void CairoTurtle::turn_right() {
-    auto angle = current_state_.get_angle();
+    if (is_initialised_) {
+        auto angle = current_state_.get_angle();
 
-    // No need to normailize angle because the only use is with sin/cos
-    angle += configuration_.turn_angle_;
+        // No need to normailize angle because the only use is with sin/cos
+        angle += configuration_.turn_angle_;
 
-    current_state_.set_angle(angle);
+        current_state_.set_angle(angle);
+    }
 };
 
 /*
 Calculates a left turn and sets the current state to the new direction
 */
 void CairoTurtle::turn_left() {
-    auto angle = current_state_.get_angle();
+    if (is_initialised_) {
+        auto angle = current_state_.get_angle();
 
-    // No need to normailize angle because the only use is with sin/cos
-    angle -= configuration_.turn_angle_;
+        // No need to normailize angle because the only use is with sin/cos
+        angle -= configuration_.turn_angle_;
 
-    current_state_.set_angle(angle);
+        current_state_.set_angle(angle);
+    }
 };
 
 // === output/saving ============================================
 /*
 Saves the current drawing state to a png
 */
-void CairoTurtle::save_to_png() {
+bool CairoTurtle::save_to_png() {
     
-    // when the path is closed and you are not on the start position it will draw a line form the end position to the start position
-    // move to the start so it wont draw this line
-    move_to(start_state_.get_x(), start_state_.get_y());
-    cairo_close_path(cr_);
-    cairo_stroke(cr_);
+    if (is_initialised_) {
+        // when the path is closed and you are not on the start position it will draw a line form the end position to the start position
+        // move to the start so it wont draw this line
+        move_to(start_state_.get_x(), start_state_.get_y());
+        cairo_close_path(cr_);
+        cairo_stroke(cr_);
 
-    cairo_surface_write_to_png(surface_, configuration_.export_filename_.c_str());
+        cairo_surface_write_to_png(surface_, configuration_.export_filename_.c_str());
+        return true;
+    }
+
+    return false;
 }
 
-void CairoTurtle::view_result() {
+bool CairoTurtle::view_result() {
     std::cout << "View result is not implemented - the data will be exported as png: " << configuration_.export_filename_ << std::endl;
-    save_to_png();
+    return save_to_png();
 }
 
 // === calcualtions =============================================
