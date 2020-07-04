@@ -10,6 +10,9 @@
 
 int main() {
 
+
+    //TODO: when do you need a copy/assignment constructor operator ? => have the std:: ... objects(stack,..) issues which need to explizit define them?
+
     //TODO: Performance improvements: dont copy the string in the l2 system -> only work with the reference
     // other data object?
 
@@ -31,13 +34,11 @@ int main() {
 
     lsystem.configure(config);
 
-    const std::string& result = lsystem.calculate();
-
     CairoTurtle t;
     t.configure(config);
 
     Parser p{t};
-    p.parse_and_save_to_png(result);
+    p.parse_and_save_to_png(lsystem);
    
     return 0;
 }
