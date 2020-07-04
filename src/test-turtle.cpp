@@ -7,6 +7,10 @@ void TestTurtle::configure(const Configuration& configuration) {
     std::cout << "configure" << std::endl;
 };
 
+void TestTurtle::init() {
+    std::cout << "init" << std::endl;
+};
+
 // === state functions ==========================================
 void TestTurtle::save_state() {
     std::cout << "save_state" << std::endl;

@@ -14,6 +14,7 @@ public:
 
     // === configuration functions ==================================
     void configure(const Configuration& configuration);
+    void init();
 
     // === state functions ==========================================
     void save_state() override;

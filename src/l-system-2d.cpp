@@ -12,6 +12,7 @@ void LSystem2D::configure(const Configuration& configuration) {
 
     // if l system was used bevor remove old data;
     production_rules_.clear();
+
     for (auto rule : configuration.production_rules_) {
 
         // TODO: validate rule (is already the same rule there + do i override a rule)

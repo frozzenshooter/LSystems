@@ -57,11 +57,13 @@ void Parser::handle(char ch) {
 /*
 Parses the string and draws the interpretation with the turtlegraphic
 */
-void Parser::parse_and_draw(const std::string& l_system_result) {
+void Parser::parse_and_save_to_png(const std::string& l_system_result) {
 
     std::size_t current_index = 0;
 
     std::cout << "[Parsing started]" << std::endl;
+    
+    turtle_graphic_.init();
 
     while (current_index < l_system_result.size()) {
 
@@ -76,5 +78,7 @@ void Parser::parse_and_draw(const std::string& l_system_result) {
         ++current_index;
     }
 
-    std::cout << "[Parsing ended]" << std::endl;
+    std::cout << "[Parsing ended]: result will be exported as png" << std::endl;
+
+    turtle_graphic_.save_to_png();
 }

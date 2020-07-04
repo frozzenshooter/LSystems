@@ -25,6 +25,7 @@ public:
 
     // === configuration functions ==================================
     void configure(const Configuration& configuration) override;
+    void init() override;
 
     void set_start_state(State start_state);
 
@@ -43,16 +44,13 @@ public:
 
     // === output/saving ============================================
     void save_to_png() override;
+    void view_result() override;
 
 private:
 
     // === configuration data =======================================
-    int width_;
-    int height_;
-    double short_line_length_;
-    double line_length_;
-    double turn_angle_;
-    std::string export_filename_;
+    bool is_initialised_;
+    Configuration configuration_;
 
     // === states ===================================================
     State current_state_;

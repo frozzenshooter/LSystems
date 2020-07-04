@@ -8,29 +8,14 @@
 Init cairo turtle with default values
 */
 CairoTurtle::CairoTurtle() :
-    width_(2000),
-    height_(2000),
-    short_line_length_(0.5),
-    line_length_(1.0),
-    turn_angle_(45.0),
-    export_filename_("exportfile.png"),
     current_state_(0.0, 0.0, 0.0),
-    start_state_(0.0, 0.0, 0.0)
+    start_state_(0.0, 0.0, 0.0),
+    is_initialised_(false)
 {
-
-    //TODO: IF YOU SET THE DIMENSIONS LATER ON THE SURFACE NEEDS TO BE REBUILD
-    // YOU NEED TO TOGGLE IF YOU CAN SET AND RESET IN A CASE
-
-    // initalisie cairo for drawing
-    surface_ = cairo_image_surface_create(CAIRO_FORMAT_RGB24, width_, height_);
-    cr_ = cairo_create(surface_);
-
-    // background white and lines black for now
-    cairo_set_source_rgb(cr_, 1, 1, 1);
-    cairo_paint(cr_);
-    cairo_set_source_rgb(cr_, 0, 0, 0);
-
-    cairo_set_line_width(cr_, 1.0);
+    // set default configuration
+    configuration_ = {};
+    surface_ = nullptr;
+    cr_ = nullptr;
 };
 
 /*
@@ -45,8 +30,31 @@ CairoTurtle::~CairoTurtle() {
 
 // === configuration functions ======================================
 void CairoTurtle::configure(const Configuration& configuration) {
-   //TODO;
+    configuration_ = configuration;
 }
+
+void CairoTurtle::init() {
+
+    if (is_initialised_) {
+        // cleanup old turtle
+        cairo_destroy(cr_);
+        cairo_surface_destroy(surface_);
+    }
+
+    // initalisie cairo for drawing
+    surface_ = cairo_image_surface_create(CAIRO_FORMAT_RGB24, configuration_.width_, configuration_.height_);
+    cr_ = cairo_create(surface_);
+
+    // background white and lines black for now
+    cairo_set_source_rgb(cr_, 1, 1, 1);
+    cairo_paint(cr_);
+    cairo_set_source_rgb(cr_, 0, 0, 0);
+
+    cairo_set_line_width(cr_, 1.0);
+    
+    is_initialised_ = true;
+}
+
 
 /*
 Sets the start state so it will be possible to end the drawing without an extra line
@@ -87,7 +95,7 @@ Draws a line from the current position with the current direction
 */
 void CairoTurtle::draw_line() {
 
-    auto next_state = calculate_next_state(current_state_, line_length_);
+    auto next_state = calculate_next_state(current_state_, configuration_.line_length_);
     cairo_line_to(cr_, next_state.get_x(), next_state.get_y());
 
     current_state_ = next_state;
@@ -98,7 +106,7 @@ Draws a short line from the current position with the current direction
 */
 void CairoTurtle::draw_short_line() {
 
-    auto next_state = calculate_next_state(current_state_, short_line_length_);
+    auto next_state = calculate_next_state(current_state_, configuration_.short_line_length_);
     cairo_line_to(cr_, next_state.get_x(), next_state.get_y());
 
     current_state_ = next_state;
@@ -111,7 +119,7 @@ void CairoTurtle::turn_right() {
     auto angle = current_state_.get_angle();
 
     // No need to normailize angle because the only use is with sin/cos
-    angle += turn_angle_;
+    angle += configuration_.turn_angle_;
 
     current_state_.set_angle(angle);
 };
@@ -123,7 +131,7 @@ void CairoTurtle::turn_left() {
     auto angle = current_state_.get_angle();
 
     // No need to normailize angle because the only use is with sin/cos
-    angle -= turn_angle_;
+    angle -= configuration_.turn_angle_;
 
     current_state_.set_angle(angle);
 };
@@ -133,10 +141,19 @@ void CairoTurtle::turn_left() {
 Saves the current drawing state to a png
 */
 void CairoTurtle::save_to_png() {
+    
+    // when the path is closed and you are not on the start position it will draw a line form the end position to the start position
+    // move to the start so it wont draw this line
     move_to(start_state_.get_x(), start_state_.get_y());
     cairo_close_path(cr_);
     cairo_stroke(cr_);
-    cairo_surface_write_to_png(surface_, export_filename_.c_str());
+
+    cairo_surface_write_to_png(surface_, configuration_.export_filename_.c_str());
+}
+
+void CairoTurtle::view_result() {
+    std::cout << "View result is not implemented - the data will be exported as png: " << configuration_.export_filename_ << std::endl;
+    save_to_png();
 }
 
 // === calcualtions =============================================

@@ -13,6 +13,7 @@ public:
 
     // === configuration functions ==================================
     virtual void configure(const Configuration& configuration) = 0;
+    virtual void init() = 0;
 
     // === state functions ==========================================
     virtual void save_state() = 0;

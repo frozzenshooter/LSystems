@@ -11,6 +11,20 @@ class Configuration {
 
 public:
 
+    // === constructor ==============================================
+    Configuration() :
+        width_(2000),
+        height_(2000),
+        generations_(0),
+        short_line_length_(1.5),
+        line_length_(3.0),
+        turn_angle_(60.0),
+        line_width_(1.0),
+        export_filename_("export_file.png")
+    {
+        // set default values
+    }
+
     // === turtle configuration data ================================
     int width_;
     int height_;
@@ -26,7 +40,6 @@ public:
     std::vector<ProductionRule> production_rules_;
 
     void print() const{
-
 
         std::cout << "[Configuration]:" << std::endl;
         std::cout << "width: " << width_ << std::endl;

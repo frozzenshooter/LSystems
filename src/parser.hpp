@@ -25,7 +25,7 @@ public:
     Parser(TurtleGraphic& turtle_graphic) : turtle_graphic_(turtle_graphic) {};
     
     // === parsing/drawing ==========================================
-    void parse_and_draw(const std::string& l_system_result);
+    void parse_and_save_to_png(const std::string& l_system_result);
 
 private:
     TurtleGraphic& turtle_graphic_;    

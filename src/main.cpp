@@ -19,14 +19,9 @@ int main() {
 
     //TODO: style des codes -> tabs /spaces beachtet ?
 
-    //PRODUCTION RULES PER COPY ÜBERGEBEN DAMIT MAN DIE REGELN FÜR MEHRERE VERWENDEN KANN
-
     // alignments der einzelnen klassen in Ordnung ?
 
     //TODO getter and setter inline if to do sth - if not the compiler will link them away
-
-    // Sierpinski
-    //LSystem2D test;
 
     FileHandler handler;
 
@@ -38,14 +33,11 @@ int main() {
 
     const std::string& result = lsystem.calculate();
 
-    TestTurtle t;
+    CairoTurtle t;
     t.configure(config);
 
     Parser p{t};
-
-    p.parse_and_draw(result);
-
-    t.save_to_png();
+    p.parse_and_save_to_png(result);
    
     return 0;
 }
@@ -73,35 +65,4 @@ bool configure_l_system(LSystem& l_system) {
     }
     return false;
 };
-
-bool configure_turtle_graphic(TurtleGraphic& turtle_graphic);
-
-bool FileHandler::is_file_successfully_parsed() {
-    return file_successfully_parsed_;
-};
-
-// === l system initalisiation ==================================
-
-
-/*
-Configures the tutrle which will draw the l system (can be used to configure multiple turtles with the same data)
-
-bool FileHandler::configure_turtle_graphic(TurtleGraphic& turtle_graphic) {
-
-    //TODO: not used for now - better handling of the configuration needed
-    //turtle_graphic.set_export_filename();
-    //turtle_graphic.set_line_width();
-    //turtle_graphic.set_dimensions();
-    turtle_graphic.set_line_length(3);
-    turtle_graphic.set_short_line_length(3);
-    turtle_graphic.set_turn_angle(60.0);
-
-    return true;
-}
-
-
-    start_axiom_ = "X";
-    production_rules.emplace_back('X', "YF+XF+Y");
-    production_rules.emplace_back('Y', "XF-YF-X");
-    file_successfully_parsed_ = true;
 */
