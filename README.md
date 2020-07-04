@@ -40,6 +40,8 @@ __F__ | Move forward for a length d (in the current direction) and draw a line
 __f__ | Move forward for a length d without drawing a line
 __+__ | Turn left by angle δ
 __-__ | Turn right by angle δ
+__\[__ | Save current state
+__\]__ | Reset to last saved state
 
 ## Usage
 
