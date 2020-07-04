@@ -1,12 +1,11 @@
-generations: 5
+generations: 14
 width: 2000
 height: 2000
-line_width: 1.01
-line_length: 10.01
-short_line_length: 5.01
-turn_angle: 60.01
+line_width: 1.0
+line_length: 3.0
+short_line_length: 1.5
+turn_angle: 60.0
 axiom: X 
 rule: X, YF+XF+Y
 rule: Y, XF-YF-X
-testq123
-export_filename: test.png
+export_filename: sierpinski.png

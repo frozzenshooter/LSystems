@@ -28,6 +28,8 @@ add_executable(
   src/cairo-turtle.hpp
   src/file-handler.hpp
   src/production-rule.hpp
+  src/configuration.hpp
+  src/state.hpp
 )
 
 link_directories(${Cairo_INCLUDE_DIRS})
