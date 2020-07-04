@@ -13,12 +13,7 @@ public:
     ~TestTurtle() {};
 
     // === configuration functions ==================================
-    void set_export_filename(std::string filename) override;
-    void set_line_width(double width) override;
-    void set_line_length(double length) override;
-    void set_short_line_length(double length) override;
-    void set_turn_angle(double degree) override;
-    void set_dimensions(int width, int height) override;
+    void configure(const Configuration& configuration);
 
     // === state functions ==========================================
     void save_state() override;
@@ -35,5 +30,6 @@ public:
 
     // === output/saving ============================================
     void save_to_png() override;
+    void view_result() override;
 };
 #endif

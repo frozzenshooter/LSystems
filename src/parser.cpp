@@ -61,6 +61,8 @@ void Parser::parse_and_draw(const std::string& l_system_result) {
 
     std::size_t current_index = 0;
 
+    std::cout << "[Parsing started]" << std::endl;
+
     while (current_index < l_system_result.size()) {
 
         auto ch = l_system_result[current_index];
@@ -73,4 +75,6 @@ void Parser::parse_and_draw(const std::string& l_system_result) {
 
         ++current_index;
     }
+
+    std::cout << "[Parsing ended]" << std::endl;
 }

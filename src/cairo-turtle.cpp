@@ -13,7 +13,7 @@ CairoTurtle::CairoTurtle() :
     short_line_length_(0.5),
     line_length_(1.0),
     turn_angle_(45.0),
-    filename_("exportfile.png"),
+    export_filename_("exportfile.png"),
     current_state_(0.0, 0.0, 0.0),
     start_state_(0.0, 0.0, 0.0)
 {
@@ -44,49 +44,8 @@ CairoTurtle::~CairoTurtle() {
 }
 
 // === configuration functions ======================================
-/*
-Sets the filename to export to
-*/
-void CairoTurtle::set_export_filename(std::string filename) {
-    filename_ = filename;
-}
-
-/*
-Set the width of a line
-*/
-void CairoTurtle::set_line_width(double width) {
-    cairo_set_line_width(cr_, width);
-};
-
-/*
-Set the length of a line
-*/
-void CairoTurtle::set_line_length(double length) {
-    line_length_ = length;
-};
-
-/*
-Set the length of the short line
-*/
-void CairoTurtle::set_short_line_length(double length) {
-    short_line_length_ = length;
-};
-
-/*
-Sets the turn angle
-*/
-void CairoTurtle::set_turn_angle(double degree) {
-    turn_angle_ = degree;
-};
-
-/*
-Sets the dimensions of the resulting image
-*/
-void CairoTurtle::set_dimensions(int width, int height) {
-    width_ = width;
-    height_ = height;
-
-    //TODO RESET OF THE SURFACE AND REDRAW ? - say sth about the conditions calling this function
+void CairoTurtle::configure(const Configuration& configuration) {
+   //TODO;
 }
 
 /*
@@ -177,7 +136,7 @@ void CairoTurtle::save_to_png() {
     move_to(start_state_.get_x(), start_state_.get_y());
     cairo_close_path(cr_);
     cairo_stroke(cr_);
-    cairo_surface_write_to_png(surface_, filename_.c_str());
+    cairo_surface_write_to_png(surface_, export_filename_.c_str());
 }
 
 // === calcualtions =============================================

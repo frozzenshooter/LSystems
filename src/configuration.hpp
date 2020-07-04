@@ -1,7 +1,10 @@
 #ifndef L_SYSTEM_CONFIGURATION_HPP
 #define L_SYSTEM_CONFIGURATION_HPP
 
+#include <iostream>
+#include <iomanip>
 #include <string>
+#include <vector>
 #include "production-rule.hpp"
 
 class Configuration {
@@ -24,9 +27,8 @@ public:
 
     void print() const{
 
-        std::cout << "================================================================================" << std::endl;
-        std::cout << "Configuration" << std::endl;
-        std::cout << "================================================================================" << std::endl;
+
+        std::cout << "[Configuration]:" << std::endl;
         std::cout << "width: " << width_ << std::endl;
         std::cout << "height: " << height_ << std::endl;
 
@@ -43,8 +45,6 @@ public:
         for (auto rule : production_rules_) {
             std::cout << "rule: " << rule.get_non_terminal() << " => " << rule.get_production_rule() << std::endl;
         }
-        std::cout << "================================================================================" << std::endl;
-
     }
 };
 

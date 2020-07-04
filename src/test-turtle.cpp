@@ -3,29 +3,9 @@
 #include <iostream>
 
 // === configuration functions ==================================
-void TestTurtle::set_export_filename(std::string filename) {
-    std::cout << "set_export_filename" << std::endl;
-}
-
-void TestTurtle::set_line_width(double width) {
-    std::cout << "set_line_width" << width << std::endl;
+void TestTurtle::configure(const Configuration& configuration) {
+    std::cout << "configure" << std::endl;
 };
-
-void TestTurtle::set_line_length(double length) {
-    std::cout << "set_line_length: " << length << std::endl;
-};
-
-void TestTurtle::set_short_line_length(double length) {
-    std::cout << "set_short_line_length: " << length << std::endl;
-};
-
-void TestTurtle::set_turn_angle(double degree) {
-    std::cout << "set_turn_angle: " << degree << std::endl;
-};
-
-void TestTurtle::set_dimensions(int width, int height) {
-    std::cout << "set_dimensions: " << width << ", "<< height << std::endl;
-}
 
 // === state functions ==========================================
 void TestTurtle::save_state() {
@@ -60,4 +40,8 @@ void TestTurtle::turn_left() {
 // === output/saving ============================================
 void TestTurtle::save_to_png() {
     std::cout << "save_to_png" << std::endl;
+}
+
+void TestTurtle::view_result() {
+    std::cout << "view_result" << std::endl;
 }

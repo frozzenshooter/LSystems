@@ -4,14 +4,17 @@
 
 
 // === file handling ============================================
+
 /*
-Parses a configuration file which will 
+Parses a configuration file and returns a configuration for the turtle and l system
 */
-const Configuration& FileHandler::parse_file(const std::string& input_filename) {
+Configuration FileHandler::parse_file(const std::string& input_filename) {
     
     Configuration configuration;
 
     std::ifstream input_stream{ input_filename };
+
+    std::cout << "[Reading Configuration file]: " << input_filename << std::endl;
 
     if (input_stream) {
         
@@ -24,10 +27,13 @@ const Configuration& FileHandler::parse_file(const std::string& input_filename) 
             std::size_t size = line.size() - 1;
             std::size_t value_start = header_end + 2; // after the : needs to be a space which will be ignored
 
+
+            //TODO: EXCEPTION HANDLING FOR THE PARSING OF THE VALUES
+
             // switch not supported for strings -> if statements
             if (header.compare("generations") == 0) {
 
-                configuration.generations_ = std::stoi(line.substr(value_start, line.size()-1));
+                configuration.generations_ = std::stoi(line.substr(value_start, line.size() - 1));
             }
             else if (header.compare("width") == 0) {
 
@@ -59,10 +65,11 @@ const Configuration& FileHandler::parse_file(const std::string& input_filename) 
             }
             else if (header.compare("axiom") == 0) {
 
-                configuration.start_axiom_= line.substr(value_start, size);
+                configuration.start_axiom_ = line.substr(value_start, size);
             }
             else if (header.compare("rule") == 0) {
-               
+
+                // split rule in non_terminal and production_rule
                 auto rule = line.substr(value_start, size);
 
                 configuration.production_rules_.emplace_back(rule[0], rule.substr(3));
@@ -70,7 +77,8 @@ const Configuration& FileHandler::parse_file(const std::string& input_filename) 
             else {
                 std::cout << "[Unknown header]: " << header << std::endl;
             }
-        }
+
+            }
 
         // print resulting
         configuration.print();

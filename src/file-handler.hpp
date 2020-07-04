@@ -12,7 +12,7 @@ class FileHandler {
 public:
 
     // === file handling ============================================
-    const Configuration& parse_file(const std::string& input_filename);
+    Configuration parse_file(const std::string& input_filename);
 
 };
 #endif

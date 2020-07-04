@@ -4,6 +4,7 @@
 #include <map>
 #include <string>
 #include "production-rule.hpp"
+#include "configuration.hpp"
 
 class LSystem2D{
 
@@ -14,19 +15,17 @@ private:
 public:
 
     // === constructor ==================================================
-    LSystem2D::LSystem2D() : start_axiom_(""), currentState_("") {}
+    LSystem2D::LSystem2D() : generations_(0), start_axiom_(""), currentState_("") {}
 
-    // === axiom ========================================================
-    void set_start_axiom(const std::string& start_axiom);
+    // === configuration ============================================
+    void configure(const Configuration& configuration);
 
-    // === production rules =============================================
-    void add_production_rule(const ProductionRule& production_rule);
-    void remove_production_rules() noexcept;
-
-    const std::string& get_result(const std::size_t generation);
+    // === calculation ==============================================
+    const std::string& calculate();
 
 private:
 
+    int generations_;
     std::string start_axiom_;
     std::string currentState_;
     std::map<char, std::string> production_rules_;

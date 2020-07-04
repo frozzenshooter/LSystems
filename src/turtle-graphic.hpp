@@ -1,7 +1,7 @@
 #ifndef TURTLE_GRAPHIC_HPP
 #define TURTLE_GRAPHIC_HPP
 
-#include <string>
+#include "configuration.hpp"
 
 class TurtleGraphic {
 
@@ -12,12 +12,7 @@ public:
     virtual ~TurtleGraphic(){};
 
     // === configuration functions ==================================
-    virtual void set_export_filename(std::string filename) = 0;
-    virtual void set_line_width(double width) = 0;
-    virtual void set_line_length(double length) = 0;
-    virtual void set_short_line_length(double length) = 0;
-    virtual void set_turn_angle(double degree) = 0;
-    virtual void set_dimensions(int width, int height) = 0;
+    virtual void configure(const Configuration& configuration) = 0;
 
     // === state functions ==========================================
     virtual void save_state() = 0;
@@ -34,6 +29,7 @@ public:
 
     // === output/saving ============================================
     virtual void save_to_png() = 0;
+    virtual void view_result() = 0;
 };
 
 #endif

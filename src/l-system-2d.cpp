@@ -2,31 +2,44 @@
 #include <iostream>
 
 /*
-Set the start axiom of the l system
+Configures the l system
 */
-void LSystem2D::set_start_axiom(const std::string& start_axiom) {
-    start_axiom_ = start_axiom;
-}
+void LSystem2D::configure(const Configuration& configuration) {
 
-// === production rules =============================================
+    generations_ = configuration.generations_;
+
+    start_axiom_ = configuration.start_axiom_;
+
+    // if l system was used bevor remove old data;
+    production_rules_.clear();
+    for (auto rule : configuration.production_rules_) {
+
+        // TODO: validate rule (is already the same rule there + do i override a rule)
+        // TODO: describe why this should be more efficient to just hold string now
+
+        production_rules_.insert(std::pair(rule.get_non_terminal(), rule.get_production_rule()));
+    }
+};
 
 /*
-Adds a production rule consiting of a nonTerminal which will be replaced with the production
+Calculate the result of the l system (for the defined generations) and return it
 */
-void LSystem2D::add_production_rule(const ProductionRule& production_rule) {
-        
-    // TODO: validate rule (is already the same rule there + do i override a rule)
-    // TODO: describe why this should be more efficient to just hold string now
+const std::string& LSystem2D::calculate() {
 
+    currentState_ = start_axiom_;
 
-    production_rules_.insert(std::pair(production_rule.get_non_terminal(), production_rule.get_production_rule()));
-}
+    if (production_rules_.size() > 0) {
 
-void LSystem2D::remove_production_rules() noexcept{
-    production_rules_.clear();
-}
+        for (std::size_t i = 0; i < generations_; ++i) {
 
-// === l system calculations ========================================
+            CalculateNextGeneration();
+        }
+    }
+
+    std::cout << "[Resulting size]: " << currentState_.size() << std::endl;
+    
+    return currentState_;
+};
 
 /*
 Calculates the next generation of the l system
@@ -53,25 +66,5 @@ void LSystem2D::CalculateNextGeneration() {
         }
     }
 
-    std::cout << currentState_.size() << std::endl;
-
     currentState_ = nextState;
-}
-
-/*
-Calculates the resulting (generation) string of the given l system
-*/
-const std::string& LSystem2D::get_result(const std::size_t generation) {
-       
-    currentState_ = start_axiom_;
-
-    if (production_rules_.size() > 0) {
-        
-        for (std::size_t i = 0; i < generation; ++i) {
-
-            CalculateNextGeneration();
-        }
-    }
-
-    return currentState_;
 }

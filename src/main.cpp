@@ -30,25 +30,22 @@ int main() {
 
     FileHandler handler;
 
-    handler.parse_file("test_file.ls");
+    LSystem2D lsystem;
 
-    // TODO: BETTER IDEA FOR FILE HANDLER - ONLY PARSES AND RETRUNS THE VALUES 
-    // ANOTHER CLASS WILL CONFIGURE THE TURTLE GRAPHIC / L_SYSTEM
+    auto config = handler.parse_file("test_file.ls");
 
-    /*handler.parse_file();
+    lsystem.configure(config);
 
-    CairoTurtle a;
+    const std::string& result = lsystem.calculate();
 
-    if (handler.configure_l_system(test) && handler.configure_turtle_graphic(a)) {
+    TestTurtle t;
+    t.configure(config);
 
-        auto result = test.get_result(14);
+    Parser p{t};
 
-        Parser p{ a };
+    p.parse_and_draw(result);
 
-        p.parse_and_draw(result);
-
-        a.save_to_png();
-    }*/
+    t.save_to_png();
    
     return 0;
 }
