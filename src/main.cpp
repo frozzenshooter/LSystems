@@ -6,6 +6,7 @@
 #include "parser.hpp"
 #include "file-handler.hpp"
 #include <cairo.h>
+#include "l-system-handler.hpp"
 
 
 int main() {
@@ -34,12 +35,35 @@ int main() {
 
     lsystem.configure(config);
 
+    auto test = std::make_shared<std::string>(config.start_axiom_);
+    
+    LSystemHandler<std::string> lsystem_handler(test);
+
+    lsystem_handler.set_start_axiom(config.start_axiom_);
+
+    for (auto rule : config.production_rules_) {
+    
+        lsystem_handler.add_production_rule(rule);
+    }
+
+    std::cout << *test << std::endl;
+    for (int i = 0; i < 3; ++i) {
+
+        lsystem_handler.calculate_next_gen();
+        std::cout << *test << std::endl;
+    }
+
+    
+    /*
     CairoTurtle t;
     t.configure(config);
 
     Parser p{t};
     p.parse_and_save_to_png(lsystem);
-   
+    */
+    
+    
+
     return 0;
 }
 
