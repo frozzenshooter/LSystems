@@ -37,10 +37,10 @@ void Parser::handle(char ch) {
         turtle_graphic_.draw_short_line();
         break;
     case '-':
-        turtle_graphic_.turn_right();
+        turtle_graphic_.turn_left();
         break;
     case '+':
-        turtle_graphic_.turn_left();
+        turtle_graphic_.turn_right();
         break;
     case '[':
         turtle_graphic_.save_state();

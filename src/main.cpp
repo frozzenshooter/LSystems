@@ -31,8 +31,6 @@ int main() {
 
     handler.parse_file("test_file.ls");
 
-
-
     auto test = std::make_shared<std::string>(handler.start_axiom_);
     
     LSystemHandler<std::string> lsystem_handler(test);
@@ -55,10 +53,12 @@ int main() {
     /*
     CairoTurtle t;
     t.configure(config);
+*/
+    TestTurtle t;
 
     Parser p{t};
-    p.parse_and_save_to_png(lsystem);
-    */
+    p.parse_and_save_to_png(test);
+
     
     
 

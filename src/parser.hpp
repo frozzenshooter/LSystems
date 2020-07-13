@@ -2,6 +2,7 @@
 #define PARSER_HPP
 
 #include <string>
+#include <memory>
 #include "turtle-graphic.hpp"
 
 class Parser {
@@ -29,9 +30,9 @@ public:
     Parses the string and draws the interpretation with the turtlegraphic
     */
     template<typename LSystem>
-    void parse_and_save_to_png(LSystem& l_system) {
+    void parse_and_save_to_png(std::shared_ptr<LSystem> l_system) {
 
-        auto l_system_result = l_system.calculate();
+        auto l_system_result = *l_system;
 
         std::size_t current_index = 0;
 
