@@ -4,22 +4,22 @@
 /*
 Configures the l system
 */
-void LSystem2D::configure(const Configuration& configuration) {
+void LSystem2D::configure() {
 
-    generations_ = configuration.generations_;
+    //generations_ = configuration.generations_;
 
-    start_axiom_ = configuration.start_axiom_;
+    //start_axiom_ = configuration.start_axiom_;
 
     // if l system was used bevor remove old data;
     production_rules_.clear();
 
-    for (auto rule : configuration.production_rules_) {
+    //for (auto rule : configuration.production_rules_) {
 
         // TODO: validate rule (is already the same rule there + do i override a rule)
         // TODO: describe why this should be more efficient to just hold string now
 
-        production_rules_.insert(std::pair(rule.get_non_terminal(), rule.get_production_rule()));
-    }
+    //    production_rules_.insert(std::pair(rule.get_non_terminal(), rule.get_production_rule()));
+    //}
 };
 
 /*

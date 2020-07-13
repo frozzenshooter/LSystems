@@ -13,7 +13,7 @@ public:
     ~TestTurtle() {};
 
     // === configuration functions ==================================
-    void configure(const Configuration& configuration);
+    void configure();
     void init();
 
     // === state functions ==========================================

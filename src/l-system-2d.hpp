@@ -4,7 +4,6 @@
 #include <map>
 #include <string>
 #include "production-rule.hpp"
-#include "configuration.hpp"
 
 class LSystem2D{
 
@@ -18,7 +17,7 @@ public:
     LSystem2D::LSystem2D() : generations_(0), start_axiom_(""), currentState_("") {}
 
     // === configuration ============================================
-    void configure(const Configuration& configuration);
+    void configure();
 
     // === calculation ==============================================
     const std::string& calculate();

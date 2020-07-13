@@ -13,7 +13,7 @@ CairoTurtle::CairoTurtle() :
     is_initialised_(false)
 {
     // set default configuration
-    configuration_ = {};
+    //configuration_ = {};
     surface_ = nullptr;
     cr_ = nullptr;
 };
@@ -29,8 +29,8 @@ CairoTurtle::~CairoTurtle() {
 }
 
 // === configuration functions ======================================
-void CairoTurtle::configure(const Configuration& configuration) {
-    configuration_ = configuration;
+void CairoTurtle::configure() {
+    //configuration_ = configuration;
     // possible to change configureation for each draw call
 }
 
@@ -44,7 +44,7 @@ void CairoTurtle::init() {
     }
 
     // initalisie cairo for drawing
-    surface_ = cairo_image_surface_create(CAIRO_FORMAT_RGB24, configuration_.width_, configuration_.height_);
+    surface_ = cairo_image_surface_create(CAIRO_FORMAT_RGB24, 2000, 2000);
     cr_ = cairo_create(surface_);
 
     // background white and lines black for now
@@ -99,7 +99,7 @@ Draws a line from the current position with the current direction
 */
 void CairoTurtle::draw_line() {
     if (is_initialised_) {
-        auto next_state = calculate_next_state(current_state_, configuration_.line_length_);
+        auto next_state = calculate_next_state(current_state_, 3.0);
         cairo_line_to(cr_, next_state.get_x(), next_state.get_y());
 
         current_state_ = next_state;
@@ -111,7 +111,7 @@ Draws a short line from the current position with the current direction
 */
 void CairoTurtle::draw_short_line() {
     if (is_initialised_) {
-        auto next_state = calculate_next_state(current_state_, configuration_.short_line_length_);
+        auto next_state = calculate_next_state(current_state_, 1.5);
         cairo_line_to(cr_, next_state.get_x(), next_state.get_y());
 
         current_state_ = next_state;
@@ -126,7 +126,7 @@ void CairoTurtle::turn_right() {
         auto angle = current_state_.get_angle();
 
         // No need to normailize angle because the only use is with sin/cos
-        angle += configuration_.turn_angle_;
+        angle += 60.0;
 
         current_state_.set_angle(angle);
     }
@@ -140,7 +140,7 @@ void CairoTurtle::turn_left() {
         auto angle = current_state_.get_angle();
 
         // No need to normailize angle because the only use is with sin/cos
-        angle -= configuration_.turn_angle_;
+        angle -= 60.0;
 
         current_state_.set_angle(angle);
     }
@@ -159,7 +159,7 @@ bool CairoTurtle::save_to_png() {
         cairo_close_path(cr_);
         cairo_stroke(cr_);
 
-        cairo_surface_write_to_png(surface_, configuration_.export_filename_.c_str());
+        cairo_surface_write_to_png(surface_, "export_file.png");
         return true;
     }
 
@@ -167,7 +167,7 @@ bool CairoTurtle::save_to_png() {
 }
 
 bool CairoTurtle::view_result() {
-    std::cout << "View result is not implemented - the data will be exported as png: " << configuration_.export_filename_ << std::endl;
+    std::cout << "View result is not implemented - the data will be exported as png: " << "export_file.png" << std::endl;
     return save_to_png();
 }
 

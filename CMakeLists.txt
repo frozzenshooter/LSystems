@@ -23,7 +23,6 @@ add_executable(
   src/test-turtle.cpp
 
   src/cairo-turtle.hpp
-  src/configuration.hpp
   src/file-handler.hpp
   src/l-system.hpp
   src/l-system-2d.hpp

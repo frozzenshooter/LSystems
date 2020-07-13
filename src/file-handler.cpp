@@ -8,10 +8,8 @@
 /*
 Parses a configuration file and returns a configuration for the turtle and l system
 */
-Configuration FileHandler::parse_file(const std::string& input_filename) {
+void FileHandler::parse_file(const std::string& input_filename) {
     
-    Configuration configuration;
-
     std::ifstream input_stream{ input_filename };
 
     std::cout << "[Reading Configuration file]: " << input_filename << std::endl;
@@ -33,60 +31,81 @@ Configuration FileHandler::parse_file(const std::string& input_filename) {
             // switch not supported for strings -> if statements
             if (header.compare("generations") == 0) {
 
-                configuration.generations_ = std::stoi(line.substr(value_start, line.size() - 1));
+                generation_count_ = std::stoi(line.substr(value_start, line.size() - 1));
             }
             else if (header.compare("width") == 0) {
 
-                configuration.width_ = stoi(line.substr(value_start, size));
+                width_ = stoi(line.substr(value_start, size));
             }
             else if (header.compare("height") == 0) {
 
-                configuration.height_ = stoi(line.substr(value_start, size));
+                height_ = stoi(line.substr(value_start, size));
             }
             else if (header.compare("line_width") == 0) {
 
-                configuration.line_width_ = stod(line.substr(value_start, size));
+                line_width_ = stod(line.substr(value_start, size));
             }
             else if (header.compare("line_length") == 0) {
 
-                configuration.line_length_ = stod(line.substr(value_start, size));
+                line_length_ = stod(line.substr(value_start, size));
             }
             else if (header.compare("short_line_length") == 0) {
 
-                configuration.short_line_length_ = stod(line.substr(value_start, size));
+                short_line_length_ = stod(line.substr(value_start, size));
             }
             else if (header.compare("turn_angle") == 0) {
 
-                configuration.turn_angle_ = stod(line.substr(value_start, size));
+                turn_angle_ = stod(line.substr(value_start, size));
             }
             else if (header.compare("export_filename") == 0) {
 
-                configuration.export_filename_ = line.substr(value_start, size);
+                export_filename_ = line.substr(value_start, size);
             }
             else if (header.compare("axiom") == 0) {
 
-                configuration.start_axiom_ = line.substr(value_start, size);
+                start_axiom_ = line.substr(value_start, size);
             }
             else if (header.compare("rule") == 0) {
 
                 // split rule in non_terminal and production_rule
                 auto rule = line.substr(value_start, size);
 
-                configuration.production_rules_.emplace_back(rule[0], rule.substr(3));
+                production_rules_.emplace_back(rule[0], rule.substr(3));
             }
             else {
                 std::cout << "[Unknown header]: " << header << std::endl;
             }
 
-            }
+         }
 
         // print resulting
-        configuration.print();
+        print();
 
     } else {
         std::cout << "Not able to read file - default configuration will be used" << std::endl;
     }
-
-    // return rvalue so it can be move assigned
-    return configuration;
 };
+
+/*
+Prints the loaded data
+*/
+void FileHandler::print() const {
+
+    std::cout << "[Configuration loaded from file]:" << std::endl;
+    std::cout << "width: " << width_ << std::endl;
+    std::cout << "height: " << height_ << std::endl;
+
+    std::cout << "short_line_length: " << short_line_length_ << std::endl;
+    std::cout << "line_length: " << line_length_ << std::endl;
+    std::cout << "turn_angle: " << turn_angle_ << std::endl;
+    std::cout << "line_width: " << line_width_ << std::endl;
+
+    std::cout << "export_filename: " << export_filename_ << std::endl;
+
+    std::cout << "generation count: " << generation_count_ << std::endl;
+    std::cout << "start_axiom: " << start_axiom_ << std::endl;
+
+    for (auto rule : production_rules_) {
+        std::cout << "rule: " << rule.get_non_terminal() << " => " << rule.get_production_rule() << std::endl;
+    }
+}

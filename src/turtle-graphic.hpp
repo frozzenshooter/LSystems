@@ -1,7 +1,7 @@
 #ifndef TURTLE_GRAPHIC_HPP
 #define TURTLE_GRAPHIC_HPP
 
-#include "configuration.hpp"
+
 
 class TurtleGraphic {
 
@@ -12,7 +12,7 @@ public:
     virtual ~TurtleGraphic(){};
 
     // === configuration functions ==================================
-    virtual void configure(const Configuration& configuration) = 0;
+    virtual void configure() = 0;
     virtual void init() = 0;
 
     // === state functions ==========================================

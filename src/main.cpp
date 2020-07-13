@@ -29,19 +29,17 @@ int main() {
 
     FileHandler handler;
 
-    LSystem2D lsystem;
+    handler.parse_file("test_file.ls");
 
-    auto config = handler.parse_file("test_file.ls");
 
-    lsystem.configure(config);
 
-    auto test = std::make_shared<std::string>(config.start_axiom_);
+    auto test = std::make_shared<std::string>(handler.start_axiom_);
     
     LSystemHandler<std::string> lsystem_handler(test);
 
-    lsystem_handler.set_start_axiom(config.start_axiom_);
+    lsystem_handler.set_start_axiom(handler.start_axiom_);
 
-    for (auto rule : config.production_rules_) {
+    for (auto rule : handler.production_rules_) {
     
         lsystem_handler.add_production_rule(rule);
     }

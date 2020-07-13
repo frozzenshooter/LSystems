@@ -24,7 +24,7 @@ public:
     ~CairoTurtle();
 
     // === configuration functions ==================================
-    void configure(const Configuration& configuration) override;
+    void configure() override;
     void init() override;
 
     void set_start_state(State start_state);
@@ -50,7 +50,7 @@ private:
 
     // === configuration data =======================================
     bool is_initialised_;
-    Configuration configuration_;
+    //Configuration configuration_;
 
     // === states ===================================================
     State current_state_;

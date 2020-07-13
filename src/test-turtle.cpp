@@ -3,7 +3,7 @@
 #include <iostream>
 
 // === configuration functions ==================================
-void TestTurtle::configure(const Configuration& configuration) {
+void TestTurtle::configure() {
     std::cout << "configure" << std::endl;
 };
 
