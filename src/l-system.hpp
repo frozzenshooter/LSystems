@@ -15,35 +15,40 @@ class LSystem {
 private:
     class Node {
     public:
-        Node(std::list<std::string>& strings, const std::string& relevant_data)
+        Node(std::list<std::weak_ptr<std::string>>& strings, const std::string& relevant_data)
         {
-             auto it = std::find(strings.begin(), strings.end(), relevant_data);
+             //TODO find if there is a string similar to relevant_data
 
-             if (it != strings.end()) {
+             // if so save the shared pointer in the list
+                
+             auto exists_string = false;
+             if (exists_string) {
 
-                 // save the iterator
-                 relevant_string_it_ = it;
+                 // save the shared pointer so the data will not be deleted
+                 relevant_string_ = std::make_shared<std::string>(new std::string(relevant_data));
 
              } else {
 
-                 // new string needs to be added and iterator hold
-                 strings.emplace_back(relevant_data);
-                 relevant_string_it_ = std::find(strings.begin(), strings.end(), relevant_data);
+                 // new string needs to be added and shared_ptr needs to be stored in node and in list
+                 
+                 auto pointer = std::make_shared<std::string>(new std::string(relevant_data));
+                 relevant_string_ = pointer;
+                 strings.emplace_back(pointer);
              }
-             
         };
 
         void replace() {
-
+            // falls selber keine Daten vorhanden sind - kindknoten dursuchen wer verantwortlich ist
+            // immer wenn ein knoten übrig ist kann ein Knoten in der Liste angepasst werden bzw ein neuer hinzugefügt werden - man weiß nicht unbedingt, wie viele leute auf den String verweisen
+            // evt doch mit shared_pointer lösen
+            // vlt mit iterator einfacher als mit index -> man muss sich nicht direkt merken welche Node für welchen Index verantwortlich ist
         };
 
     private:
 
-        std::list<std::string>::iterator relevant_string_it_;
-        std::vector<std::shared_ptr<Node>> children_;
-
-
-
+        std::shared_ptr<std::string> relevant_string_;
+        std::weak_ptr<Node> parent_;
+        std::vector<Node> children_;
     };
 
 public:
@@ -54,6 +59,11 @@ public:
 
     ~LSystem() {
 
+    }
+
+    void clear() {
+        strings_.clear();
+        start_node_.reset(new Node(strings_, ""));
     }
 
     void replace(std::size_t index, const std::string& replacement) {
@@ -72,8 +82,8 @@ public:
 
 
 private:
-    std::shared_ptr<Node> start_node_;
-    std::list<std::string> strings_;
+    std::unique_ptr<Node> start_node_;
+    std::list<std::weak_ptr<std::string>> strings_;
 };
 
 #endif
