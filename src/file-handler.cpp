@@ -31,31 +31,71 @@ void FileHandler::parse_file(const std::string& input_filename) {
             // switch not supported for strings -> if statements
             if (header.compare("generations") == 0) {
 
-                generation_count_ = std::stoi(line.substr(value_start, line.size() - 1));
+                try {
+                   generation_count_ = std::stoi(line.substr(value_start, line.size() - 1));
+                }
+                catch (std::exception exception) {
+                   std::cout << "[Import failure]: not able to read generations (" << exception.what() << ")"<< std::endl;
+                   generation_count_ = 0;
+                }
             }
             else if (header.compare("width") == 0) {
-
-                width_ = stoi(line.substr(value_start, size));
+                
+                try{
+                    width_ = stoi(line.substr(value_start, size));
+                }
+                catch (std::exception exception) {
+                    std::cout << "[Import failure]: not able to read width (" << exception.what() << ")" << std::endl;
+                    width_ = 0;
+                }
             }
             else if (header.compare("height") == 0) {
 
-                height_ = stoi(line.substr(value_start, size));
+                try{
+                    height_ = stoi(line.substr(value_start, size));
+                }
+                catch (std::exception exception) {
+                    std::cout << "[Import failure]: not able to read height (" << exception.what() << ")" << std::endl;
+                    height_ = 0;
+                }
             }
             else if (header.compare("line_width") == 0) {
-
-                line_width_ = stod(line.substr(value_start, size));
+                
+                try{
+                    line_width_ = stod(line.substr(value_start, size));
+                }
+                catch (std::exception exception) {
+                    std::cout << "[Import failure]: not able to read line_width (" << exception.what() << ")" << std::endl;
+                    line_width_ = 0;
+                }
             }
             else if (header.compare("line_length") == 0) {
-
-                line_length_ = stod(line.substr(value_start, size));
+                try {
+                    line_length_ = stod(line.substr(value_start, size));
+                }
+                catch (std::exception exception) {
+                    std::cout << "[Import failure]: not able to read line_length (" << exception.what() << ")" << std::endl;
+                    line_length_ = 0;
+                }
             }
             else if (header.compare("short_line_length") == 0) {
-
-                short_line_length_ = stod(line.substr(value_start, size));
+                
+                try {
+                    short_line_length_ = stod(line.substr(value_start, size));
+                }
+                catch (std::exception exception) {
+                    std::cout << "[Import failure]: not able to read short_line_length (" << exception.what() << ")" << std::endl;
+                    short_line_length_ = 0;
+                }
             }
             else if (header.compare("turn_angle") == 0) {
-
-                turn_angle_ = stod(line.substr(value_start, size));
+                try {
+                    turn_angle_ = stod(line.substr(value_start, size));
+                }
+                catch (std::exception exception) {
+                    std::cout << "[Import failure]: not able to read turn_angle (" << exception.what() << ")" << std::endl;
+                    turn_angle_ = 0;
+                }
             }
             else if (header.compare("export_filename") == 0) {
 

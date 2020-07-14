@@ -18,17 +18,13 @@ public:
     */
     void calculate_next_gen() {
 
-        std::size_t size = (*l_system_).length();
+        for (auto i = (*l_system_).end(); i != (*l_system_).begin(); --i) {
 
-        for (std::size_t i = 0; i < size; ++i) {
-
-            char key = (*l_system_)[i];
-            auto replacement = production_rules_[key];
+            auto replacement = production_rules_[(*i)];
 
             if (!replacement.empty()) {
-                (*l_system_).replace(i, 1, replacement);
-                i += replacement.length()-1;
-                size += replacement.length()-1;
+                (*l_system_).replace(i, i, replacement);
+                    //i += replacement.length()-1;
             }
             else {
                 // TODO: what happens for terminals ? nothing ?
