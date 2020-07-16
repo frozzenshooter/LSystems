@@ -7,3 +7,5 @@ docs/*.log
 docs/*.out
 docs/*.run.xml
 docs/*.gz
+docs/*.bbl
+docs/*.blg
