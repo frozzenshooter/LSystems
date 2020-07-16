@@ -50,13 +50,13 @@
 
 % fonts
 \RequirePackage{fontspec}
-%\setmainfont[Ligatures=TeX]{TeX Gyre Pagella}
-%\setmathfont{TeX Gyre Pagella Math}
-%\setmonofont{Source Code Pro}[Scale=MatchLowercase]
+\setmainfont[Ligatures=TeX]{TeX Gyre Pagella}
+\setmathfont{TeX Gyre Pagella Math}
+\setmonofont{Source Code Pro}[Scale=MatchLowercase]
 
-\setmainfont[Ligatures=TeX]{texgyrepagella-regular.otf}
-\setmathfont{texgyrepagella-math.otf}
-\setmonofont{sourcecodepro-regular.otf}[Scale=MatchLowercase]
+%\setmainfont[Ligatures=TeX]{texgyrepagella-regular.otf}
+%\setmathfont{texgyrepagella-math.otf}
+%\setmonofont{sourcecodepro-regular.otf}[Scale=MatchLowercase]
 
 \RequirePackage{sectsty}
 \allsectionsfont{\normalfont\sffamily\bfseries}
