@@ -1,28 +1,89 @@
 \documentclass[english]{cpp-hmwk}
    \usepackage{blindtext}
 \begin{document}
-   \Homework{Implementation for lindenmayer systemss}{Steffen Knoblauch}
-   \section{Introduction}
+\Homework{Implementation for lindenmayer systemss}{Steffen Knoblauch}
+\section{Introduction}
    
-   \pagebreak
-   \section{Lindenmayer systems}
-   \subsection{General idea}
-   \subsection{Grammar}
-   \subsection{Examples}
+\pagebreak
+\section{Lindenmayer systems}
+\subsection{General idea}
    
-   \pagebreak
-   \section{Architecture}
-   \section{FileHandler}
-   \section{LSystemHandler}
-   \section{LSystem Datastructure}
-   \section{Parser for the lsystem}
-   \section{TurtleGraphic}
-   \subsection{Abstract class}
-   \subsection{TestTurtle}
-   \subsection{CairoTurtle}
-   \subsection{Further implementations}
-   SVG implementation
+\begin{itemize}
+	\item Rewriting System (Objekte und Regeln die durch andere Objekte ersetzten)
+\end{itemize}
+
+
+\subsection{Grammar}
+
+\begin{itemize}
+	\item Erklären von paralleler Erzeugung
+	\item Unterscheidung zu Chomsky context free grammmar
+	\item Aber hier Fokus auf DOL-System (deterministic)
+\end{itemize}
+
+\subsection{Examples}
+
+\begin{itemize}
+	\item Koch
+	\item ...
+\end{itemize}
    
+\pagebreak
+\section{Architecture}
+\begin{itemize}
+	\item general focus on flexibility
+	\item interfaces for future use cases
+	\item different independent parts in the sample application
+\end{itemize}
+
+\section{Build System}
+\begin{itemize}
+	\item Cmake as buildsystem
+	\item reasons why cmake
+	\item problems ?
+\end{itemize}
+
+
+
+\section{FileHandler}
+
+\begin{itemize}
+	\item Load init data from file
+	\item convinient way to configure the sample code
+	\item no hard coded l system rules and axioms - use of the data in other apllications
+\end{itemize}
+
+\section{LSystemHandler}
+
+\begin{itemize}
+	\item Suksessiver aufbau des L Systems
+	\item Nutzung von beliebiger datenstruktur mit speziellen eigenschaften -> Semantische Schnittstelle
+	\item Bekommt die Daten aus dem FileHandler, kann aber aus allem kommen - belieib in andere Sachen einbindbar
+\end{itemize}
+
+\section{LSystem Datastructure}
+
+\begin{itemize}
+	\item Tree like sturcture
+	\item save data not double only save pointers to the data
+	\item provides access to the data with an iterator
+\end{itemize}
+
+\section{Parser for the lsystem}
+\begin{itemize}
+	\item Parses the result of the l system
+	\item calls the Turtle Graphic on the fly
+	
+	\item Problem for now -> not very flexible (perhaps for the future: provide which function to call for which object)
+\end{itemize}
+
+\section{TurtleGraphic}
+\subsection{Abstract class}
+\subsection{TestTurtle}
+\subsection{CairoTurtle}
+\subsection{Further implementations}
+SVG implementation
+\section{Tests}
    \pagebreak
    \section{Outlook}
    \footnote{\fullcite{prusinkiewiczp.lindenmayera.2004}}
