@@ -22,8 +22,8 @@ public:
     ~CairoTurtle();
 
     // === configuration functions ==================================
-    void configure() override;
-    void init() override;
+    void configure();
+    void init();
 
     void set_start_state(State start_state);
 
@@ -41,8 +41,8 @@ public:
     void turn_left() override;
 
     // === output/saving ============================================
-    bool save_to_png() override;
-    bool view_result() override;
+    bool save_to_png();
+    bool view_result();
 
 private:
 

@@ -24,6 +24,12 @@ void FileHandler::load_configuration(std::istream& stream) {
         string_stream.str(line);
         ++index;
 
+
+        if (string_stream >> header >> str_value) {
+            std::cout << index << ": " << header << "- str_value: " << str_value << std::endl;
+        }
+
+        /*
         if (string_stream >> header >> i_value) {
             std::cout << index << ": " << header << "- i_value: " << i_value << std::endl;
         }
@@ -39,6 +45,7 @@ void FileHandler::load_configuration(std::istream& stream) {
         else {
             std::cout << index << ": Failure: " << line << std::endl;
         }
+        */
     }
 }
 

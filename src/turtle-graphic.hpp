@@ -8,10 +8,6 @@ public:
     // === destructor ===============================================
     virtual ~TurtleGraphic() {};
 
-    // === configuration functions ==================================
-    virtual void configure() = 0;
-    virtual void init() = 0;
-
     // === state functions ==========================================
     virtual void save_state() = 0;
     virtual void pop_state() = 0;
@@ -25,9 +21,8 @@ public:
     virtual void turn_right() = 0;
     virtual void turn_left() = 0;
 
-    // === output/saving ============================================
-    virtual bool save_to_png() = 0;
-    virtual bool view_result() = 0;
+    // Parameter packs to provide different configurations for every possible implementation 
+    // https://www.murrayc.com/permalink/2015/12/05/modern-c-variadic-template-parameters-and-tuples/
 };
 
 #endif

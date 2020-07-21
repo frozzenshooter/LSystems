@@ -10,11 +10,12 @@ template<typename LSystem, typename OutputIterator>
 class LSystemHandler {
 public:
 
-    LSystemHandler(const LSystem& l_system) : l_system_(l_system) {};
+    LSystemHandler(LSystem& l_system) : calls_(0), l_system_(l_system) {};
 
     void calculate_generation(int generation, OutputIterator& output_iterator) {
 
-        std::string start_axiom = l_system_.get_start_axiom(); // TODO später durch auto ersetzten
+        // Get start object
+        auto start_axiom = l_system_.get_start_axiom();
 
         calls_ = 0;
 

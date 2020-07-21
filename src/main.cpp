@@ -23,11 +23,7 @@ int main() {
 
         LSystemHandler manages the data of the l_system datastructure
         LSystemHandler uses a template to specifiy the datastructure - later on a semantic interface (concepts c++ 20)
-        LSystemHandler needs this functions from the datastructure:
-            - get_char(std::size_t index)
-            - replace(std::size_t index, const std::string& replacement)
-            - clear()
-            -
+        LSystemHandler needs this functions from the datastructure: TODO
 
         Parser gets the l_system data as input, inspects and calls the appropriate function of the turtle (on the fly)
 
@@ -36,9 +32,6 @@ int main() {
     */
 
     //TODO: when do you need a copy/assignment constructor operator ? => have the std:: ... objects(stack,..) issues which need to explizit define them?
-
-    //TODO: Performance improvements: dont copy the string in the l2 system -> only work with the reference
-    // other data object?
 
     //TODO: exception handling
 
@@ -50,9 +43,9 @@ int main() {
 
     FileHandler handler;
 
-    //std::ifstream input_stream{ "test_file_space.ls" };
+    std::ifstream input_stream{ "test_file_space.ls" };
 
-    //handler.load_configuration(input_stream);
+    handler.load_configuration(input_stream);
 
     handler.parse_file("test_file.ls");
 
@@ -86,27 +79,3 @@ int main() {
 
     return 0;
 }
-
-/*
-// === l system initalisiation ==================================
-//TODO: concepts/sifnae um schnittstelle umzusetzen
-/*
-Configures the l system with the parsed data (can be used to configure multiple l systems with the same data)
-
-template<typename LSystem>
-bool configure_l_system(LSystem& l_system) {
-    //TODO: concepts/sifnae um schnittstelle umzusetzen
-
-    if (file_successfully_parsed_) {
-        l_system.set_start_axiom(start_axiom_);
-
-        //TODO: is this efficient ? because of reference problems later on ?
-        for (auto& production_rule : production_rules) {
-            l_system.add_production_rule(production_rule);
-        }
-
-        return true;
-    }
-    return false;
-};
-*/
