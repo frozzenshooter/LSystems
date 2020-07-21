@@ -47,7 +47,7 @@ public:
             return ProductionRule('a', "abc");
         }
 
-        // Alternative nicht de ganze Regel übergeben, sondern nur den STring zum ersetzten -> die FUnktion umbennenen in get_replacement
+        // Alternative nicht de ganze Regel übergeben, sondern nur den String zum ersetzten -> die Funktion umbennenen in get_replacement
         // Wenn etwas nicht gefunden wurde einfach den char zurückgeben -> dort kann man dann auf gleichheit prüfen
     }
 

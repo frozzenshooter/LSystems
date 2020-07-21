@@ -70,7 +70,7 @@ private:
 
 private:
     size_t calls_;
-    LSystem l_system_;
+    LSystem& l_system_;
 };
 
 #endif

@@ -50,9 +50,9 @@ int main() {
 
     FileHandler handler;
 
-    std::ifstream input_stream{ "test_file_space.ls" };
+    //std::ifstream input_stream{ "test_file_space.ls" };
 
-    handler.load_configuration(input_stream);
+    //handler.load_configuration(input_stream);
 
     handler.parse_file("test_file.ls");
 
