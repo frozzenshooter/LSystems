@@ -17,9 +17,10 @@ private:
     bool ignore_char(char ch);
 
     // === function call handling ===================================
-    void handle(char ch);
-
+    
 public:
+
+    void handle(char ch);
 
     // === constructor ==============================================
     Parser(TurtleGraphic& turtle_graphic) : turtle_graphic_(turtle_graphic) {};

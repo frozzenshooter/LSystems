@@ -6,74 +6,71 @@
 #include <memory>
 #include "production-rule.hpp"
 
-template<typename LSystem>
+template<typename LSystem, typename OutputIterator>
 class LSystemHandler {
 public:
 
-    LSystemHandler(std::shared_ptr<LSystem> l_system) : current_generation_(0), l_system_(l_system) {};
+    LSystemHandler(const LSystem& l_system) : l_system_(l_system) {};
 
-    /*
-    Calculates the next generation of the l system
-    */
-    void calculate_next_gen() {
-        for (auto i = (*l_system_).end(); i != (*l_system_).begin(); --i) {
-            auto replacement = production_rules_[(*i)];
+    void calculate_generation(int generation, OutputIterator& output_iterator) {
 
-            if (!replacement.empty()) {
-                (*l_system_).replace(i, i, replacement);
-                //i += replacement.length()-1;
-            }
-            else {
-                // TODO: what happens for terminals ? nothing ?
-            }
-        }
+        std::string start_axiom = l_system_.get_start_axiom(); // TODO später durch auto ersetzten
 
-        ++current_generation_;
-    };
+        calls_ = 0;
 
-    /*
-    Calculatea the next generations of the current l system
-    */
-    void calculate_generation(int generation) {
-        if (!start_axiom_.empty()
-            && production_rules_.size() > 0)
-        {
-            for (int i = 0; i < generation; ++i) {
-                calculate_next_gen();
+        //TODO: überprüfen ob leer
+        calculate_recursive(generation, start_axiom, output_iterator);
+
+        std::cout << "[Calls]: " << calls_ << std::endl;
+
+    }
+
+private:
+
+    void calculate_recursive(int generation, std::string start_value, OutputIterator& output_iterator) {
+
+        if (generation > 0) {
+
+            for (char& c : start_value) {
+
+                try {
+                    auto rule = l_system_.get_production_rule(c);
+                    if (rule.get_production_rule().compare("abc") != 0) {
+                        calculate_recursive(generation - 1, rule.get_production_rule(), output_iterator);
+                    }
+                    else {
+                        calls_++;
+                        output_iterator.handle(c);
+                    }
+                   
+
+                }
+                catch (std::exception exception) {
+                    // Must be a terminal symbol, which must be processed by the output iterator -> TODO: solve later not with an exception
+                    // output_iterator << c;
+                    // output_iterator++;
+                    calls_++;
+                    output_iterator.handle(c);
+                   
+                }
             }
         }
         else {
-            std::cout << "No start_axiom oder production rule was set" << std::endl;
-        }
-    };
+            for (char& c : start_value) {
 
-    /*
-    Sets the start axiom of the l system - if the l system has already generated generations, will these values be deleted
-    */
-    void set_start_axiom(const std::string& start_axiom) {
-        if (current_generation_ > 0) {
-            reset_l_system();
-        }
+                // calls the Turtle function
+                // output_iterator << c;
+                // output_iterator++;
 
-        start_axiom_ = start_axiom;
-    };
-
-    void add_production_rule(ProductionRule rule) {
-        production_rules_.insert(std::pair(rule.get_non_terminal(), rule.get_production_rule()));
-    };
-
-    void reset_l_system() {
-        current_generation_ = 0;
-
-        // TODO: IMPLEMENT IN L SYSTEM
-        (*l_system_).clear();
-    };
+                calls_++;
+                output_iterator.handle(c);
+            }
+        }     
+    }
 
 private:
-    int current_generation_;
-    std::shared_ptr<LSystem> l_system_;
-    std::string start_axiom_;
-    std::map<char, std::string> production_rules_;
+    size_t calls_;
+    LSystem l_system_;
 };
 
 #endif

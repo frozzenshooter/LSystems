@@ -1,13 +1,12 @@
 #include <iostream>
 
-#include "l-system-2d.hpp"
 #include "cairo-turtle.hpp"
 #include "test-turtle.hpp"
 #include "parser.hpp"
 #include "file-handler.hpp"
 #include <cairo.h>
 #include "l-system-handler.hpp"
-
+#include "l-system.hpp"
 #include <string>
 #include <sstream>
 
@@ -55,24 +54,24 @@ int main() {
 
     handler.load_configuration(input_stream);
 
-    /*handler.parse_file("test_file.ls");
+    handler.parse_file("test_file.ls");
 
-    auto test = std::make_shared<std::string>(handler.start_axiom_);
 
-    LSystemHandler<std::string> lsystem_handler(test);
+    LSystem l_system;
 
-    lsystem_handler.set_start_axiom(handler.start_axiom_);
+    l_system.set_start_axiom(handler.start_axiom_);
 
     for (auto rule : handler.production_rules_) {
-        lsystem_handler.add_production_rule(rule);
+        l_system.add_production_rule(rule);
     }
 
-    std::cout << *test << std::endl;
-    for (int i = 0; i < 3; ++i) {
-        lsystem_handler.calculate_next_gen();
-        std::cout << *test << std::endl;
-    }
-    */
+    TestTurtle t;
+    Parser p{ t };
+
+    LSystemHandler<LSystem, Parser> lsystem_handler(l_system);
+
+    lsystem_handler.calculate_generation(5, p);
+
 
     /*
     CairoTurtle t;

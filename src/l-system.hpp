@@ -44,8 +44,11 @@ public:
         else {
             //better way if there is a terminal -> https://stackoverflow.com/questions/58929539/how-to-return-null-as-reference-in-c
             //evt in production rule constructor mit bool -> is_valid/is_non_terminal -> quasi flag um dann später überprüfen zu können
-            throw new std::exception("Rule not found");
+            return ProductionRule('a', "abc");
         }
+
+        // Alternative nicht de ganze Regel übergeben, sondern nur den STring zum ersetzten -> die FUnktion umbennenen in get_replacement
+        // Wenn etwas nicht gefunden wurde einfach den char zurückgeben -> dort kann man dann auf gleichheit prüfen
     }
 
 private:
