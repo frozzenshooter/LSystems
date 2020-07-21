@@ -8,7 +8,6 @@
 
 template<typename LSystem>
 class LSystemHandler {
-
 public:
 
     LSystemHandler(std::shared_ptr<LSystem> l_system) : current_generation_(0), l_system_(l_system) {};
@@ -17,14 +16,12 @@ public:
     Calculates the next generation of the l system
     */
     void calculate_next_gen() {
-
         for (auto i = (*l_system_).end(); i != (*l_system_).begin(); --i) {
-
             auto replacement = production_rules_[(*i)];
 
             if (!replacement.empty()) {
                 (*l_system_).replace(i, i, replacement);
-                    //i += replacement.length()-1;
+                //i += replacement.length()-1;
             }
             else {
                 // TODO: what happens for terminals ? nothing ?
@@ -39,7 +36,7 @@ public:
     */
     void calculate_generation(int generation) {
         if (!start_axiom_.empty()
-            && production_rules_.size() > 0 ) 
+            && production_rules_.size() > 0)
         {
             for (int i = 0; i < generation; ++i) {
                 calculate_next_gen();
@@ -72,13 +69,11 @@ public:
         (*l_system_).clear();
     };
 
-
 private:
     int current_generation_;
     std::shared_ptr<LSystem> l_system_;
     std::string start_axiom_;
     std::map<char, std::string> production_rules_;
 };
-
 
 #endif

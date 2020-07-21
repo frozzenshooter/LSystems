@@ -7,12 +7,10 @@
 #include "turtle-graphic.hpp"
 #include "State.hpp"
 
-
 /*
 * Class which uses the cairo graphics lib to implement turtle graphics behaviour
 */
 class CairoTurtle : public TurtleGraphic {
-
 private:
     // === calcualtions =============================================
     State calculate_next_state(State current_state, double line_length);

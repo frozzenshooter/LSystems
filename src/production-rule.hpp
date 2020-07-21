@@ -10,7 +10,7 @@ public:
         //TODO: Ist das so effizient mit dem übergeben der strings
     }
 
-    char get_non_terminal() const{
+    char get_non_terminal() const {
         return non_terminal_;
     }
 
@@ -18,11 +18,9 @@ public:
         return production_rule_;
     }
 
-
 private:
     char non_terminal_;
     std::string production_rule_;
 };
-
 
 #endif

@@ -1,7 +1,6 @@
 #include "cairo-turtle.hpp"
-#include <math.h> 
+#include <math.h>
 #include <iostream>
-
 
 // === con/destructors ==============================================
 /*
@@ -22,7 +21,6 @@ CairoTurtle::CairoTurtle() :
 Deconstructor for the cairo turtle
 */
 CairoTurtle::~CairoTurtle() {
-
     //cleanup cairo
     cairo_destroy(cr_);
     cairo_surface_destroy(surface_);
@@ -35,7 +33,6 @@ void CairoTurtle::configure() {
 }
 
 void CairoTurtle::init() {
-
     if (is_initialised_) {
         // cleanup old turtle
         cairo_destroy(cr_);
@@ -53,10 +50,9 @@ void CairoTurtle::init() {
     cairo_set_source_rgb(cr_, 0, 0, 0);
 
     cairo_set_line_width(cr_, 1.0);
-    
+
     is_initialised_ = true;
 }
-
 
 /*
 Sets the start state so it will be possible to end the drawing without an extra line
@@ -151,7 +147,6 @@ void CairoTurtle::turn_left() {
 Saves the current drawing state to a png
 */
 bool CairoTurtle::save_to_png() {
-    
     if (is_initialised_) {
         // when the path is closed and you are not on the start position it will draw a line form the end position to the start position
         // move to the start so it wont draw this line
@@ -176,7 +171,6 @@ bool CairoTurtle::view_result() {
 Calculates the next state when drawing a line with the current state and defined line length
 */
 State CairoTurtle::calculate_next_state(State current_state, double line_length) {
-
     auto angle = current_state.get_angle();
     auto x_diff = sin(angle * 3.14159 / 180) * line_length;
     auto y_diff = cos(angle * 3.14159 / 180) * line_length;
@@ -184,5 +178,5 @@ State CairoTurtle::calculate_next_state(State current_state, double line_length)
     auto next_x = current_state.get_x() + x_diff;
     auto next_y = current_state.get_y() + y_diff;
 
-    return {next_x, next_y, angle};
+    return { next_x, next_y, angle };
 };

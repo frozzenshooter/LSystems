@@ -2,7 +2,6 @@
 #define STATE_HPP
 
 class State {
-
 public:
     // === constructor ==============================================
     State(double x_position, double y_position, double angle) : x_position_(x_position), y_position_(y_position), angle_(angle) {};
@@ -39,4 +38,3 @@ private:
 };
 
 #endif
-

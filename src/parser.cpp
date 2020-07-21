@@ -27,7 +27,6 @@ bool Parser::is_terminal(char ch) {
 Handles the turtle function call for the char
 */
 void Parser::handle(char ch) {
-
     switch (ch)
     {
     case 'F':

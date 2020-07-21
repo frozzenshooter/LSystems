@@ -22,7 +22,7 @@ void TestTurtle::pop_state() {
 
 // === drawing functions ========================================
 void TestTurtle::move_to(double x, double y) {
-    std::cout << "[Draw-Call]: move_to: (" << x << ", "<< y << " )" << std::endl;
+    std::cout << "[Draw-Call]: move_to: (" << x << ", " << y << " )" << std::endl;
 };
 
 void TestTurtle::draw_line() {

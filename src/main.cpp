@@ -8,12 +8,16 @@
 #include <cairo.h>
 #include "l-system-handler.hpp"
 
+#include <string>
+#include <sstream>
+
+#include <iostream>
+
+#include <fstream>
 
 int main() {
-
-
     /*
-    
+
     Concept:
 
         FileHandler loads data from file
@@ -24,18 +28,13 @@ int main() {
             - get_char(std::size_t index)
             - replace(std::size_t index, const std::string& replacement)
             - clear()
-            - 
+            -
 
         Parser gets the l_system data as input, inspects and calls the appropriate function of the turtle (on the fly)
 
         Turtle: Interface which enbales the export of the parsed data specified by the implementation of the turtle
-    
-    
+
     */
-
-
-
-
 
     //TODO: when do you need a copy/assignment constructor operator ? => have the std:: ... objects(stack,..) issues which need to explizit define them?
 
@@ -43,8 +42,6 @@ int main() {
     // other data object?
 
     //TODO: exception handling
-
-    //TODO: validation rules
 
     //TODO: style des codes -> tabs /spaces beachtet ?
 
@@ -54,38 +51,39 @@ int main() {
 
     FileHandler handler;
 
-    handler.parse_file("test_file.ls");
+    std::ifstream input_stream{ "test_file_space.ls" };
+
+    handler.load_configuration(input_stream);
+
+    /*handler.parse_file("test_file.ls");
 
     auto test = std::make_shared<std::string>(handler.start_axiom_);
-    
+
     LSystemHandler<std::string> lsystem_handler(test);
 
     lsystem_handler.set_start_axiom(handler.start_axiom_);
 
     for (auto rule : handler.production_rules_) {
-    
         lsystem_handler.add_production_rule(rule);
     }
 
     std::cout << *test << std::endl;
     for (int i = 0; i < 3; ++i) {
-
         lsystem_handler.calculate_next_gen();
         std::cout << *test << std::endl;
     }
+    */
 
-    
     /*
     CairoTurtle t;
     t.configure(config);
-*/
+
     TestTurtle t;
 
     Parser p{t};
     p.parse_and_save_to_png(test);
 
-    
-    
+    */
 
     return 0;
 }
@@ -101,7 +99,6 @@ bool configure_l_system(LSystem& l_system) {
     //TODO: concepts/sifnae um schnittstelle umzusetzen
 
     if (file_successfully_parsed_) {
-
         l_system.set_start_axiom(start_axiom_);
 
         //TODO: is this efficient ? because of reference problems later on ?

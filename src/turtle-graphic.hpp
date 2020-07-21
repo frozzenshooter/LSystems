@@ -1,15 +1,12 @@
 #ifndef TURTLE_GRAPHIC_HPP
 #define TURTLE_GRAPHIC_HPP
 
-
-
 class TurtleGraphic {
-
 public:
 
     //TODO why no pure virtual destructor?
     // === destructor ===============================================
-    virtual ~TurtleGraphic(){};
+    virtual ~TurtleGraphic() {};
 
     // === configuration functions ==================================
     virtual void configure() = 0;
@@ -34,4 +31,3 @@ public:
 };
 
 #endif
-

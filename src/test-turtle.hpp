@@ -7,7 +7,6 @@
 * Class to test the turtle behaviour - it will output the called functions via std::out
 */
 class TestTurtle : public TurtleGraphic {
-
 public:
     // === con/deconstructor ========================================
     ~TestTurtle() {};

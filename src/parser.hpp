@@ -6,7 +6,6 @@
 #include "turtle-graphic.hpp"
 
 class Parser {
-
     //TODO rename to l system 2d parser or sth like this - can only parse one special grammar
 
 private:
@@ -24,14 +23,13 @@ public:
 
     // === constructor ==============================================
     Parser(TurtleGraphic& turtle_graphic) : turtle_graphic_(turtle_graphic) {};
-    
+
     // === parsing/drawing ==========================================
     /*
     Parses the string and draws the interpretation with the turtlegraphic
     */
     template<typename LSystem>
     void parse_and_save_to_png(std::shared_ptr<LSystem> l_system) {
-
         auto l_system_result = *l_system;
 
         std::size_t current_index = 0;
@@ -41,11 +39,9 @@ public:
         turtle_graphic_.init();
 
         while (current_index < l_system_result.size()) {
-
             auto ch = l_system_result[current_index];
 
             if (!ignore_char(ch)) {
-
                 // call turtle only for valid chars
                 handle(ch);
             }
@@ -59,7 +55,7 @@ public:
     }
 
 private:
-    TurtleGraphic& turtle_graphic_;    
+    TurtleGraphic& turtle_graphic_;
 };
 
 #endif

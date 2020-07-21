@@ -6,7 +6,6 @@
 #include "production-rule.hpp"
 
 class FileHandler {
-
 public:
 
     /*
@@ -22,10 +21,10 @@ public:
         line_width_(1.0),
         export_filename_("export_file.png")
     {
-
     };
 
     // === file handling ============================================
+    void load_configuration(std::istream& stream);
     void parse_file(const std::string& input_filename);
     void print() const;
 
