@@ -7,6 +7,16 @@
 #include <exception>
 #include "production-rule.hpp"
 
+/*
+This class holds the data for an LSystem, which consists of the start_axiom of the LSystem and the production rules.
+
+There are two template parameters which can be used for the procuction rule
+
+
+
+TODO: BETTER NAMING FOR THE PARAMETERS ? OR OTHER PARAMETERS?
+
+*/
 template< typename Nonterminal, typename Rule >
 class LSystem {
 public:
