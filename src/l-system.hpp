@@ -7,6 +7,7 @@
 #include <exception>
 #include "production-rule.hpp"
 
+template< typename Nonterminal, typename Rule >
 class LSystem {
 public:
 
@@ -18,7 +19,7 @@ public:
         return start_axiom_;
     }
 
-    void add_production_rule(const ProductionRule& rule) {
+    void add_production_rule(const ProductionRule<Nonterminal, Rule>& rule) {
    
 
         auto it = production_rules_.find(rule.get_non_terminal());
@@ -31,7 +32,7 @@ public:
         }
     }
 
-    const ProductionRule& get_production_rule(char non_terminal) {
+    const ProductionRule<Nonterminal, Rule>& get_production_rule(char non_terminal) {
    
         // MAP used for fast access because it will be called often
         // improvment to replace char with more flexible type
@@ -44,7 +45,7 @@ public:
         else {
             //better way if there is a terminal -> https://stackoverflow.com/questions/58929539/how-to-return-null-as-reference-in-c
             //evt in production rule constructor mit bool -> is_valid/is_non_terminal -> quasi flag um dann später überprüfen zu können
-            return ProductionRule('a', "abc");
+            return ProductionRule<Nonterminal, Rule>('a', "abc");
         }
 
         // Alternative nicht de ganze Regel übergeben, sondern nur den String zum ersetzten -> die Funktion umbennenen in get_replacement
@@ -53,7 +54,7 @@ public:
 
 private:
     std::string start_axiom_;
-    std::unordered_map<char, ProductionRule> production_rules_;
+    std::unordered_map<Nonterminal, ProductionRule<Nonterminal, Rule>> production_rules_;
 };
 
 #endif
