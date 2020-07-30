@@ -25,6 +25,24 @@ void FileHandler::load_configuration(std::istream& stream) {
         ++index;
 
 
+
+
+        /*
+        
+            New idea
+
+        */
+        
+        if (string_stream >> header) {
+            // lookup header in table
+
+
+            
+
+        }
+
+
+
         if (string_stream >> header >> str_value) {
             std::cout << index << ": " << header << "- str_value: " << str_value << std::endl;
         }
