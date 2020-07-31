@@ -32,6 +32,15 @@ The end of the paper includes a conclusion and an outlook for possible extension
 
 On the beginning the focus of L-systems theory was based on larger plant parts and was later on extended with new interpretations, which enabled it to represent complexer and more detailed objects.
 
+\bigskip
+
+Verbessern mit den informationen aus chapter 1 - 1.3 Turtle interpretation -> was wurde davor gentzt -> das hat auch einfluss auf den inhalt der grundlagen -> nochmals verbessern
+
+
+
+
+\bigskip
+
 \subsection{General idea}
 The general idea of a L-system is the use of a rewriting system based on a formal grammar. The formal grammar is restricted by and based on different principles, which will be discussed in section \ref{section:grammar}.
 
@@ -109,16 +118,34 @@ The L-systems introduced to this points are capable of creating a string based o
 
 \bigskip
 
-WHAT IS A TURTLE GRAPHIC
+WHAT IS A TURTLE
+
 
 \bigskip
 
 This is based on a mapping between the symbols in the alphabet and the commands which should be called.
-This could be done by an arbitrary mapping between a nonterminal or a terminal and a command. For this paper the following mapping will be used, but the concept for the architecture includes the possibility to use other mappings for the future.
+This could be done by an arbitrary mapping between a nonterminal or a terminal and a command. For this paper the following mapping will be used, but the concept for the architecture includes the possibility to use other mappings in the future.
 
-\bigskip
+\noindent For the mapping the following alphabet is used, which is a slightly extended version of the basic version of a L-system:
 
-HIER DAS MAPPING BESCHREIBEN
+\begin{center}
+V = (F, f, +, -, [,  ])
+\end{center}
+
+
+\begin{center}
+\begin{tabular}{ c c }
+Symbol & Turtle interpretation \\
+\hline
+F & cell  \\ 
+f & cell  \\  
++& cell  \\  
+-& cell  \\  
+{[} & cell  \\  
+{]} & cell \\
+
+\end{tabular}
+\end{center}
 
 \bigskip
 
