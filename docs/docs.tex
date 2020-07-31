@@ -27,6 +27,7 @@ The end of the paper includes a conclusion and an outlook for possible extension
 \section{Lindenmayer systems}
 \label{section:lindenmayer}
 \subsection{History}
+\label{section:history}
 ''[L-systems] were introduced in 1968 by Lindenmayer as a theoretical framwork for studying the development of simple multicellular organisms [...]''\footnote{Zitiert ausd abop Preface - Abschnitt Modeling of Plants} and were later used in computer graphics to generate visuals of organisms and fractals.
 
 On the beginning the focus of L-systems theory was based on larger plant parts and was later on extended with new interpretations, which enabled it to represent complexer and more detailed objects.
@@ -93,16 +94,36 @@ If in the process of rewriting a terminal symbol is found, there will be no expl
 
 \bigskip
 
+\noindent As mentioned in section \ref{section:history} there are other extensions of a basic L-systems. The extensions introduce more possiblities for the generation process, like a non-deterministic behaviour. These extensions result in new grammars:
 
+\begin{itemize}
+\item Stochastic grammars: the system isn't deterministic anymore, because there can be multiple production rules for the same nonterminal with a probaility which results in a randomisation of the generation
+\item Context senstive grammars: production not only look for the nonterminal, they rather look for the symbols bevor and after the current symbol to process, the context.
+\item Parametric grammars: it is possible to set additional parameters for a symbol to influence the generation or the evalutaion of the data
+\end{itemize}
 
-
-
-
-Nicht auf Stochastic L-systems
-Nicht context sensitve L-Systeme
-Es gib tweitere arten zb auch paremtererisiert
+\noindent With these new grammars it is possible to generate more complexe fractals and more detailed plant structures.
 
 \subsection{Interpretation as turtle graphic}
+The L-systems introduced to this points are capable of creating a string based on the grammar. To create a graphic of the generation of the L-system, the resulting string can be interpreted as commands of a turtle graphic.
+
+\bigskip
+
+WHAT IS A TURTLE GRAPHIC
+
+\bigskip
+
+This is based on a mapping between the symbols in the alphabet and the commands which should be called.
+This could be done by an arbitrary mapping between a nonterminal or a terminal and a command. For this paper the following mapping will be used, but the concept for the architecture includes the possibility to use other mappings for the future.
+
+\bigskip
+
+HIER DAS MAPPING BESCHREIBEN
+
+\bigskip
+
+
+
 
 \subsection{Examples}
 
