@@ -1,25 +1,96 @@
 \documentclass[english]{cpp-hmwk}
    \usepackage{blindtext}
+
 \begin{document}
-\Homework{Implementation for lindenmayer systemss}{Steffen Knoblauch}
+\Homework{Lindenmayer systems - a flexible implementation}{Steffen Knoblauch}
+
+\begin{abstract}
+Lindenmayer Systems, short L-systems, are the result of \textbf{research from Lindenmayer et al.}\footnote{ZITIEREN} about the geometric features of plants.
+L-systems are a concept to mathematicaly describe and model the growth processes of plant development. They are not only restricted to the plant based developments, but they can also be used to generate fractals.
+
+L-systems start with a defined state and use rules, like a formal grammar, to transform the current state to create the next state of the development or the fractal.
+It is therefore possible to successive calculate each state of the development of a plant or a fractal.
+Such a state of a L-system can be interpreted as commands for a turtle graphic, which creates the opportunity to draw the created fractals or plant states. 
+
+Goal of this paper is to design an architecture for L-systems, which includes an implementation for L-systems, their creation and an interface for a turtle graphic. The interface should enable the polymorphic use of different turtle graphic implementations. 
+\end{abstract}
+
+\pagebreak
 \section{Introduction}
-   
+
+
+This paper is organised in several topics, beginning with section \ref{section:lindenmayer}, which is a short introduction to the general idea and the grammar of L- systems.
+The following sections contain a discussion about the architecture and the final general concept of an implementation of a L-system.
+
+
+
+
 \pagebreak
 \section{Lindenmayer systems}
+\label{section:lindenmayer}
+\subsection{History}
+''[L-systems] were introduced in 1968 by Lindenmayer as a theoretical framwork for studying the development of simple multicellular organisms [...]''\footnote{Zitiert ausd abop Preface - Abschnitt Modeling of Plants} and were later used in computer graphics to generate visuals of organisms and fractals.
+
+On the beginning the focus of L-systems theory was based on larger plant parts and was later on extended with new interpretations, which enabled it to represent complexer and more detailed objects.
+
 \subsection{General idea}
-   
-\begin{itemize}
-	\item Rewriting System (Objekte und Regeln die durch andere Objekte ersetzten)
-\end{itemize}
+The general idea of a L-system is the use of a rewriting system based on a formal grammar. The formal grammar is restricted by and based on different principles, which will be discussed in section \ref{section:grammar}.
 
+''In general, rewriting is a technique for defining complex objects by successively replacing parts of a simple initial object using a set of rewriting rules or productions.''\footnote{Zitiert von abop Chapter 1  - 1.1 Rewriting systems}
 
+For example this concept can be used to rewrite a inital string, called axiom, with defined rewriting rules.
+A simple example is the following grammar, which consits of only two nonterminals, A and B, and two production rules. 
+The first rule is A\rightarrow AB, the second rule is B\rightarrow A. The arrow '\rightarrow' symbols the replacement of the object on the left with the object of the right of the arrow.
+The L-system has as axiom the value 'A' and will be expanded with these rules, creating the results in figure \ref{figure:simple_lsystem}.
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.7\columnwidth]{../graphs/Examples/simple_lsystem.png}
+	\caption{Simple L-system}
+	\label{figure:simple_lsystem}
+\end{figure}
+
+The first step is to use rule one, which replaces the nonterminal A with AB, resulting in the first generation. The result of the first generation ('AB') will be used to generate the second generation.
+For all nonterminals the productions will be parallel applied. In this case the nonterminals A and B will be replaced, because both have existing production rules. This results in the second generation with 'ABA' as result.
+
+This process can be successively repeated recursive for a arbitrary amount of generations.
 \subsection{Grammar}
+\label{section:grammar}
+The definition of an L-system can be done similar to a Chomsky grammar, but there are some general differences. In Chomsky grammars the productions are applied sequentially, whereas in L-systems they can be applied parallel. This has some consequences for the formal properties of an L-system, for example a context-free L-system can produce a language which cannot be produced by a context-free Chomsky grammar.\footnote{Zitat abop vgl Seite 3  Abschnitt L-Systems}
 
-\begin{itemize}
-	\item Erklären von paralleler Erzeugung
-	\item Unterscheidung zu Chomsky context free grammmar
-	\item Aber hier Fokus auf DOL-System (deterministic)
-\end{itemize}
+\noindent This paper will only focus on a class of L-systems, known as the DOL-systems, which can be used for string based rewriting systems. This class is deterministic (D) and context-free (O) and can be formaly described  by a tuple:
+
+\begin{center}
+G = (V, ω, P)
+\end{center}
+
+V: set of symbols as alphabet of the l-system - consiting of terminals and non terminals
+
+ω: axiom - nonempty word of the alphabet, which should contain at least one nonterminal
+
+P: set of productions
+
+\medskip
+\noindent A production conistst of a predecessor, a nonterminal symbol of the alphabet, and a successor, the replacment of the nonterminal in the next generation.
+To guarantee that the l-system is deterministic, there only can be one production for each nonterminal of the alphabet.The identity production is implicit a part of the set of productions.\footnote{Zitat vgl Seite 4 abop}
+
+\bigskip
+
+TODO: Erklären was self similar und development rules sind
+
+
+
+ Further a terminal, a letter which has no production rule and won't be replaced, will be skipped and only the nonterminals will be rewriten.
+This can be done because the  based on self-similarity and development-algorithms.
+
+
+\subsection{Focus}
+Fokus auf DOL-Systems -> deterministic
+Not 3D -> but possible becuse of open implementation
+
+Nicht auf Stochastic L-systems
+Nicht context sensitve L-Systeme
+Es gib tweitere arten zb auch paremtererisiert
 
 \subsection{Examples}
 
@@ -27,7 +98,11 @@
 	\item Koch
 	\item ...
 \end{itemize}
-   
+  
+  
+
+
+  
 \pagebreak
 \section{Architecture}
 \begin{itemize}
@@ -85,6 +160,7 @@
 SVG implementation
 \section{Tests}
    \pagebreak
+   \section{Problems and Restrictions}
    \section{Outlook}
    \footnote{\fullcite{prusinkiewiczp.lindenmayera.2004}}
 \end{document}

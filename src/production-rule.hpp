@@ -14,8 +14,8 @@ The non_terminal in an LSystem will be replaced with the replacement.
 TODO: Bennenung nich sauber - handelt es sich wirklich um eine nonterminal und eine rule ? weil eigentlich ist das gesamte eine production rule und die rule ist eig ein axiom oder so
 
 zb: start_axiom: start_object
-    non_terminal: non_terminal
-    rule: replacement
+    non_terminal: predecessor 
+    rule: successor
 */
 template<typename Nonterminal, typename Replacment>
 class ProductionRule {
