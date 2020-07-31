@@ -17,8 +17,6 @@ Goal of this paper is to design an architecture for L-systems, which includes an
 
 \pagebreak
 \section{Introduction}
-
-
 This paper is organised in several topics, beginning with section \ref{section:lindenmayer}, which is a short introduction to the general idea and the grammar of L- systems.
 The following sections contain a discussion about the architecture and the final general concept of an implementation of a L-system.
 
@@ -58,7 +56,7 @@ This process can be successively repeated recursive for a arbitrary amount of ge
 \label{section:grammar}
 The definition of an L-system can be done similar to a Chomsky grammar, but there are some general differences. In Chomsky grammars the productions are applied sequentially, whereas in L-systems they can be applied parallel. This has some consequences for the formal properties of an L-system, for example a context-free L-system can produce a language which cannot be produced by a context-free Chomsky grammar.\footnote{Zitat abop vgl Seite 3  Abschnitt L-Systems}
 
-\noindent This paper will only focus on a class of L-systems, known as the DOL-systems, which can be used for string based rewriting systems. This class is deterministic (D) and context-free (O) and can be formaly described  by a tuple:
+\noindent This paper will only focus on a class of L-systems, the DOL-systems, which can be used for string based rewriting systems. This class is deterministic (D) and context-free (O) and can be formaly described  by a tuple:
 
 \begin{center}
 G = (V, ω, P)
