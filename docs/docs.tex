@@ -8,11 +8,11 @@
 Lindenmayer Systems, short L-systems, are the result of \textbf{research from Lindenmayer et al.}\footnote{ZITIEREN} about the geometric features of plants.
 L-systems are a concept to mathematicaly/formal describe and model the growth processes of plant development. They are not only restricted to the plant based developments, but can also be used to generate fractals.
 
-L-systems start with a defined state and use rules, like a formal grammar, to transform or rather rewrite the current state to create the next state of the development or the fractal.
-It is therefore possible to successive calculate each state of the development of a plant or a fractal.
+L-systems have an inital state and use rules, like a formal grammar, to transform or rather rewrite the current state to create the next state of the development from a plant or a fractal.
+It is therefore possible to successive calculate each state of the development.
 Such a state of a L-system can be interpreted as commands for a turtle graphic, which creates the opportunity to draw the created fractals or plant states. 
 
-Goal of this paper is to design an architecture for L-systems, which includes an implementation for L-systems, their creation and an interface for a turtle graphic. The interface should enable the polymorphic use of different turtle graphic implementations. 
+Goal of this paper is to design an architecture for L-systems, which includes an implementation for L-systems, their creation and an interface for a turtle graphic. The interface should enable the polymorphic use of different turtle graphic implementations and enable drawing of the L-system state.
 \end{abstract}
 
 \pagebreak
@@ -22,7 +22,7 @@ This paper is organised in several topics, beginning with section \ref{section:l
 The following sections contain a discussion about the architecture and possible implementation steps. The discussion results in a final concept for an implementation.
 The final concept is realized and the code is available via my github repository.\footnote{link to my github adding}
 
-The end of the paper includes a conclusion and an outlook for possible extension in the future.
+The end of the paper sums up with a conclusion section and an outlook for possible extensions in the future.
 
 \section{Lindenmayer systems}
 \label{section:lindenmayer}
@@ -30,33 +30,14 @@ The end of the paper includes a conclusion and an outlook for possible extension
 \label{section:history}
 ''[L-systems] were introduced in 1968 by Lindenmayer as a theoretical framwork for studying the development of simple multicellular organisms [...]''\footnote{Zitiert ausd abop Preface - Abschnitt Modeling of Plants} and were later used in computer graphics to generate visuals of organisms and fractals.
 
-On the beginning the focus of L-systems theory was based on larger plant parts and was later on extended with new interpretations, which enabled it to represent complexer and more detailed objects.
-
-\bigskip
-
-Verbessern mit den informationen aus chapter 1 - 1.3 Turtle interpretation -> was wurde davor gentzt -> das hat auch einfluss auf den inhalt der grundlagen -> nochmals verbessern
-
-
-
-
-\bigskip
+On the beginning the focus of L-systems theory was based on larger plant parts and the graphical interpretation used chains of rectangles to display a L-system. Further research into L-system extended the interpretations, resulting in a interpretation of a L-system state with a LOGO-style Turtle. These extension make it possible to model more complex plants and fractaals and display them in a graphical way. \footnote{Zitat abop Vgl. Seite 6 Chapter 1.3}
 
 \subsection{General idea}
-The general idea of a L-system is the use of a rewriting system based on a formal grammar. The formal grammar is restricted by and based on different principles, which will be discussed in section \ref{section:grammar}.
-
-''In general, rewriting is a technique for defining complex objects by successively replacing parts of a simple initial object using a set of rewriting rules or productions.''\footnote{Zitiert von abop Chapter 1  - 1.1 Rewriting systems}
-
-
-\bigskip
-
-TODO: Erklären was self similar und development rules sind
-
-\bigskip
-
+The general idea of a L-system is the use of a rewriting system based on a formal grammar. The shape of a plant or a fractal consists of geometric pieces, for example a branch of a tree has several subbranches. ''When each piece of a shape is geometrically similar to the whole, both the shape and the cascade that generate it are called self-similar.''\footnote{Zitate The Nature of....  chapter 6 page 34 } The self-similartiy makes it possible to create a formal description for the plant or fractal generation as a formal grammar, further discussed in  section \ref{section:grammar}. The rewritng uses this formal description to generate the diffferent states of the development. ''In general, rewriting is a technique for defining complex objects by successively replacing parts of a simple initial object using a set of rewriting rules or productions.''\footnote{Zitiert von abop Chapter 1  - 1.1 Rewriting systems}. 
 
 For example this concept can be used to rewrite a inital string, called axiom, with defined rewriting rules.
 A simple example is the following grammar, which consits of only two nonterminals, A and B, and two production rules. 
-The first rule is A\rightarrow AB, the second rule is B\rightarrow A. The arrow '\rightarrow' symbols the replacement of the object on the left with the object of the right of the arrow.
+The first rule is A\rightarrow AB, the second rule is B\rightarrow A. The arrow '\rightarrow' symbols the replacement, the rewriting, of the object on the left with the object of the right of the arrow.
 The L-system has as axiom the value 'A' and will be expanded with these rules, creating the results in figure \ref{figure:simple_lsystem}.
 
 \begin{figure}[h!]
@@ -66,15 +47,9 @@ The L-system has as axiom the value 'A' and will be expanded with these rules, c
 	\label{figure:simple_lsystem}
 \end{figure}
 
-The first step is to use rule one, which replaces the nonterminal A with AB, resulting in the first generation. The result of the first generation ('AB') will be used to generate the second generation.
-For all nonterminals the productions will be parallel applied. In this case the nonterminals A and B will be replaced, because both have existing production rules. This results in the second generation with 'ABA' as result.
+The first step is to use rule one, which replaces the nonterminal A with AB, resulting in the first generation. The result of the first generation ('AB') will be used to generate the second generation. For all nonterminals the productions will be parallel applied. In this case the nonterminals A and B will be replaced, because both have existing production rules. This results in the second generation with 'ABA' as result.
 
-This process can be successively repeated recursive for a arbitrary amount of generations.
-
-
-
-
-
+This process can be successively repeated recursive for a arbitrary amount of generations and create a fractal or plant with self-similar pieces.
 
 
 \subsection{Grammar}
