@@ -48,8 +48,7 @@ The L-system has as axiom the value 'A' and will be expanded with these rules, c
 
 The first step is to use rule one, which replaces the nonterminal A with AB, resulting in the first generation. The result of the first generation ('AB') will be used to generate the second generation. For all nonterminals the productions will be parallel applied. In this case the nonterminals A and B will be replaced, because both have existing production rules. This results in the second generation with 'ABA' as result.
 
-This process can be successively repeated recursive for a arbitrary amount of generations and create a fractal or plant with self-similar pieces.
-
+This process can be successively repeated recursive for a arbitrary amount of generations and create a fractal or plant with self-similar pieces. The more generations are calculated, the more detailed is the resulting state. 
 
 \subsection{Grammar}
 \label{section:grammar}
@@ -107,7 +106,7 @@ $\alpha$ is the direction in which a turtle is facing, called heading
 
 \medskip
 
-\noindent To control the walking path of turtle some commands are needed. Therefor a defined step size \textit{d} and an angle \textit{$\theta$ } is needed to calculate the next state of the turtle.
+\noindent The walking path of the turtle is controlled by commands. Therefor a defined step size \textit{d} and an angle \textit{$\theta$ } is needed to calculate the next state of the turtle.
 
 \begin{itemize}
 \item Draw: moves one step in the current facing direction drawing a line 
@@ -115,6 +114,7 @@ $\alpha$ is the direction in which a turtle is facing, called heading
 \item Right-turn: turns to the right by the angle $\theta$
 \item Left-turn: turns to the left by the angle $\theta$
 \end{itemize}
+\footnote{Zitat vlg cad book seitev 2 unteres drittel}
 
 \noindent Additional to the state of the turtle the state there is a state for the pen. The pen state consist of the color and its width, which will result in more colorfull or different pictures.
 
@@ -171,40 +171,37 @@ This fractal will be created with 'F' as axiom and two productions:
 \item Y\rightarrow XF-YF-X
 \end{itemize}
 
- The turtle will be initalized with an angle of 60° and an arbitrary length \textit{d} for a step.
+\noindent The turtle will be initalized with an angle of 60° and an arbitrary length \textit{d} for a step.
  
 \footnote{ADD A PICTURE and SOURCE}
 
 
 \pagebreak
 \section{Architecture}
-\begin{itemize}
-	\item general focus on flexibility
-	\item interfaces for future use cases
-	\item different independent parts in the sample application
-\end{itemize}
-
-\section{Build System}
-\begin{itemize}
-	\item Cmake as buildsystem
-	\item reasons why cmake
-	\item problems ?
-\end{itemize}
+The primary goal of this paper is creating an architecture and an implementation of a L-system as described in section \ref{section:lindenmayer}. The focus of the architecture will be on flexibility and expandability and therefor is the following section splitted into several parts with discussions about different aspects of the final architecture.
 
 
+\subsection{LSystem}
+Core of the current architecture but still excahngable
 
-\section{FileHandler}
+What data to hold 
+How to generate different generations (Suksessiver aufbau des L Systems)
+ - why dont hold the generations - efficency
+On the fly generation with an Output itertaor vs Graph
 
-\begin{itemize}
-	\item Load init data from file
-	\item convinient way to configure the sample code
-	\item no hard coded l system rules and axioms - use of the data in other apllications
-\end{itemize}
+\subsection{Turtle}
+Abstract interface with minimal set of needed functions
+
+\subsection{Turtle command mapping}
+
+\subsection{Configuration data}
+convinient way of define a grammar - not hard coded - load form file
+
 
 \section{LSystemHandler}
 
 \begin{itemize}
-	\item Suksessiver aufbau des L Systems
+	\item 
 	\item Nutzung von beliebiger datenstruktur mit speziellen eigenschaften -> Semantische Schnittstelle
 	\item Bekommt die Daten aus dem FileHandler, kann aber aus allem kommen - belieib in andere Sachen einbindbar
 \end{itemize}
@@ -225,15 +222,29 @@ This fractal will be created with 'F' as axiom and two productions:
 	\item Problem for now -> not very flexible (perhaps for the future: provide which function to call for which object)
 \end{itemize}
 
-\section{TurtleGraphic}
-\subsection{Abstract class}
-\subsection{TestTurtle}
-\subsection{CairoTurtle}
-\subsection{Further implementations}
+
+\section{Implementation}
+\subsection{Build System}
+\label{section:buildsystem}
+The first important point 
+
+\begin{itemize}
+	\item Cmake as buildsystem
+	\item reasons why cmake
+	\item problems ?
+\end{itemize}
+
+
+\subsection{TurtleGraphic}
+\subsubsection{TestTurtle}
+\subsubsection{CairoTurtle}
+\subsubsection{Further implementations}
 SVG implementation
+
+
 \section{Tests}
-   \pagebreak
-   \section{Problems and Restrictions}
-   \section{Outlook}
-   \footnote{\fullcite{prusinkiewiczp.lindenmayera.2004}}
+\section{Examples}
+\section{Problems and Restrictions}
+\section{Outlook}
+\footnote{\fullcite{prusinkiewiczp.lindenmayera.2004}}
 \end{document}
