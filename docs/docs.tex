@@ -17,12 +17,10 @@ Goal of this paper is to design an architecture for L-systems, which includes an
 
 \pagebreak
 \section{Introduction}
-This paper is organised in several topics, beginning with section \ref{section:lindenmayer}, which is a short introduction to the general idea,  based around object rewriting, and the grammar of L- systems.
+L-systems are a formal way to describe plant or fractal development and interpret the result as a graphic. In order provide a general understanding of Lsystems is this  paper organised in several topics. Section \ref{section:lindenmayer} is a short introduction to the general idea,  based around object rewriting, the grammar of L- systems and the interpretation of a L-system as graphic.
+After discussing the architecture and possible implementation steps, a final concept for an implementation is proposed.The code for this implementatiopn is available via my github repository.\footnote{link to my github adding}
 
-The following sections contain a discussion about the architecture and possible implementation steps. The discussion results in a final concept for an implementation.
-The final concept is realized and the code is available via my github repository.\footnote{link to my github adding}
-
-The end of the paper sums up with a conclusion section and an outlook for possible extensions in the future.
+Finaly, there is a conclusion and an outlook for possible future extensions.
 
 \section{Lindenmayer systems}
 \label{section:lindenmayer}
@@ -33,6 +31,7 @@ The end of the paper sums up with a conclusion section and an outlook for possib
 On the beginning the focus of L-systems theory was based on larger plant parts and the graphical interpretation used chains of rectangles to display a L-system. Further research into L-system extended the interpretations, resulting in a interpretation of a L-system state with a LOGO-style Turtle. These extension make it possible to model more complex plants and fractaals and display them in a graphical way. \footnote{Zitat abop Vgl. Seite 6 Chapter 1.3}
 
 \subsection{General idea}
+\label{section:gerneralidea}
 The general idea of a L-system is the use of a rewriting system based on a formal grammar. The shape of a plant or a fractal consists of geometric pieces, for example a branch of a tree has several subbranches. ''When each piece of a shape is geometrically similar to the whole, both the shape and the cascade that generate it are called self-similar.''\footnote{Zitate The Nature of....  chapter 6 page 34 } The self-similartiy makes it possible to create a formal description for the plant or fractal generation as a formal grammar, further discussed in  section \ref{section:grammar}. The rewritng uses this formal description to generate the diffferent states of the development. ''In general, rewriting is a technique for defining complex objects by successively replacing parts of a simple initial object using a set of rewriting rules or productions.''\footnote{Zitiert von abop Chapter 1  - 1.1 Rewriting systems}. 
 
 For example this concept can be used to rewrite a inital string, called axiom, with defined rewriting rules.
@@ -59,12 +58,12 @@ The definition of an L-system can be done similar to a Chomsky grammar, but ther
 \noindent This paper will only focus on a class of L-systems, the DOL-systems, which can be used for string based rewriting systems. This class is deterministic (D) and context-free (O) and can be formaly described  by a tuple:
 
 \begin{center}
-G = (V, ω, P)
+G = (V, $\omega$, P)
 \end{center}
 
 V: set of symbols as alphabet of the l-system - consiting of terminals and non terminals
 
-ω: axiom - nonempty word of the alphabet, which should contain at least one nonterminal
+$\omega$: axiom - nonempty word of the alphabet, which should contain at least one nonterminal
 
 P: set of productions
 
@@ -72,60 +71,80 @@ P: set of productions
 \noindent A production conistst of a predecessor, a nonterminal symbol of the alphabet, and a successor, the replacment of the nonterminal in the next generation.
 To guarantee that the l-system is deterministic, there only can be one production for each nonterminal of the alphabet.The identity production is implicit a part of the set of productions.\footnote{Zitat vgl Seite 4 abop}
 
-\bigskip
+\medskip
 
 If in the process of rewriting a terminal symbol is found, there will be no explicit production applied, but rather the identity production is applied. Terminals will therefore remain in future generations and won't extend an L-system with a production.
 
-\bigskip
+\medskip
 
-\noindent As mentioned in section \ref{section:history} there are other extensions of a basic L-systems. The extensions introduce more possiblities for the generation process, like a non-deterministic behaviour. These extensions result in new grammars:
+\noindent As mentioned in section \ref{section:history} there are other extensions of a basic L-systems. The extensions introduce more possiblities for the generation process, like a non-deterministic behaviour. These extensions result in new grammars which can represent much complexer plants or fractals:
 
 \begin{itemize}
 \item Stochastic grammars: the system isn't deterministic anymore, because there can be multiple production rules for the same nonterminal with a probaility which results in a randomisation of the generation
 \item Context senstive grammars: production not only look for the nonterminal, they rather look for the symbols bevor and after the current symbol to process, the context.
-\item Parametric grammars: it is possible to set additional parameters for a symbol to influence the generation or the evalutaion of the data
+\item Parametric grammars: it is possible to set additional parameters for a symbol to influence the generation or the evaluation of the data
 \end{itemize}
 
-\noindent With these new grammars it is possible to generate more complexe fractals and more detailed plant structures.
+\subsection{Interpretation as turtle commands}
+The L-systems introduced to this points are capable of creating a string based on a grammar. In order to create a graphic of a state of a L-system, the resulting state can be interpreted as commands of a turtle.
 
-\subsection{Interpretation as turtle graphic}
-The L-systems introduced to this points are capable of creating a string based on the grammar. To create a graphic of the generation of the L-system, the resulting string can be interpreted as commands of a turtle graphic.
+\noindent A turtle is a concept introduced by the language Logo as a tool for computer graphics.\footnote{Zitat VGL. Seite 179 Chappter 10 Logo book}
 
-\bigskip
+\noindent A state of a turtle can be described as a tuple\footnote{Zitat vgl abop Seite 6 ff}:
 
-WHAT IS A TURTLE
+\begin{center}
+S = (x,y, $\alpha$)
+\end{center}
 
+x and y are Cartesian coordinates
 
-\bigskip
+$\alpha$ is the direction in which a turtle is facing, called heading
 
-This is based on a mapping between the symbols in the alphabet and the commands which should be called.
+\medskip
+
+\noindent A turtle can move in the Cartesian coordinate system by altering the current state.You can think of it as a real turtle with a pen attached to it, walking on a paper. While moving in the coordinate system, or on the paper, the turtle can draw lines. Given this concept the turtle can receive different commands. The commands let the turtle walk on the paper or the coordinate system by altering the current state and drawing a line. For now I'll restrict this to a two dimensional coordinate system, but it is also possible to enhance it for a three dimensional coordinate system.
+
+\medskip
+
+\noindent To control the walking path of turtle some commands are needed. Therefor a defined step size \textit{d} and an angle \textit{$\theta$ } is needed to calculate the next state of the turtle.
+
+\begin{itemize}
+\item Draw: moves one step in the current facing direction drawing a line 
+\item Move: moves one step in the current facing direction without drawing a line
+\item Right-turn: turns to the right by the angle $\theta$
+\item Left-turn: turns to the left by the angle $\theta$
+\end{itemize}
+
+\noindent Additional to the state of the turtle the state there is a state for the pen. The pen state consist of the color and its width, which will result in more colorfull or different pictures.
+
+\medskip
+
+\noindent  With the given turtle concept is it possible to interpret the result of an L-system. Therefor a mapping between the symbols in the alphabet and the commands which should be called is needed.
 This could be done by an arbitrary mapping between a nonterminal or a terminal and a command. For this paper the following mapping will be used, but the concept for the architecture includes the possibility to use other mappings in the future.
 
-\noindent For the mapping the following alphabet is used, which is a slightly extended version of the basic version of a L-system:
+\noindent For the mapping alphabet V is used, which is a slightly extended version of the basic version of a L-system:
 
 \begin{center}
 V = (F, f, +, -, [,  ])
 \end{center}
 
+This alphabet will be mapped with extended turtle commands:
 
 \begin{center}
-\begin{tabular}{ c c }
+\begin{tabular}{ c l }
 Symbol & Turtle interpretation \\
 \hline
-F & cell  \\ 
-f & cell  \\  
-+& cell  \\  
--& cell  \\  
-{[} & cell  \\  
-{]} & cell \\
+F & Draw a line in the facing direction  \\ 
+f & Move in the facing direction  \\  
++& Turn right  \\  
+-& Turn left  \\  
+{[} & save the current state in a stack  \\  
+{]} & pop the last state form the stack and set it to the current state  \\
 
 \end{tabular}
 \end{center}
 
-\bigskip
-
-
-
+This interpretation enables to draw the result of the L-system and export it as a graphic.
 
 \subsection{Examples}
 
