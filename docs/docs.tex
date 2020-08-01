@@ -86,6 +86,7 @@ If in the process of rewriting a terminal symbol is found, there will be no expl
 \end{itemize}
 
 \subsection{Interpretation as turtle commands}
+\label{section:turtle}
 The L-systems introduced to this points are capable of creating a string based on a grammar. In order to create a graphic of a state of a L-system, the resulting state can be interpreted as commands of a turtle.
 
 \noindent A turtle is a concept introduced by the language Logo as a tool for computer graphics.\footnote{Zitat VGL. Seite 179 Chappter 10 Logo book}
@@ -144,19 +145,37 @@ f & Move in the facing direction  \\
 \end{tabular}
 \end{center}
 
-This interpretation enables to draw the result of the L-system and export it as a graphic.
+This interpretation enables to draw the result of the L-system by iterating over every terminal and nonterminal of the result state and calling the mapped command. If no command is mapped the symbol will be skipped.
+
+\bigskip
+
+STACK ENTFERENEN UND NUR SIMPLEN WEG NUTZEN
+
+\bigskip
 
 \subsection{Examples}
+This section will present some examples for L-system grammars which create fractals. They use the introduced mapping of section \ref{section:turtle}.
+  
+\subsubsection{Koch curve}
+This fractal will be generated with the simple axiom 'F' and just one production: F\rightarrow F+F--F+F 
+
+\noindent The turtle will be initalized with an angle of 60° and an arbitrary length \textit{d} for a step.
+
+\footnote{ADD A PICTURE and perhaps a source: http://mathforum.org/advanced/robertd/lsys2d.html}
+
+\subsubsection{Sierpinski triangle}
+This fractal will be created with 'F' as axiom and two productions:
 
 \begin{itemize}
-	\item Koch
-	\item ...
+\item X\rightarrow YF+XF+Y
+\item Y\rightarrow XF-YF-X
 \end{itemize}
-  
-  
+
+ The turtle will be initalized with an angle of 60° and an arbitrary length \textit{d} for a step.
+ 
+\footnote{ADD A PICTURE and SOURCE}
 
 
-  
 \pagebreak
 \section{Architecture}
 \begin{itemize}
