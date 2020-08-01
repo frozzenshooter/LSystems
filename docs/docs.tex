@@ -180,14 +180,43 @@ This fractal will be created with 'F' as axiom and two productions:
 \section{Architecture}
 The primary goal of this paper is creating an architecture and an implementation of a L-system as described in section \ref{section:lindenmayer}. The focus of the architecture will be on flexibility and expandability and therefor is the following section splitted into several parts with discussions about different aspects of the final architecture.
 
+\subsection{Overview and requirements}
+The architecture consists of parts with different responiblitites and each of these parts has special requirements. This section will be introduce the core requirements and objects needed to implement a flexible L-system and turtle to interpret the result state.
 
-\subsection{LSystem}
+\medskip
+\noindent The L-system is the core of the concept and has because of this a few requirments to guarantee a flexible usage. The L-system needs to hold the data, which will be needed to 
+
+
+
+Was man braucht
+-> ein Lsystem welches die Daten hält 
+-> Das Lsystem muss konfigurierbar sein bzw verschiedenen grammatiken halten
+-> eine möglihckeit die Grammatiken zu definieren
+-> das lsystem muss es ermöglichen, dass man verschiedene generationen berechnen kann
+-> eine Turtle, die das ergebnis des LSystem ausgeben kann
+
+\medskip
+
+\noindent The turtle has the task to 
+
+Sollte man das hier so trennen oder lieber als fließstext und nicht aufgeteilt und dann nur beschrieben was möglich sein soll.
+
+Damit muss man hier noch nicht Das mapping etc. einführen sondern kann auf einer abstrakteren Ebene planen
+
+
+\subsection{L-system}
+The core of the architecture is the L-system which will be holding the data of the L-system itself. 
+
+\bigskip
+
 Core of the current architecture but still excahngable
 
 What data to hold 
 How to generate different generations (Suksessiver aufbau des L Systems)
- - why dont hold the generations - efficency
+ - >why dont hold the generations - efficency
 On the fly generation with an Output itertaor vs Graph
+
+ Nutzung von beliebiger datenstruktur mit speziellen eigenschaften -> Semantische Schnittstelle
 
 \subsection{Turtle}
 Abstract interface with minimal set of needed functions
@@ -197,14 +226,6 @@ Abstract interface with minimal set of needed functions
 \subsection{Configuration data}
 convinient way of define a grammar - not hard coded - load form file
 
-
-\section{LSystemHandler}
-
-\begin{itemize}
-	\item 
-	\item Nutzung von beliebiger datenstruktur mit speziellen eigenschaften -> Semantische Schnittstelle
-	\item Bekommt die Daten aus dem FileHandler, kann aber aus allem kommen - belieib in andere Sachen einbindbar
-\end{itemize}
 
 \section{LSystem Datastructure}
 
