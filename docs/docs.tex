@@ -180,32 +180,58 @@ This fractal will be created with 'F' as axiom and two productions:
 \section{Architecture}
 The primary goal of this paper is creating an architecture and an implementation of a L-system as described in section \ref{section:lindenmayer}. The focus of the architecture will be on flexibility and expandability and therefor is the following section splitted into several parts with discussions about different aspects of the final architecture.
 
-\subsection{Overview and requirements}
-The architecture consists of parts with different responiblitites and each of these parts has special requirements. This section will be introduce the core requirements and objects needed to implement a flexible L-system and turtle to interpret the result state.
+\footnote{HIER SOLLTE MAN EVT NOCH IRGENDWO DIE SEMANTSCIHE SCHNITTSTELLE ERWÄHNEN}
+
+\subsection{Requirements overview}
+The architecture for a L-system, as introduced in section \ref{section:lindenmayer}, has several requirements . This section will introduce the needed core requirements to get a flexible L-system and turtle.
 
 \medskip
-\noindent The L-system is the core of the concept and has because of this a few requirments to guarantee a flexible usage. The L-system needs to hold the data, which will be needed to 
-
-
-
-Was man braucht
--> ein Lsystem welches die Daten hält 
--> Das Lsystem muss konfigurierbar sein bzw verschiedenen grammatiken halten
--> eine möglihckeit die Grammatiken zu definieren
--> das lsystem muss es ermöglichen, dass man verschiedene generationen berechnen kann
--> eine Turtle, die das ergebnis des LSystem ausgeben kann
+\noindent The core of the concept is the L-system itfself, which has to guarantee a flexible usage. The L-system holds relevant data like the grammar, consisting of production rules and an axiom. The L-system should offer a way to configure a grammmar and guarantee the usage in different architectures without hardcoded grammars. The L-system should also offer to successively generate the next states of the configured grammar and access this generated result.
 
 \medskip
 
-\noindent The turtle has the task to 
+\noindent The turtle is another key component, which will be used to interpret the result of a L-system. The turtle has to offer the typical turtle commands as introduced in section \ref{section:turtle}. In order to provide a turtle that is as extensible as possible, it should be possible to implement it flexibly. Therefor an interface should be offered, that enables a fast exchange of implementations. Depending on the implementation of a turtle, it should be possible to configure the turtle and change properties, like the color or line width.
 
-Sollte man das hier so trennen oder lieber als fließstext und nicht aufgeteilt und dann nur beschrieben was möglich sein soll.
-
-Damit muss man hier noch nicht Das mapping etc. einführen sondern kann auf einer abstrakteren Ebene planen
+\medskip
+\noindent A mapping between the turtle commands and the L-system alphabet is an important part, so it is possible to call the correct turtle commands. Additional a function which is calling the mapped commands, after interpreting the L-system result, is needed to create an image of a plant or a fractal development state.
 
 
 \subsection{L-system}
-The core of the architecture is the L-system which will be holding the data of the L-system itself. 
+This section provides a dissussion of possible implementations of the L-system and a final proposal.
+
+\medskip
+
+\noindent A simple and rather naive idea would be an object which holds the L-system as a string and addtional the grammar, consisting of productions and an axiom. This L-system could offer a function that calculates the next generation by iterating over every char in the string. If there is a production for the current char, the char will be replaced with the preddecessor in the string.
+
+\medskip
+\noindent This idea has several flaws 
+
+
+2. Probleme damit: ineffizient, wegen replace und weil man riesigen string halten muss
+
+
+To make it possible to exchange the L-system a clear seperation between the datastructure and the functionality of a L-system is needed.
+
+ The L-system is just a container for the data and won't provide 
+
+Core der architektur
+
+Daten halten -> zwei möglichkeiten: nur die grammatik und produktionsregeln oder eine generation  
+
+wenn zustand -> einfachste möglichkeit ist einfach einen String zu speichern und für jede generation string replacmenets machen -> sehr teuer 
+--> Folglich muss man einen graph aufbauen, der die Daten hält damit es effizienter wird
+wenn on the fly dann nur grammatik notwendig -> Time memory tradeoff -> man muss jedes mal neu berechnen  
+
+-> berechnen von nächster generation notwendig 	-> beim graph muss man immer wieder neue Knoten ziehen und Daten anders halten
+								-> Beim on the fly: rekursive mit direktem übergeben des wertes
+
+-> berechnen von mehrern generationen auf einmal schwierig 
+	-> beim zustand müsste man alle zustände entsprechend markieren
+	-> beim on the fly kann man das auch nur erschwert umsetzten
+
+
+-> wie funktioniert eigentlich das aufrufen 
+
 
 \bigskip
 
