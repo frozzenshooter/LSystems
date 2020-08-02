@@ -20,7 +20,8 @@ Goal of this paper is to design an architecture for L-systems, which includes an
 L-systems are a formal way to describe plant or fractal development and interpret the result as a graphic. In order provide a general understanding of Lsystems is this  paper organised in several topics. Section \ref{section:lindenmayer} is a short introduction to the general idea,  based around object rewriting, the grammar of L- systems and the interpretation of a L-system as graphic.
 After discussing the architecture and possible implementation steps, a final concept for an implementation is proposed.The code for this implementatiopn is available via my github repository.\footnote{link to my github adding}
 
-Finaly, there is a conclusion and an outlook for possible future extensions.
+\medskip
+\noindent Finaly, there is a conclusion and an outlook for possible future extensions.
 
 \section{Lindenmayer systems}
 \label{section:lindenmayer}
@@ -201,18 +202,50 @@ This section provides a dissussion of possible implementations of the L-system a
 
 \medskip
 
-\noindent A simple and rather naive idea would be an object which holds the L-system as a string and addtional the grammar, consisting of productions and an axiom. This L-system could offer a function that calculates the next generation by iterating over every char in the string. If there is a production for the current char, the char will be replaced accodirng to the production with the predecessor. This function could be called for n generations to create the n-th generation of the L-system.\footnote{BEISPIEL ALS UML?}
+\noindent A simple and rather naive idea would be an object which holds the L-system as a string and addtional the grammar, consisting of productions and an axiom. This L-system could offer a function that calculates the next generation by iterating over every char in the string. If there is a production for the current char, the char will be replaced according to the production with the successor. This function could be called for n generations to create the n-th generation of the L-system, as show in figure \ref{figure:naive_lsystem}.
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=1\columnwidth]{../graphs/LSystem/naive/class_diagram_l_system_naive.png}
+	\caption{Naive L-system}
+	\label{figure:naive_lsystem}
+\end{figure}
 
 \medskip
-\noindent This idea has several design flaws resulting in a bad performance and unclear behaviour. The first flaws exist because of the lack of seperation between datastructure and processing of the data. It is not possible to simply exchange the datastructure or the function without the seperation, which affects flexibility of the L-system. This can be solved by extracting the functionality into a seperate function and the data structure remains as ''dumb'' object. The seperate function can be a used to manipulate the current state in the datastrutcture itself and also creates the opportunity to exchange the underlying datastructure, as long as the datastructure fullfills some formal properties, like the support of access to the string and grammar.\newline
-A further flaw is the bad performance because of the use of a string to save the current state/generation. There are to reasons why the performance is bad, especially for larger generations. The first reason is the size of the string itself, which will grow very fast because of the nature of a L-system. Every nonterminal will be often replaced by severall symbols, which enormously increases the total size of the string for each generation. Additional to the large amount of space needed for the string, the replace in a string needs to be done for each nonterminal, which can result in a big overhead. Because of this problems, another more efficient design is needed.
+\noindent This idea has several design flaws resulting in a bad performance and unflexible architecture. The first flaws exist because of the lack of seperation between datastructure and processing of the data. It is not possible to simply exchange the datastructure or the function without the seperation, which affects flexibility of the L-system negative. This can be solved by extracting the functionality into a seperate function and the datastructure remains as ''dumb'' object. The seperated function can be a used to manipulate the current state in the datastrutcture itself and also creates the opportunity to exchange the underlying datastructure, as long as the datastructure fullfills some formal properties, like the support of access to the string and grammar.\newline
+For a more flexible design additional changes could be done, because the current idea bases on chars as alphabet of the grammar. The L-system could be enhanced by allowing arbitrary objects as symbols of the alphabet, as long as they provide certain functions like a operator to compare them. Instead of a string, the objects could for example be saved as a list.\newline
+A further flaw is the bad performance, because of the use of a string to save the current state/generation. There are two reasons why the performance is bad, especially for larger generations. The first reason is the size of the string itself, which will grow very fast because of the nature of a L-system. Every nonterminal will be often replaced by severall symbols, which enormously increases the total size of the string for each generation. Additional to the large amount of space needed for the string, the replace in a string needs to be done for each nonterminal, which can result in a big overhead. Because of this problems, another more efficient design is needed.\newline
+This implementation only works for simple L-systems where only a few generations are needed.
 
 \medskip
-\noindent In order to solve this problems and to create a more efficient and flexible architecture, let's recap the nature of L-systems. The generation of a L-system is based on a rewriting process. This process iterates over every object in the current state and calcualtes the resulting geneartion with the productions. Because of the restriction to DOL-systems the rewriting is not context-sensitive and can be done independent from other objects of the current state. If a object gets replaced by the successor of the production, the result of this replacment can be handled independent. The calculation of the n-th generation can be done for each object on their own and can simply be done in a recursive manner.\newline
-There is only a limited number of productions in a grammar of a L-system. Each of these productions is choosen deterministic when comparing the nonterminal. The next generation is created by rewriting the curren state, when a nonterminal is often in the current state, the same production can be used. If the same production is used muliple times, the resulting generation has a lot of similar objects or more specific the same string muliple times. These two aspects can be used to improve the current discussed idea.
+\noindent In order to solve this problems and to create a more efficient and flexible architecture, let's recap the nature of L-systems. The generation of a L-system is based on a rewriting process. This process iterates over every object in the current state and calcualtes the resulting generation by applying the productions. Because of the restriction to DOL-systems the rewriting is not context-sensitive and can be done independent from other objects of the current state. If a object gets replaced by the successor of the production, the result of this replacment can be handled independent. The calculation of the n-th generation can be done for each object on their own and can simply be done in a recursive manner.\newline
+There is only a limited number of productions in a grammar of a L-system. Each of these productions is choosen deterministic when comparing the nonterminal. The next generation is created by rewriting the current state, when a nonterminal is often in the current state, the same production can be used. If the same production is used muliple times, the resulting generation has a lot of similar objects or more specific the same string muliple times. The repeating data and the recursive calculation can be used to improve the naive idea.
 
 \medskip
-\noindent
+\noindent The simple example in figure \ref{figure:lsystem_mem_reduction} shows the possible reduction of data using the following grammar:
+
+Axiom: A
+
+Production: A \rightarrow AAAAAAAAAA 
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.8\columnwidth]{../graphs/LSystem/examples/simple_grammar_data_doubling.png}
+	\caption{Memory reduction}
+	\label{figure:lsystem_mem_reduction}
+\end{figure}
+
+This rather ideal example shows how it would be sufficient to save just parts of the resulting string to represent the whole generation of a L-system. This is even for more complex grammars possible because of the disscused repetitions.
+
+\medskip
+\noindent With this knowledge multiple improvements can be discussed. The first possible improvement is storing the data not in a plain object, like a string, but instead in a graph.
+A graph has several advantages in comparison to the string concept, for example the reduction of needed memory storage. Such a graph can have a structure like this:
+
+
+
+
+
+The second possible improvment is to neglect the storage of a state at all. Instead of saving the generation of a L-system in a datastructure, the result gets calculated on demand and never stored. This calculation can be done wit a recursive function and returned in pieces. 
 
 
 -> Nächste ansätze -> Unterschiedung zwischen den verschiednen arten das zu speichern -> nature of the L-system thorey nochmal in kopf rufen
@@ -237,19 +270,13 @@ wenn on the fly dann nur grammatik notwendig -> Time memory tradeoff -> man muss
 	-> beim on the fly kann man das auch nur erschwert umsetzten
 
 
--> wie funktioniert eigentlich das aufrufen 
 
 
-\bigskip
+Bis hierher nur diskutiert wie man eigentlich die Datne hält und auch wie man die nächsten generationen berechnet aber wie funktioniert eigentlich das aufrufen 
 
-Core of the current architecture but still excahngable
 
-What data to hold 
-How to generate different generations (Suksessiver aufbau des L Systems)
- - >why dont hold the generations - efficency
-On the fly generation with an Output itertaor vs Graph
+Nochmals auf semantische schnittstelle eingehen -> es wird dadurch ermöglicht mit vers datenstrukturen zu arbeiten solange diese einige formale eigenschaften haben
 
- Nutzung von beliebiger datenstruktur mit speziellen eigenschaften -> Semantische Schnittstelle
 
 \subsection{Turtle}
 Abstract interface with minimal set of needed functions
@@ -258,23 +285,6 @@ Abstract interface with minimal set of needed functions
 
 \subsection{Configuration data}
 convinient way of define a grammar - not hard coded - load form file
-
-
-\section{LSystem Datastructure}
-
-\begin{itemize}
-	\item Tree like sturcture
-	\item save data not double only save pointers to the data
-	\item provides access to the data with an iterator
-\end{itemize}
-
-\section{Parser for the lsystem}
-\begin{itemize}
-	\item Parses the result of the l system
-	\item calls the Turtle Graphic on the fly
-	
-	\item Problem for now -> not very flexible (perhaps for the future: provide which function to call for which object)
-\end{itemize}
 
 
 \section{Implementation}
