@@ -18,10 +18,9 @@ Goal of this paper is to design an architecture for L-systems, which includes an
 \pagebreak
 \section{Introduction}
 L-systems are a formal way to describe plant or fractal development and interpret the result as a graphic. In order provide a general understanding of Lsystems is this  paper organised in several topics. Section \ref{section:lindenmayer} is a short introduction to the general idea,  based around object rewriting, the grammar of L- systems and the interpretation of a L-system as graphic.
-After discussing the architecture and possible implementation steps, a final concept for an implementation is proposed.The code for this implementatiopn is available via my github repository.\footnote{link to my github adding}
+After discussing the architecture and possible implementation steps, a final concept for an implementation is proposed.The code for this implementation is available via my github repository.\footnote{https://github.com/frozzenshooter/LSystems}
 
-\medskip
-\noindent Finaly, there is a conclusion and an outlook for possible future extensions.
+Finaly, there is a conclusion and an outlook for possible future extensions.
 
 \section{Lindenmayer systems}
 \label{section:lindenmayer}
@@ -218,16 +217,10 @@ A further flaw is the bad performance, because of the use of a string to save th
 This implementation only works for simple L-systems where only a few generations are needed.
 
 \medskip
-\noindent In order to solve this problems and to create a more efficient and flexible architecture, let's recap the nature of L-systems. The generation of a L-system is based on a rewriting process. This process iterates over every object in the current state and calcualtes the resulting generation by applying the productions. Because of the restriction to DOL-systems the rewriting is not context-sensitive and can be done independent from other objects of the current state. If a object gets replaced by the successor of the production, the result of this replacment can be handled independent. The calculation of the n-th generation can be done for each object on their own and can simply be done in a recursive manner.\newline
-There is only a limited number of productions in a grammar of a L-system. Each of these productions is choosen deterministic when comparing the nonterminal. The next generation is created by rewriting the current state, when a nonterminal is often in the current state, the same production can be used. If the same production is used muliple times, the resulting generation has a lot of similar objects or more specific the same string muliple times. The repeating data and the recursive calculation can be used to improve the naive idea.
+\noindent In order to solve this problems and to create a more efficient and flexible architecture, let's recap the nature of L-systems. The generation of a L-system is based on a rewriting process. This process iterates over every object in the current state and calcualtes the resulting generation by applying the productions. Because of the restriction to DOL-systems, the rewriting is not context-sensitive and can be done independent from other objects of the current state. If a object gets replaced by the successor of the production, the result of this replacment can be handled independent. CONsequently, the calculation of the n-th generation can be done for each object on their own and can simply be done in a recursive manner.\newline
+There is only a limited number of productions in a grammar of a L-system. Each of these productions is choosen deterministic when comparing the current nonterminal with the predecessor. The next generation is created by rewriting the current state, when a nonterminal is often in the current state, the same production can be used. If the same production is used muliple times, the resulting generation has a lot of similar objects or more specific the same string muliple times. The repeating data and the recursive calculation can be used to improve the naive idea.
 
 \medskip
-\noindent The simple example in figure \ref{figure:lsystem_mem_reduction} shows the possible reduction of data using the following grammar:
-
-Axiom: A
-
-Production: A \rightarrow AAAAAAAAAA 
-
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width=0.8\columnwidth]{../graphs/LSystem/examples/simple_grammar_data_doubling.png}
@@ -235,19 +228,53 @@ Production: A \rightarrow AAAAAAAAAA
 	\label{figure:lsystem_mem_reduction}
 \end{figure}
 
-This rather ideal example shows how it would be sufficient to save just parts of the resulting string to represent the whole generation of a L-system. This is even for more complex grammars possible because of the disscused repetitions.
+\noindent The simple example in figure \ref{figure:lsystem_mem_reduction} shows the possible reduction of data using the following grammar:
+
+Axiom: A
+
+Production: A \rightarrow AAAAAAAAAA 
 
 \medskip
-\noindent With this knowledge multiple improvements can be discussed. The first possible improvement is storing the data not in a plain object, like a string, but instead in a graph.
-A graph has several advantages in comparison to the string concept, for example the reduction of needed memory storage. Such a graph can have a structure like this:
+\noindent This rather ideal example shows how it would be sufficient to save just parts of the resulting string to represent the whole generation of a L-system. For this example it could be possible to save ''AAAAAAAAAA'' and how often it is needed. Because of the repetitions, this is partly even for more complex grammars possible.
+
+\medskip
+\noindent With this knowledge multiple improvements can be discussed. The first possible improvement is storing the data not in a simple list, like a string, but instead in a more sophisticated datastructure. A first improvement is to use a doubly linked list, because this should improve the performance loss of the replace function. A doubly linked list still has the problem of waste of memory storage and therefore another datastructure is needed. In this case a graph as datastructure is better suited. Such a graph enables a better performance for replacements and reduction of memory space.
+
+\medskip
+\noindent The mentioned graph has a special strutcure based on the requirments for a L-system. It has to save the data for the grammar and the state of the system as the nodes themself.
+
+
+BESCHREIBEN WIE DER GRAPH FUNKTIONIEREN WÜRDE: Konzept der KNoten in YED machen und hierfür eine beispiel grammatik überlegen
+
+-> Axiom: A
+
+-> Production:  A -> BBB
+		    B -> AAA
+		    
+-> Speichern: BBB und AAA und die Pointer darauf
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.8\columnwidth]{../graphs/LSystem/examples/lsystem_graph_example.png}
+	\caption{L-system as graph}
+	\label{figure:lsystem_graph}
+\end{figure}
+
+
+Nächste verbesserung für den Graph um noch mehr zu sparen is das zusammenfassen von knoten
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.8\columnwidth]{../graphs/LSystem/examples/lsystem_graph_reduced_example.png}
+	\caption{L-system as graph with memory improved}
+	\label{figure:lsystem_graph_mem_reduction}
+\end{figure}
+
+The second possible improvment is to neglect the storage of a state at all. Instead of saving the generation of a L-system in a datastructure, the result gets calculated on demand and never stored. This calculation can be done with a recursive function and returned in pieces. 
 
 
 
-
-
-The second possible improvment is to neglect the storage of a state at all. Instead of saving the generation of a L-system in a datastructure, the result gets calculated on demand and never stored. This calculation can be done wit a recursive function and returned in pieces. 
-
-
+\bigskip
 -> Nächste ansätze -> Unterschiedung zwischen den verschiednen arten das zu speichern -> nature of the L-system thorey nochmal in kopf rufen
 
 To make it possible to exchange the L-system a clear seperation between the datastructure and the functionality of a L-system is needed.
@@ -258,8 +285,6 @@ Core der architektur
 
 Daten halten -> zwei möglichkeiten: nur die grammatik und produktionsregeln oder eine generation  
 
-wenn zustand -> einfachste möglichkeit ist einfach einen String zu speichern und für jede generation string replacmenets machen -> sehr teuer 
---> Folglich muss man einen graph aufbauen, der die Daten hält damit es effizienter wird
 wenn on the fly dann nur grammatik notwendig -> Time memory tradeoff -> man muss jedes mal neu berechnen  
 
 -> berechnen von nächster generation notwendig 	-> beim graph muss man immer wieder neue Knoten ziehen und Daten anders halten
