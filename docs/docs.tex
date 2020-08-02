@@ -201,14 +201,21 @@ This section provides a dissussion of possible implementations of the L-system a
 
 \medskip
 
-\noindent A simple and rather naive idea would be an object which holds the L-system as a string and addtional the grammar, consisting of productions and an axiom. This L-system could offer a function that calculates the next generation by iterating over every char in the string. If there is a production for the current char, the char will be replaced with the preddecessor in the string.
+\noindent A simple and rather naive idea would be an object which holds the L-system as a string and addtional the grammar, consisting of productions and an axiom. This L-system could offer a function that calculates the next generation by iterating over every char in the string. If there is a production for the current char, the char will be replaced accodirng to the production with the predecessor. This function could be called for n generations to create the n-th generation of the L-system.\footnote{BEISPIEL ALS UML?}
 
 \medskip
-\noindent This idea has several flaws 
+\noindent This idea has several design flaws resulting in a bad performance and unclear behaviour. The first flaws exist because of the lack of seperation between datastructure and processing of the data. It is not possible to simply exchange the datastructure or the function without the seperation, which affects flexibility of the L-system. This can be solved by extracting the functionality into a seperate function and the data structure remains as ''dumb'' object. The seperate function can be a used to manipulate the current state in the datastrutcture itself and also creates the opportunity to exchange the underlying datastructure, as long as the datastructure fullfills some formal properties, like the support of access to the string and grammar.\newline
+A further flaw is the bad performance because of the use of a string to save the current state/generation. There are to reasons why the performance is bad, especially for larger generations. The first reason is the size of the string itself, which will grow very fast because of the nature of a L-system. Every nonterminal will be often replaced by severall symbols, which enormously increases the total size of the string for each generation. Additional to the large amount of space needed for the string, the replace in a string needs to be done for each nonterminal, which can result in a big overhead. Because of this problems, another more efficient design is needed.
+
+\medskip
+\noindent In order to solve this problems and to create a more efficient and flexible architecture, let's recap the nature of L-systems. The generation of a L-system is based on a rewriting process. This process iterates over every object in the current state and calcualtes the resulting geneartion with the productions. Because of the restriction to DOL-systems the rewriting is not context-sensitive and can be done independent from other objects of the current state. If a object gets replaced by the successor of the production, the result of this replacment can be handled independent. The calculation of the n-th generation can be done for each object on their own and can simply be done in a recursive manner.\newline
+There is only a limited number of productions in a grammar of a L-system. Each of these productions is choosen deterministic when comparing the nonterminal. The next generation is created by rewriting the curren state, when a nonterminal is often in the current state, the same production can be used. If the same production is used muliple times, the resulting generation has a lot of similar objects or more specific the same string muliple times. These two aspects can be used to improve the current discussed idea.
+
+\medskip
+\noindent
 
 
-2. Probleme damit: ineffizient, wegen replace und weil man riesigen string halten muss
-
+-> Nächste ansätze -> Unterschiedung zwischen den verschiednen arten das zu speichern -> nature of the L-system thorey nochmal in kopf rufen
 
 To make it possible to exchange the L-system a clear seperation between the datastructure and the functionality of a L-system is needed.
 
