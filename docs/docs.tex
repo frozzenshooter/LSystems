@@ -197,6 +197,7 @@ The architecture for a L-system, as introduced in section \ref{section:lindenmay
 
 
 \subsection{L-system}
+\label{section:lsystem_discussion}
 This section provides a dissussion of possible implementations of the L-system and a final proposal.
 
 \medskip
@@ -288,9 +289,9 @@ There seems to be no difference, but in combination with the proposed next step 
 \bigskip
 
 \noindent Another possible simplification is to neglect storing the generations of a L-system at all. Instead of saving the generation of a L-system in a datastructure, the result can be calculated on demand and never stored. The only data such a L-system would hold, would be the grammar itself. The calculation can be done with a recursive function, that will return the generation. Clearly an advantage is the reduction of needed storage space, but this reduction is only achived at the cost of recalculation for each generation. Whenever a generation is needed, it is nessecary to calculate again and it is not possible to use a previous result.
-If a generation is needed multiple times, a solution could be to store the result in another object. This calculations also guarantees a flexiblity, because you can either only calculate the generation once and use the result directly, like in this case to call the turtle commands, or save it for later usage.
+If a generation is needed multiple times or if it is needed to setp forwards and backwards in the result, a solution could be to store the result in another object. This calculations also guarantees a flexiblity, because you can either only calculate the generation once and use the result directly, like in this case to call the turtle commands, or save it for later usage.
  
-The recursive function can be designed flexible in order to allow a simple exchange of a L-system datastructure. This results in two main components, the L-system datastructure and the function, which accepts a L-system datastructure and calculates the generation. The L-system, the function needs to accepts, has to fullfill some requirments, like to offer access functions. This will be discribed further in section \ref{section:impl}.
+The recursive function can be designed flexible in order to allow a simple exchange of a L-system datastructure. This results in two main components, the L-system datastructure and the function, which accepts a L-system datastructure and calculates the generation. The L-system, the function needs to accepts, has to fullfill some requirements, like to offer access functions. This will be discribed further in section \ref{section:impl}.
  
 \bigskip
  
@@ -306,7 +307,9 @@ The recursive function can be designed flexible in order to allow a simple excha
 \medskip
 \noindent The proposed L-system will just hold the grammar for a L-system, which will be given to the recursive function. This L-system can be used in a flexible way, because it can be configured without a restriction of the grammar. Additonal, there is only a general type restriction for the axiom and the prodcutions. The self-similarity and ergo the rewriting need to be represented by the types. The type of the axiom and the successor should have the same type, which is splittable in smaller parts. These parts must be comparable with the predecessor, which should have for that reason the same type.
 
-To this point the discussion doesn't include how the turtle commands can be called. As already mentioned there must be mapping between the commands of turtle and the alphabet of the L-system. The mapping will be discussed in section \ref{section:turtle_mapping} and for now we just asume a mapping exists in some way. When using a graph, it would be possible to call the turtle commands by accessing a generation and interpret the objects. In this paper, the implementation will base on a recursive function. This function can call the turtle commands for a generation or more specific when the recursion depth is reached. How this will be done in detail is described in section \ref{section:impl}. \footnote{Hierfür in der implementierung erklären warum man einen output itertaor nimmt -> flexibler}
+To this point the discussion doesn't include how the turtle commands can be called. As already mentioned there must be mapping between the commands of turtle and the alphabet of the L-system. The mapping will be discussed further in section \ref{section:turtle_mapping} and for now we just asume a mapping exists in some way. When using a graph, it would be possible to call the turtle commands by accessing a generation data and interpret the objects.
+
+In this paper, the implementation is based on a recursive function. This function can call the turtle commands for a generation or more specific when the recursion depth is reached. How this will be done in detail is described in section \ref{section:impl}, but is based around the idea of an output iterator. The recursive function will receive an arbitrary output iterator and instead of interpreting the data in the function itself it will just hand over the objects of the generation to the iterator. This iterator can than interpret the objects as turtle commands and call them.  For other scenarios has the iterator no restrictions on what to do with the data and for example may be used to save data in a datastructure or print it in a file.
 
 Overall allows this concept, consiting of the L-system datastructure and the recursive funtion, a possible user a flexible field of operation. The recursive function and the L-system datastructure can be used completely independent. For this concept, these components will be used together, in combination with other components, like a turtle and a turtle command mapping.
 
@@ -322,19 +325,47 @@ The most general or abstract version of a turtle offers the four minimal functio
 \end{figure}
 
 \medskip
-\noindent More specialiced versions can offer more functions, depending on other needs and completly undependent of the paper usage of the turtle. For example an OpenGL implementation can offer more commands to represent a three dimensional trutle, like rotate around an axis. Additional to more commands, also different ways to configure a turtle can be offered for each specialization. Some possible implementations in connection with this paper will be described in section \ref{section:impl}.
+\noindent More specialiced versions can offer more functions, depending on other needs and completly undependent of the paper usage of the turtle. For example an OpenGL implementation can offer more commands to represent a three dimensional trutle, like rotate around an axis. Additional to more commands, also different ways to configure a turtle can be offered for each specialization. Some possible implementations, in connection with this paper, will be described in section \ref{section:impl}.
 
 Consequently the general interface is not only sufficient for this paper, but also for other usecases in the future.
 
-\subsection{Turtle command mapping}
+\subsection{Turtle command mapper}
 \label{section:turtle_mapping}
+It is nessecary to map a command to an object in order to interpret the result of a L-system. As mentioned in section \ref{section:lsystem_discussion} a recursive function will be used to calculate the result of a L-system. Until this point we just assumed there was a mapping between the members of the alphabet of the L-system and the commands which will be called. In this scenario the recursive function would call the mapped command the moment it calculates it. To make this call as flexible as possible and with a clear separation of functionality another indirection is introduced, the command mapper.
+The command mapper is also an abstract interface with some general functionality. In figure \ref{figure:if_command_map} is the abstract interface of the command mapper displayed. The command mapper has a function which will return an output iterator. The output iterator receives data, interprets it according to the mapping and calls the specified command. The abstract interface enables different implementations and it is therefore possible to create a new mapping and just exchanged it.
 
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.7\columnwidth]{../graphs/LSystem/examples/class_command_mapping.png}
+	\caption{Interface command mapper}
+	\label{figure:if_command_map}
+\end{figure}
+
+An output iterator is choosen because it integrates with the recursive function for the L-system. The function will receive the output iterator as parameter and just hands the result over to the iterator and therefore to the command mapper. The command mapper just has to search for to correct command and calls it.
+The indirection in form of the command mapper offers a clear separation between the calculation of the L-system generation and the handling of the data. In order to offer different mappings, new implementations of the mapper are nessecary.
+
+
+\footnote{Überlegen wie ein output iterotr umgestzt wird und evt nochmals anpassen - UML IST HIER NOCH NICHT KORREKT}
+\footnote{Evt nicht auf turtle beziehen, da man hier theroetisch auch andere sachen machen könnte - zum beispiel die Daten in eine Datei schreiben}
 
 
 \subsection{Configuration data}
-convinient way of define a grammar - not hard coded - load form file
+Finaly a last component is introduced, which offers a convinient way to configure a L-system. 
+
+-> daten aus datei laden + struktur der daten festlegen mittels einer tabelle
 
 \subsection{Overview}
+
+Möglich das lsystem unabhängig von der funktion zu nutzen bzw die funktion auch mit anderen datenstrukturen zu füttern - solange diese bestimmte funktionen zur verfügung stellen
+
+die funktion unabhängig vom daten handling nutzbar -> weiß nichts davon was der output iterator macht
+
+verschiedene Mappings zwischen den turtle commands und den objecten im Lsyetm möglich
+
+configurations daten aus datei unabhängig laden mittels einer statischen map
+
+turtle unabhängig nutzbar von den anderen komponenten -> ermöglicht beliebige nutzung und auhc durhc verschiedene implementierungen schnell austauschbar
+
 
 \pagebreak
 
@@ -362,5 +393,7 @@ SVG implementation
 \section{Examples}
 \section{Problems and Restrictions}
 \section{Outlook}
+
+\footnote{FÜR ALLE UMLS DIE MEMBER VARIABLEN UM DEN UNTERSTRICH ERGÄNZEN}
 \footnote{\fullcite{prusinkiewiczp.lindenmayera.2004}}
 \end{document}
