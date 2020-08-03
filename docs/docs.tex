@@ -106,7 +106,7 @@ $\alpha$ is the direction in which a turtle is facing, called heading
 
 \medskip
 
-\noindent The walking path of the turtle is controlled by commands. Therefor a defined step size \textit{d} and an angle \textit{$\theta$ } is needed to calculate the next state of the turtle.
+\noindent The walking path of the turtle is controlled by commands. Therefore a defined step size \textit{d} and an angle \textit{$\theta$ } is needed to calculate the next state of the turtle.
 
 \begin{itemize}
 \item Draw: moves one step in the current facing direction drawing a line 
@@ -120,7 +120,7 @@ $\alpha$ is the direction in which a turtle is facing, called heading
 
 \medskip
 
-\noindent  With the given turtle concept is it possible to interpret the result of an L-system. Therefor a mapping between the symbols in the alphabet and the commands which should be called is needed.
+\noindent  With the given turtle concept is it possible to interpret the result of an L-system. Therefore a mapping between the symbols in the alphabet and the commands which should be called is needed.
 This could be done by an arbitrary mapping between a nonterminal or a terminal and a command. For this paper the following mapping will be used, but the concept for the architecture includes the possibility to use other mappings in the future.
 
 \noindent For the mapping alphabet V is used, which is a slightly extended version of the basic version of a L-system:
@@ -178,7 +178,7 @@ This fractal will be created with 'F' as axiom and two productions:
 
 \pagebreak
 \section{Architecture}
-The primary goal of this paper is creating an architecture and an implementation of a L-system as described in section \ref{section:lindenmayer}. The focus of the architecture will be on flexibility and expandability and therefor is the following section splitted into several parts with discussions about different aspects of the final architecture.
+The primary goal of this paper is creating an architecture and an implementation of a L-system as described in section \ref{section:lindenmayer}. The focus of the architecture will be on flexibility and expandability and therefore is the following section splitted into several parts with discussions about different aspects of the final architecture.
 
 \footnote{HIER SOLLTE MAN EVT NOCH IRGENDWO DIE SEMANTSCIHE SCHNITTSTELLE ERWÄHNEN}
 
@@ -190,7 +190,7 @@ The architecture for a L-system, as introduced in section \ref{section:lindenmay
 
 \medskip
 
-\noindent The turtle is another key component, which will be used to interpret the result of a L-system. The turtle has to offer the typical turtle commands as introduced in section \ref{section:turtle}. In order to provide a turtle that is as extensible as possible, it should be possible to implement it flexibly. Therefor an interface should be offered, that enables a fast exchange of implementations. Depending on the implementation of a turtle, it should be possible to configure the turtle and change properties, like the color or line width.
+\noindent The turtle is another key component, which will be used to interpret the result of a L-system. The turtle has to offer the typical turtle commands as introduced in section \ref{section:turtle}. In order to provide a turtle that is as extensible as possible, it should be possible to implement it flexibly. Therefore an interface should be offered, that enables a fast exchange of implementations. Depending on the implementation of a turtle, it should be possible to configure the turtle and change properties, like the color or line width.
 
 \medskip
 \noindent A mapping between the turtle commands and the L-system alphabet is an important part, so it is possible to call the correct turtle commands. Additional a function which is calling the mapped commands, after interpreting the L-system result, is needed to create an image of a plant or a fractal development state.
@@ -212,12 +212,12 @@ This section provides a dissussion of possible implementations of the L-system a
 
 \medskip
 \noindent This idea has several design flaws resulting in a bad performance and unflexible architecture. The first flaws exist because of the lack of seperation between datastructure and processing of the data. It is not possible to simply exchange the datastructure or the function without the seperation, which affects flexibility of the L-system negative. This can be solved by extracting the functionality into a seperate function and the datastructure remains as ''dumb'' object. The seperated function can be a used to manipulate the current state in the datastrutcture itself and also creates the opportunity to exchange the underlying datastructure, as long as the datastructure fullfills some formal properties, like the support of access to the string and grammar.\newline
-For a more flexible design additional changes could be done, because the current idea bases on chars as alphabet of the grammar. The L-system could be enhanced by allowing arbitrary objects as symbols of the alphabet, as long as they provide certain functions like a operator to compare them. Instead of a string, the objects could for example be saved as a list.\newline
+For a more flexible design additional changes could be done, because the current idea bases on chars as alphabet of the grammar. The L-system could be enhanced by allowing arbitrary objects as symbols of the alphabet, as long as they provide certain functions, like a operator to compare them. Instead of a string, the objects could for example be saved as a list.\newline
 A further flaw is the bad performance, because of the use of a string to save the current state/generation. There are two reasons why the performance is bad, especially for larger generations. The first reason is the size of the string itself, which will grow very fast because of the nature of a L-system. Every nonterminal will be often replaced by severall symbols, which enormously increases the total size of the string for each generation. Additional to the large amount of space needed for the string, the replace in a string needs to be done for each nonterminal, which can result in a big overhead. Because of this problems, another more efficient design is needed.\newline
 This implementation only works for simple L-systems where only a few generations are needed.
 
 \medskip
-\noindent In order to solve this problems and to create a more efficient and flexible architecture, let's recap the nature of L-systems. The generation of a L-system is based on a rewriting process. This process iterates over every object in the current state and calcualtes the resulting generation by applying the productions. Because of the restriction to DOL-systems, the rewriting is not context-sensitive and can be done independent from other objects of the current state. If a object gets replaced by the successor of the production, the result of this replacment can be handled independent. CONsequently, the calculation of the n-th generation can be done for each object on their own and can simply be done in a recursive manner.\newline
+\noindent In order to solve this problems and to create a more efficient and flexible architecture, let's recap the nature of L-systems. The generation of a L-system is based on a rewriting process. This process iterates over every object in the current state and calcualtes the resulting generation by applying the productions. Because of the restriction to DOL-systems, the rewriting is not context-sensitive and can be done independent from other objects of the current state. If a object gets replaced by the successor of the production, the result of this replacment can be handled independent. Consequently, the calculation of the n-th generation can be done for each object on their own and can simply be done in a recursive manner.\newline
 There is only a limited number of productions in a grammar of a L-system. Each of these productions is choosen deterministic when comparing the current nonterminal with the predecessor. The next generation is created by rewriting the current state, when a nonterminal is often in the current state, the same production can be used. If the same production is used muliple times, the resulting generation has a lot of similar objects or more specific the same string muliple times. The repeating data and the recursive calculation can be used to improve the naive idea.
 
 \medskip
@@ -238,20 +238,20 @@ Production: A \rightarrow AAAAAAAAAA
 \noindent This rather ideal example shows how it would be sufficient to save just parts of the resulting string to represent the whole generation of a L-system. For this example it could be possible to save ''AAAAAAAAAA'' and how often it is needed. Because of the repetitions, this is partly even for more complex grammars possible.
 
 \medskip
-\noindent With this knowledge multiple improvements can be discussed. The first possible improvement is storing the data not in a simple list, like a string, but instead in a more sophisticated datastructure. A first improvement is to use a doubly linked list, because this should improve the performance loss of the replace function. A doubly linked list still has the problem of waste of memory storage and therefore another datastructure is needed. In this case a graph as datastructure is better suited. Such a graph enables a better performance for replacements and reduction of memory space.
+\noindent With this knowledge multiple improvements can be discussed. The first possible improvement is storing the data not in a simple list, like a string, but instead in a more sophisticated datastructure. For this case a graph as datastructure is better suited. Such a graph enables a better performance for replacements and reduction of memory space.
 
 \medskip
-\noindent The mentioned graph has a special strutcure based on the requirments for a L-system. It has to save the data for the grammar and the state of the system as the nodes themself.
+\noindent The graph has a special sturture to achive the improvements for a L-system. The following grammar is used to demonstrate the possible improvements:
+ 
+Axiom: A
 
+1. Production: A \rightarrow BBB
 
-BESCHREIBEN WIE DER GRAPH FUNKTIONIEREN WÜRDE: Konzept der KNoten in YED machen und hierfür eine beispiel grammatik überlegen
+2. Production: B \rightarrow AAA
 
--> Axiom: A
+\medskip
 
--> Production:  A -> BBB
-		    B -> AAA
-		    
--> Speichern: BBB und AAA und die Pointer darauf
+\noindent A natural improvement of a graph is the replace function. This could be done by simply creating new childnodes with the replaced data. In figure \ref{figure:lsystem_graph} is a example with the given grammar. Each generation has its own nodes with data of the current state. A level of this graph represents a whole generation and can be accessed with the depth of the nodes.
 
 \begin{figure}[h!]
 	\centering
@@ -260,48 +260,58 @@ BESCHREIBEN WIE DER GRAPH FUNKTIONIEREN WÜRDE: Konzept der KNoten in YED machen
 	\label{figure:lsystem_graph}
 \end{figure}
 
+\medskip
 
-Nächste verbesserung für den Graph um noch mehr zu sparen is das zusammenfassen von knoten
+\noindent This graph still has the problem of the redundant data, because every note contains its own data. For example in the second generation the part ''AAA'' is stored three times. This can be improved with another indirection of the data. This concept results in a datastructure containing a graph to store the dependencies and a container for the data itself. In figure \ref{figure:lsystem_graph_mem_reduction} is an example for this indirection. Each node saves a pointer or id of the data it represents. In this graph a replace could also be done with the creation of a childnodes.
 
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width=0.8\columnwidth]{../graphs/LSystem/examples/lsystem_graph_reduced_example.png}
-	\caption{L-system as graph with memory improved}
+	\caption{L-system as graph with improved memory consumption}
 	\label{figure:lsystem_graph_mem_reduction}
 \end{figure}
 
-The second possible improvment is to neglect the storage of a state at all. Instead of saving the generation of a L-system in a datastructure, the result gets calculated on demand and never stored. This calculation can be done with a recursive function and returned in pieces. 
+\medskip
+\noindent Both of the described graphs hold every calculated generation, which allows the access to an arbitrary generation with the restriction to the deepest calculated generation. To reduce the amount of storage needed even more, it is possible to neglect if all generations are needed or only the current generation. If only the last calculated generation is needed, the graph can be simplified even more. To discuss the simplification, it is necessary to look further in the different ways to do the replacement. It  is possible to iterate over the node data and replace for each symbol of teh data at a time. For example with the current grammar the data ''AAA'', could be replaced by replacing each ''A'' at a time. Because of the focus of DOL-Systems, another possible method is to replace a node with all childnodes at once.\newline
+There seems to be no difference, but in combination with the proposed next step of the graph, it is relevant. If not all generations have to be stored, it is possible to remove a completely replaced parentnode. For example in figure \ref{figure:lsystem_graph_one_generation}, it is not needed to save the crossed out nodes, because they are completely replaced. In this simple example is it already possible save only four instead of six nodes and reduce the data. This results in a flat graph with only a few nodes depth, but only the current state of a L-system. For this graph, it is  important how the replacement is done. If the replacment is done with the all at once method, the parent node can be deleted directly. If the step by step replacement is done, it is nessecary to alter the parentnode data for each replacement. Only when the complete data and the parentnode is replaced, this node can be deleted. The complete replacement is simpler to implement, because the altering of parentnode data is not needed.
 
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.8\columnwidth]{../graphs/LSystem/examples/lsystem_graph_reduced2_example.png}
+	\caption{L-system as graph with one generation}
+	\label{figure:lsystem_graph_one_generation}
+\end{figure}
 
+\medskip
+\noindent A graph is as consequence a faster and memory saving approach in comparison to the naive L-system.
 
 \bigskip
--> Nächste ansätze -> Unterschiedung zwischen den verschiednen arten das zu speichern -> nature of the L-system thorey nochmal in kopf rufen
 
-To make it possible to exchange the L-system a clear seperation between the datastructure and the functionality of a L-system is needed.
+\noindent Another possible simplification is to neglect storing the generations of a L-system at all. Instead of saving the generation of a L-system in a datastructure, the result can be calculated on demand and never stored. This calculation can be done with a recursive function, that will return the generation. Clearly an advantage is the reduction of needed storage space, but this reduction is only achived at the cost of recalculation for each generation. Whenever a generation is needed, it is nessecary to calculate again and it is not possible to use a previous result.
+ If a generation is needed multiple time, a solution could be to store the result in another object. This also enables a flexible use, because you can either only calculate the generation once and use the result directly, in this context for example to call the turtle commands, or save it for later usage.
+ 
+\bigskip
+ 
+\noindent There are the two possible ways to handle the L-system. The storage as a datastructure, based on a graph, and the recursive calculation. For this paper it is completely sufficient to calculate the generation on demand, because it is only necessary to call the turtle command once for each object of the L-system generation. As consequence no implementation of the graph is needed for this paper. Other use cases in the future might need to store the data. This would even be possible with the recursive function, when the result is stored in another object, for example a graph. The propsal for the L-system is shown in figure \ref{figure:lsystem_proposal}.
 
- The L-system is just a container for the data and won't provide 
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=1\columnwidth]{../graphs/LSystem/examples/l_system_proposal.png}
+	\caption{L-system proposal}
+	\label{figure:lsystem_proposal}
+\end{figure}
 
-Core der architektur
-
-Daten halten -> zwei möglichkeiten: nur die grammatik und produktionsregeln oder eine generation  
-
-wenn on the fly dann nur grammatik notwendig -> Time memory tradeoff -> man muss jedes mal neu berechnen  
-
--> berechnen von nächster generation notwendig 	-> beim graph muss man immer wieder neue Knoten ziehen und Daten anders halten
-								-> Beim on the fly: rekursive mit direktem übergeben des wertes
-
--> berechnen von mehrern generationen auf einmal schwierig 
-	-> beim zustand müsste man alle zustände entsprechend markieren
-	-> beim on the fly kann man das auch nur erschwert umsetzten
-
+\medskip
+\noindent The proposed L-system will just hold the grammar for a L-system, which will be given to the recursive function. This L-system can be used in a flexible way, because it can be configured without a restriction of the grammar. Additonal, there is only a general type restriction for the axiom and the prodcutions. The self-similarity and ergo the rewriting need to be represented by the types. The type of the axiom and the successor should have the same type, which is splittable in smaller parts. These parts must be comparable with the predecessor, which should have for that reason the same type.
 
 
 
-Bis hierher nur diskutiert wie man eigentlich die Datne hält und auch wie man die nächsten generationen berechnet aber wie funktioniert eigentlich das aufrufen 
+Details zum aufrufen 
+Semantische schnittstelle bei der funktion
 
+-> genauere beschreibunf im kapitel mit der implementierung
 
-Nochmals auf semantische schnittstelle eingehen -> es wird dadurch ermöglicht mit vers datenstrukturen zu arbeiten solange diese einige formale eigenschaften haben
-
+-> woher kommt die konfiguration
 
 \subsection{Turtle}
 Abstract interface with minimal set of needed functions
