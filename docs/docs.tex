@@ -311,19 +311,25 @@ To this point the discussion doesn't include how the turtle commands can be call
 Overall allows this concept, consiting of the L-system datastructure and the recursive funtion, a possible user a flexible field of operation. The recursive function and the L-system datastructure can be used completely independent. For this concept, these components will be used together, in combination with other components, like a turtle and a turtle command mapping.
 
 \subsection{Turtle}
+A quiet important component of the architecture is the turtle. The turtle has to offer the typical commands as described in section \ref{section:turtle}. A goal of this paper is the flexible use of the seperated components. The flexibility of the turtle should allow different Framworks as implementation, for example OpenGL or the Cairo graphics library. An abstract interface, with a minimal set of commands, will allow to implement a turtle for different frameworks. A turtle like this is not only bound to a special graphics framework, but can be even implemented for other usecases, like generating text on the console or a file.
+The most general or abstract version of a turtle offers the four minimal functions of a turtle, as shown in figure \ref{figure:minimal_turtle}.\footnote{HIER MUSS MAN EVT NOCH ERWEITERN UM AUCH POP UND SAVE STATE ANZUBIETEN - MUSS DANN ENTSPRECHEND GERADEGEZOGEN WERDEN}
 
-Flexible use als prio - Abstract interface with minimal set of needed functions
-Verschiedene implementierungen für verschiedene Frameworks -> nicht unbedingt auf Grafik fokussieren
-Verschiedene FUnktionen zur verfügung stellen -> wo liegt die abgrenzung zwischen der implementierung und den notwendigen funktionen (für das L-system)
-möglichkeit das auch auf 3D zu machen -> weitere funktionen in den implementierungen wie aufwärts rotieren 
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.7\columnwidth]{../graphs/LSystem/examples/class_simple_turtle.png}
+	\caption{Minimal turtle}
+	\label{figure:minimal_turtle}
+\end{figure}
 
-Konfiguration der Turtle muss gemacht werden
+\medskip
+\noindent More specialiced versions can offer more functions, depending on other needs and completly undependent of the paper usage of the turtle. For example an OpenGL implementation can offer more commands to represent a three dimensional trutle, like rotate around an axis. Additional to more commands, also different ways to configure a turtle can be offered for each specialization. Some possible implementations in connection with this paper will be described in section \ref{section:impl}.
 
-
-
+Consequently the general interface is not only sufficient for this paper, but also for other usecases in the future.
 
 \subsection{Turtle command mapping}
 \label{section:turtle_mapping}
+
+
 
 \subsection{Configuration data}
 convinient way of define a grammar - not hard coded - load form file
