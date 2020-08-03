@@ -287,8 +287,10 @@ There seems to be no difference, but in combination with the proposed next step 
 
 \bigskip
 
-\noindent Another possible simplification is to neglect storing the generations of a L-system at all. Instead of saving the generation of a L-system in a datastructure, the result can be calculated on demand and never stored. This calculation can be done with a recursive function, that will return the generation. Clearly an advantage is the reduction of needed storage space, but this reduction is only achived at the cost of recalculation for each generation. Whenever a generation is needed, it is nessecary to calculate again and it is not possible to use a previous result.
- If a generation is needed multiple time, a solution could be to store the result in another object. This also enables a flexible use, because you can either only calculate the generation once and use the result directly, in this context for example to call the turtle commands, or save it for later usage.
+\noindent Another possible simplification is to neglect storing the generations of a L-system at all. Instead of saving the generation of a L-system in a datastructure, the result can be calculated on demand and never stored. The only data such a L-system would hold, would be the grammar itself. The calculation can be done with a recursive function, that will return the generation. Clearly an advantage is the reduction of needed storage space, but this reduction is only achived at the cost of recalculation for each generation. Whenever a generation is needed, it is nessecary to calculate again and it is not possible to use a previous result.
+If a generation is needed multiple times, a solution could be to store the result in another object. This calculations also guarantees a flexiblity, because you can either only calculate the generation once and use the result directly, like in this case to call the turtle commands, or save it for later usage.
+ 
+The recursive function can be designed flexible in order to allow a simple exchange of a L-system datastructure. This results in two main components, the L-system datastructure and the function, which accepts a L-system datastructure and calculates the generation. The L-system, the function needs to accepts, has to fullfill some requirments, like to offer access functions. This will be discribed further in section \ref{section:impl}.
  
 \bigskip
  
@@ -304,25 +306,34 @@ There seems to be no difference, but in combination with the proposed next step 
 \medskip
 \noindent The proposed L-system will just hold the grammar for a L-system, which will be given to the recursive function. This L-system can be used in a flexible way, because it can be configured without a restriction of the grammar. Additonal, there is only a general type restriction for the axiom and the prodcutions. The self-similarity and ergo the rewriting need to be represented by the types. The type of the axiom and the successor should have the same type, which is splittable in smaller parts. These parts must be comparable with the predecessor, which should have for that reason the same type.
 
+To this point the discussion doesn't include how the turtle commands can be called. As already mentioned there must be mapping between the commands of turtle and the alphabet of the L-system. The mapping will be discussed in section \ref{section:turtle_mapping} and for now we just asume a mapping exists in some way. When using a graph, it would be possible to call the turtle commands by accessing a generation and interpret the objects. In this paper, the implementation will base on a recursive function. This function can call the turtle commands for a generation or more specific when the recursion depth is reached. How this will be done in detail is described in section \ref{section:impl}. \footnote{Hierfür in der implementierung erklären warum man einen output itertaor nimmt -> flexibler}
 
-
-Details zum aufrufen 
-Semantische schnittstelle bei der funktion
-
--> genauere beschreibunf im kapitel mit der implementierung
-
--> woher kommt die konfiguration
+Overall allows this concept, consiting of the L-system datastructure and the recursive funtion, a possible user a flexible field of operation. The recursive function and the L-system datastructure can be used completely independent. For this concept, these components will be used together, in combination with other components, like a turtle and a turtle command mapping.
 
 \subsection{Turtle}
-Abstract interface with minimal set of needed functions
+
+Flexible use als prio - Abstract interface with minimal set of needed functions
+Verschiedene implementierungen für verschiedene Frameworks -> nicht unbedingt auf Grafik fokussieren
+Verschiedene FUnktionen zur verfügung stellen -> wo liegt die abgrenzung zwischen der implementierung und den notwendigen funktionen (für das L-system)
+möglichkeit das auch auf 3D zu machen -> weitere funktionen in den implementierungen wie aufwärts rotieren 
+
+Konfiguration der Turtle muss gemacht werden
+
+
+
 
 \subsection{Turtle command mapping}
+\label{section:turtle_mapping}
 
 \subsection{Configuration data}
 convinient way of define a grammar - not hard coded - load form file
 
+\subsection{Overview}
+
+\pagebreak
 
 \section{Implementation}
+\label{section:impl}
 \subsection{Build System}
 \label{section:buildsystem}
 The first important point 
