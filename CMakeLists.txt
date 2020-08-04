@@ -13,20 +13,20 @@ project(l_systems)
 # Add all the source files needed to build the executable
 add_executable(
   l_systems
-  src/cairo-turtle.cpp
-  src/file-handler.cpp
-  src/l-system.cpp
-  src/l-system-handler.cpp
+
   src/main.cpp
+  src/l-system.cpp
+  src/file-handler.cpp
+  src/cairo-turtle.cpp
   src/parser.cpp
   src/test-turtle.cpp
 
+  src/production.hpp
+  src/l-system.hpp
+  src/l-system-generation.hpp  
   src/cairo-turtle.hpp
   src/file-handler.hpp
-  src/l-system.hpp
-  src/l-system-handler.hpp
   src/parser.hpp
-  src/production-rule.hpp
   src/state.hpp
   src/test-turtle.hpp
   src/turtle-graphic.hpp

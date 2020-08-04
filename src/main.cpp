@@ -5,14 +5,13 @@
 #include "parser.hpp"
 #include "file-handler.hpp"
 #include <cairo.h>
-#include "l-system-handler.hpp"
 #include "l-system.hpp"
 #include <string>
 #include <sstream>
 #include <map>
 
 #include <iostream>
-
+#include "l-system-generation.hpp"
 #include <fstream>
 
 
@@ -41,10 +40,6 @@ int main() {
 
     //TODO: style des codes -> tabs /spaces beachtet ?
 
-    // alignments der einzelnen klassen in Ordnung ?
-
-    //TODO getter and setter inline if to do sth - if not the compiler will link them away
-
     FileHandler<char, std::string> handler;
 
     std::ifstream input_stream{ "test_file_space.ls" };
@@ -56,19 +51,18 @@ int main() {
 
     LSystem<char, std::string> l_system;
 
-    l_system.set_start_axiom(handler.start_axiom_);
+    l_system.set_axiom(handler.start_axiom_);
 
     for (auto rule : handler.production_rules_) {
-        l_system.add_production_rule(rule);
+
+        Production p(rule.get_predecessor(), rule.get_successor());
+        l_system.add_production(p);
     }
 
     TestTurtle t;
     Parser p{ t };
 
-    LSystemHandler<LSystem<char, std::string>, Parser> lsystem_handler(l_system);
-
-    lsystem_handler.calculate_generation(5, p);
-
+    calculate_l_system_generation<LSystem<char, std::string>, char, std::string, Parser>(l_system, 5, p);
 
     /*
     CairoTurtle t;

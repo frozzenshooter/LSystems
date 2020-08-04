@@ -1,70 +1,64 @@
 #ifndef L_SYSTEM_HPP
 #define L_SYSTEM_HPP
 
-
+#include "production.hpp"
 #include <unordered_map>
 #include <string>
-#include <exception>
-#include "production-rule.hpp"
+
 
 /*
-This class holds the data for an LSystem, which consists of the start_axiom of the LSystem and the production rules.
+This class represents a L-system, consisting of the grammar(productions and axiom).
 
-There are two template parameters which can be used for the procuction rule
+There are some formal restrictions for the templates, because otherwise it won't be useable as intended.
+Because of the self-similarity of a L-system, the axiom and the successor of the production should have the same type.
+This type consitst of smaller objects, which can be represented by the Predecessor. These objects have to offer a function to compare them to enable the rewriting.
 
+In conclusion a successor object consits of Predecessor objects. The rewriting will replace the Predecessor object with a Successor object and therefore with some Predecessor objects.
 
-
-TODO: BETTER NAMING FOR THE PARAMETERS ? OR OTHER PARAMETERS?
-
+An example for this is char as Predeccesor and String as Successor. A char can be compared with another char.
+If such a char is replaced in a string with the Successor string, the result will be a string, consisting of chars.
 */
-template< typename Nonterminal, typename Rule >
+template <typename Predecessor, typename Successor>
 class LSystem {
 public:
-
-    void set_start_axiom(const std::string& start_axiom) {
-        start_axiom_ = start_axiom;
+    void set_axiom(const Successor& axiom) {
+        axiom_ = axiom;
     }
 
-    const std::string& get_start_axiom() const noexcept{
-        return start_axiom_;
+    // tremplate is needed because of compile error: https://docs.microsoft.com/en-us/cpp/error-messages/compiler-errors-1/compiler-error-c2143?f1url=https%3A%2F%2Fmsdn.microsoft.com%2Fquery%2Fdev16.query%3FappId%3DDev16IDEF1%26l%3DEN-US%26k%3Dk(C2143)%26rd%3Dtrue&view=vs-2019
+    std::template shared_ptr<Successor> get_axiom() {
+        return std::make_shared<Successor>(axiom_);
     }
 
-    void add_production_rule(const ProductionRule<Nonterminal, Rule>& rule) {
-   
-
-        auto it = production_rules_.find(rule.get_non_terminal());
+    void add_production(const Production<Predecessor, Successor>& production) {
+        auto it = production_rules_.find(production.get_predecessor());
 
         if (it == production_rules_.end()) {
-            production_rules_.insert(std::make_pair(rule.get_non_terminal(), rule));
+            production_rules_.insert(std::make_pair(production.get_predecessor(), production));
         }
         else {
+            //TODO andere Exception nicht nur die Standard exception
             throw new std::exception("Rule for the same non terminal already existing");
         }
     }
 
-    const ProductionRule<Nonterminal, Rule>& get_production_rule(char non_terminal) {
-   
-        // MAP used for fast access because it will be called often
-        // improvment to replace char with more flexible type
-        auto it = production_rules_.find(non_terminal);
+    std::template shared_ptr<Successor> get_successor(const Predecessor& predecessor) {
+
+        //Verbessern, da das erzeugen eines shared pointers blöd ist -> evt nur pointer speichern??
+        // bzw ist es effizient eine referenz zu bekommen und das dann mit make shared aufzurufen ? wird dafür dann das objekt genutzt bzw was passiert kann zur Laufzeit passieren
+
+        auto it = production_rules_.find(predecessor);
 
         if (it != production_rules_.end()) {
-
-            return it->second;
-        }
-        else {
-            //better way if there is a terminal -> https://stackoverflow.com/questions/58929539/how-to-return-null-as-reference-in-c
-            //evt in production rule constructor mit bool -> is_valid/is_non_terminal -> quasi flag um dann später überprüfen zu können
-            return ProductionRule<Nonterminal, Rule>('a', "abc");
+            return std::make_shared<Successor>(it->second.get_successor());
         }
 
-        // Alternative nicht de ganze Regel übergeben, sondern nur den String zum ersetzten -> die Funktion umbennenen in get_replacement
-        // Wenn etwas nicht gefunden wurde einfach den char zurückgeben -> dort kann man dann auf gleichheit prüfen
+        return nullptr;
     }
 
 private:
-    std::string start_axiom_;
-    std::unordered_map<Nonterminal, ProductionRule<Nonterminal, Rule>> production_rules_;
+    Successor axiom_;
+    std::unordered_map<Predecessor, Production<Predecessor, Successor>> production_rules_;
 };
 
 #endif

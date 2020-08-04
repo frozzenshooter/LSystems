@@ -3,10 +3,10 @@
 
 #include <string>
 #include <vector>
-#include "production-rule.hpp"
+#include "production.hpp"
 
 //TODO: BAD THAT HERE IS THE PARAMETER NEEDED -> JUST LOAD THE DATA AND PROVIDE IT TO OTHERS
-template< typename Nonterminal, typename Rule >
+template< typename Predecessor, typename Successor >
 class FileHandler {
 public:
 
@@ -42,15 +42,15 @@ public:
 
     std::string export_filename_;
     std::string start_axiom_;
-    std::vector<ProductionRule<Nonterminal, Rule>> production_rules_;
+    std::vector<Production<Predecessor, Successor>> production_rules_;
 };
 
 
 
 
 // === file handling ============================================
-template< typename Nonterminal, typename Rule >
-void FileHandler<Nonterminal, Rule>::load_configuration(std::istream& stream) {
+template< typename Predecessor, typename Successor >
+void FileHandler<Predecessor, Successor>::load_configuration(std::istream& stream) {
     std::string line;
     std::string header;
 
@@ -112,8 +112,8 @@ void FileHandler<Nonterminal, Rule>::load_configuration(std::istream& stream) {
 /*
 Parses a configuration file and returns a configuration for the turtle and l system
 */
-template< typename Nonterminal, typename Rule >
-void FileHandler<Nonterminal, Rule>::parse_file(const std::string& input_filename) {
+template< typename Predecessor, typename Successor >
+void FileHandler<Predecessor, Successor>::parse_file(const std::string& input_filename) {
     std::ifstream input_stream{ input_filename };
 
     std::cout << "[Reading Configuration file]: " << input_filename << std::endl;
@@ -221,8 +221,8 @@ void FileHandler<Nonterminal, Rule>::parse_file(const std::string& input_filenam
 /*
 Prints the loaded data
 */
-template< typename Nonterminal, typename Rule >
-void FileHandler<Nonterminal, Rule>::print() const {
+template< typename Predecessor, typename Successor >
+void FileHandler<Predecessor, Successor>::print() const {
     std::cout << "[Configuration loaded from file]:" << std::endl;
     std::cout << "width: " << width_ << std::endl;
     std::cout << "height: " << height_ << std::endl;
@@ -238,19 +238,8 @@ void FileHandler<Nonterminal, Rule>::print() const {
     std::cout << "start_axiom: " << start_axiom_ << std::endl;
 
     for (auto rule : production_rules_) {
-        std::cout << "rule: " << rule.get_non_terminal() << " => " << rule.get_production_rule() << std::endl;
+        std::cout << "rule: " << rule.get_predecessor() << " => " << rule.get_successor() << std::endl;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
 
 #endif
