@@ -61,8 +61,18 @@ int main() {
     TestTurtle t;
     Parser p{ t };
 
-    calculate_l_system_generation<LSystem<char, std::string>, char, std::string, Parser>(l_system, 5, p);
 
+    std::vector<char> result_l_system;
+
+    auto backin = std::back_insert_iterator(result_l_system);
+
+    calculate_l_system_generation<LSystem<char, std::string>, char, std::string, std::back_insert_iterator<std::vector<char>>>(l_system, 5, backin);
+
+    for (auto c : result_l_system) {
+        p.handle(c);
+    }
+
+   // t.save_to_png();
     /*
     CairoTurtle t;
     t.configure(config);

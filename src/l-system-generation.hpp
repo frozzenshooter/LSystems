@@ -3,26 +3,30 @@
 
 /*
     TODO
+
+    erklärung warum nullptr
 */
 //template<template <typename, typename> class LSystem, typename Predecessor, typename Successor, typename OutputIterator>
 template< typename LSystem, typename Predecessor, typename Successor, typename OutputIterator>
 void calculate_l_system_generation(LSystem& l_system, int generation, OutputIterator& output_iterator, std::shared_ptr<Successor> current_value = nullptr) {
 
     if (current_value == nullptr) {
+        // inital value 
         current_value = l_system.get_axiom();
     }
 
-    // Successor needs an iterator !!! -> NEEDS TO BE IN THE INTERFACE DESCRIPTION
+    // Successor needs an iterator over its elements !!! -> NEEDS TO BE IN THE INTERFACE DESCRIPTION
 
     for (auto part : *(current_value)) {
 
         if (generation > 0) {
 
+            // rewrite needed - find production result
             auto successor = l_system.get_successor(part);
 
             if (successor == nullptr) {
-                //++output_iterator << part;
-                output_iterator.handle(part);
+                // no production found and therefore hand over the terminal object directly
+                *output_iterator++ = part;
             }
             else {
                 calculate_l_system_generation<LSystem, Predecessor, Successor, OutputIterator>(l_system, generation - 1, output_iterator, successor);
@@ -30,8 +34,8 @@ void calculate_l_system_generation(LSystem& l_system, int generation, OutputIter
         }
         else {
 
-            //++output_iterator << part;
-            output_iterator.handle(part);
+            // max depth of recursion reached 
+            *output_iterator++ = part;
         }
     }
 }

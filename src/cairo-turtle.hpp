@@ -16,38 +16,21 @@ private:
     State calculate_next_state(State current_state, double line_length);
 
 public:
+    // === drawing functions ========================================
+    void move() override;
+    void draw() override;
+    void turn_right() override;
+    void turn_left() override;
+
 
     // === con/destructors ==========================================
     CairoTurtle();
     ~CairoTurtle();
 
-    // === configuration functions ==================================
-    void configure();
-    void init();
-
-    void set_start_state(State start_state);
-
-    // === state functions ==========================================
-    void save_state();
-    void pop_state() ;
-
-    // === drawing functions ========================================
-    void move() override;
-
-    void draw() override;
-
-    void turn_right() override;
-    void turn_left() override;
-
-    // === output/saving ============================================
-    bool save_to_png();
-    bool view_result();
+    // === output ============================================
+    void save_to_png();
 
 private:
-
-    // === configuration data =======================================
-    bool is_initialised_;
-    //Configuration configuration_;
 
     // === states ===================================================
     State current_state_;
