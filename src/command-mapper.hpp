@@ -59,6 +59,7 @@ private:
     }
 
     // hier eine referenz weil sonst der destructor augerfuen wird -> evt mit pointer übergeben, damit man nicht den kopierkonstruiert und abbaut
+    // TODO: andere Lösung wäre ein pointer -> damit kann man dann auch dne dynamischen polymorophismus garantieren
     CairoTurtle& turtle_;
 };
 #endif

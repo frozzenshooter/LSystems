@@ -36,7 +36,7 @@ Moves the current position without drawing a line
 */
 void CairoTurtle::move() {
 
-        auto next_state = calculate_next_state(current_state_, 1.0);
+        auto next_state = calculate_next_state(current_state_, 3.0);
         cairo_move_to(cr_, next_state.get_x(), next_state.get_y());
         current_state_ = next_state;    
 };
@@ -46,7 +46,7 @@ Draws a line from the current position with the current direction
 */
 void CairoTurtle::draw() {
 
-        auto next_state = calculate_next_state(current_state_, 1.0);
+        auto next_state = calculate_next_state(current_state_, 3.0);
         cairo_line_to(cr_, next_state.get_x(), next_state.get_y());
         current_state_ = next_state;
     

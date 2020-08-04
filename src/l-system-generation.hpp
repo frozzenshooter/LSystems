@@ -25,7 +25,7 @@ void calculate_l_system_generation(LSystem& l_system, int generation, OutputIter
             auto successor = l_system.get_successor(part);
 
             if (successor == nullptr) {
-                // no production found and therefore hand over the terminal object directly
+                // no production found, it is therefore a terminal and can be handed over directly
                 *output_iterator++ = part;
             }
             else {
