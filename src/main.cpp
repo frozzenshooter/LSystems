@@ -58,7 +58,7 @@ int main() {
         l_system.add_production(p);
     }
 
-    TestTurtle t;
+    CairoTurtle t;
     Parser p{ t };
 
 
@@ -66,23 +66,15 @@ int main() {
 
     auto backin = std::back_insert_iterator(result_l_system);
 
-    calculate_l_system_generation<LSystem<char, std::string>, char, std::string, std::back_insert_iterator<std::vector<char>>>(l_system, 5, backin);
+    calculate_l_system_generation<LSystem<char, std::string>, char, std::string, std::back_insert_iterator<std::vector<char>>>(l_system, 15, backin);
+
+    std::cout << "Vector size: " << result_l_system.size() << std::endl;
 
     for (auto c : result_l_system) {
         p.handle(c);
     }
 
-   // t.save_to_png();
-    /*
-    CairoTurtle t;
-    t.configure(config);
-
-    TestTurtle t;
-
-    Parser p{t};
-    p.parse_and_save_to_png(test);
-
-    */
+    t.save_to_png();
 
     return 0;
 }

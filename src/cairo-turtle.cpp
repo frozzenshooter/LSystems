@@ -10,9 +10,10 @@ CairoTurtle::CairoTurtle() :
     current_state_(0.0, 0.0, 0.0),
     start_state_(0.0, 0.0, 0.0)
 {
-    surface_ = cairo_recording_surface_create(CAIRO_CONTENT_COLOR_ALPHA, NULL);
+    //surface_ = cairo_recording_surface_create(CAIRO_CONTENT_COLOR_ALPHA, NULL);
+    surface_ = cairo_image_surface_create(CAIRO_FORMAT_RGB24, 2000, 2000);
     cr_ = cairo_create(surface_);
-
+   
     // background white and lines black for now
     cairo_set_source_rgb(cr_, 1, 1, 1);
     cairo_paint(cr_);
@@ -27,31 +28,6 @@ CairoTurtle::~CairoTurtle() {
     //cleanup cairo
     cairo_destroy(cr_);
     cairo_surface_destroy(surface_);
-}
-
-/*
-TODO: IS THIS NEEDED?
-*/
-void CairoTurtle::reset() {
-    cairo_destroy(cr_);
-    cairo_surface_destroy(surface_);
-    states_.empty();
-
-    surface_ = cairo_recording_surface_create(CAIRO_CONTENT_COLOR_ALPHA, NULL);
-    cr_ = cairo_create(surface_);
-
-    cairo_set_source_rgb(cr_, 1, 1, 1);
-    cairo_paint(cr_);
-    cairo_set_source_rgb(cr_, 0, 0, 0);
-
-    cairo_set_line_width(cr_, 1.0);
-}
-
-/*
-Sets the start state so it will be possible to end the drawing without an extra line
-*/
-void CairoTurtle::set_start_state(State start_state) {
-    start_state_ = start_state_;
 }
 
 // === drawing functions ============================================
@@ -115,12 +91,32 @@ void CairoTurtle::save_to_png() {
     cairo_move_to(cr_, start_state_.get_x(), start_state_.get_y());
     cairo_close_path(cr_);
     cairo_stroke(cr_);
+    auto t = cairo_surface_write_to_png(surface_, "export_file.png");
+    
+    
     //double x0, y0, width, height;
     //cairo_recording_surface_ink_extents(surface_, &x0, &y0, &width, &height);
     //auto sf2 = cairo_surface_create_similar_image(surface_, CAIRO_FORMAT_RGB24, width, height);
-    auto t = cairo_surface_status(surface_);
-    std::cout << t << std::endl;
-    cairo_surface_write_to_png(surface_, "export_file.png");
+   
+
+
+
+    //const char* outputfile = "export_file.png";
+
+    //double x0, y0, width, height;
+    //cairo_recording_surface_ink_extents(surface_, &x0, &y0, &width, &height);
+
+    //cairo_surface_t* target = cairo_image_surface_create(CAIRO_FORMAT_RGB24, width, height);
+    //cairo_t* crt = cairo_create(target);
+    //// copy recorded image to target and paint
+    //cairo_set_source_surface(crt, surface_, -x0, -y0);
+    //cairo_paint(crt);
+    //auto t = cairo_surface_write_to_png(target, outputfile);
+
+    //cairo_destroy(crt);
+    //cairo_surface_destroy(target);
+
+    std::cout << cairo_status_to_string(t) << std::endl;
 }
 
 // === calcualtions =============================================
