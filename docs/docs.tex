@@ -331,7 +331,7 @@ Consequently the general interface is not only sufficient for this paper, but al
 
 \subsection{Turtle command mapper}
 \label{section:turtle_mapping}
-It is nessecary to map a command to an object in order to interpret the result of a L-system. As mentioned in section \ref{section:lsystem_discussion} a recursive function will be used to calculate the result of a L-system. Until this point we just assumed there was a mapping between the members of the alphabet of the L-system and the commands which will be called. In this scenario the recursive function would call the mapped command the moment it calculates it. To make this call as flexible as possible and with a clear separation of functionality another indirection is introduced, the command mapper.
+It is nessecary to map a command to an object in order to interpret the result of a L-system. As mentioned in section \ref{section:lsystem_discussion} a recursive function will be used to calculate the result of a L-system. Until this point we just assumed there was a mapping between the members of the alphabet of the L-system and the commands which will be called. In this scenario the recursive function would call the mapped command the moment it calculates it. To make this call as flexible as possible and with a clear separation of functionality, another indirection is introduced, the command mapper.
 The command mapper is also an abstract interface with some general functionality. In figure \ref{figure:if_command_map} is the abstract interface of the command mapper displayed. The command mapper has a function which will return an output iterator. The output iterator receives data, interprets it according to the mapping and calls the specified command. The abstract interface enables different implementations and it is therefore possible to create a new mapping and just exchanged it.
 
 \begin{figure}[h!]
@@ -349,14 +349,30 @@ The indirection in form of the command mapper offers a clear separation between 
 \footnote{Evt nicht auf turtle beziehen, da man hier theroetisch auch andere sachen machen könnte - zum beispiel die Daten in eine Datei schreiben}
 
 
-\subsection{Configuration data}
-Finaly a last component is introduced, which offers a convinient way to configure a L-system. 
+\subsection{Configuration}
+Some of the discussed components in this paper can be configured. The configuration could either be done in code, for example by setting it with constants or in a dynamic way. A dynamic way would be possible by loading the configuration data from a stream, for example a filestream.
+For the configuration of the introduced components it is sufficient to use simple key value pairs. For example such file could contain the configuration of a L-system:
 
--> daten aus datei laden + struktur der daten festlegen mittels einer tabelle
+\medskip
+
+generations 14
+
+axiom X
+
+rule X YF+XF+Y
+
+rule Y XF-YF-X
+
+\medskip
+
+\noindent In this example the key is seperated by the value with a space and in each row there is another key value pair. A problem is, that a value can not only consist of a single value, but can instead have of multiple values. For example a rule can consist of a precessor and a successor value. 
+A solution for the multi value problem could be the use of a JSON object. A JSON object would allow to encapsulate the values without a restriction, but for this paper a simpler approach should be sufficient. As solution for the multi value objects is a simple separation of the values with a space. This is already shown in the example above, where a rule is splitted into three values.
+When reading the data from a stream it is necessary to know what datatype the values have and therefore a mapping between the keys and the value type is needed. This can be done by a static mapping in the code, which will also allow to solve this in a flexible way. At least so flexible that the mapping can be set in a central place at the code.
+
+\footnote{Hier muss man noch das genaue design beschrieben -> wie werden die daten übergeben bzw wie werden die daten gehalten oder werden die daten direkt übergeben }
 
 \subsection{Overview}
-
-Möglich das lsystem unabhängig von der funktion zu nutzen bzw die funktion auch mit anderen datenstrukturen zu füttern - solange diese bestimmte funktionen zur verfügung stellen
+This section will now give a short overview of the disscuessed components and their dependencies. The general approach for the design was a flexible use of the seperated comopnents. It should be possible to use each component on their own and even exchange a component and still guarantee the functionlity. Under the premises, that exchanged components still offer the same functions and data.
 
 die funktion unabhängig vom daten handling nutzbar -> weiß nichts davon was der output iterator macht
 
@@ -365,6 +381,7 @@ verschiedene Mappings zwischen den turtle commands und den objecten im Lsyetm m�
 configurations daten aus datei unabhängig laden mittels einer statischen map
 
 turtle unabhängig nutzbar von den anderen komponenten -> ermöglicht beliebige nutzung und auhc durhc verschiedene implementierungen schnell austauschbar
+uml des gesmaten code notwendig
 
 
 \pagebreak
