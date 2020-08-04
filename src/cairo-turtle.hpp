@@ -4,13 +4,13 @@
 #include <string>
 #include <stack>
 #include <cairo.h>
-#include "turtle-graphic.hpp"
 #include "State.hpp"
+#include "Turtle.hpp"
 
 /*
 * Class which uses the cairo graphics lib to implement turtle graphics behaviour
 */
-class CairoTurtle : public TurtleGraphic {
+class CairoTurtle : public Turtle {
 private:
     // === calcualtions =============================================
     State calculate_next_state(State current_state, double line_length);
@@ -28,14 +28,13 @@ public:
     void set_start_state(State start_state);
 
     // === state functions ==========================================
-    void save_state() override;
-    void pop_state() override;
+    void save_state();
+    void pop_state() ;
 
     // === drawing functions ========================================
-    void move_to(double x, double y) override;
+    void move() override;
 
-    void draw_line() override;
-    void draw_short_line() override;
+    void draw() override;
 
     void turn_right() override;
     void turn_left() override;

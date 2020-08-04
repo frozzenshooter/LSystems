@@ -3,7 +3,7 @@
 
 #include <string>
 #include <memory>
-#include "turtle-graphic.hpp"
+#include "turtle.hpp"
 
 class Parser {
     //TODO rename to l system 2d parser or sth like this - can only parse one special grammar
@@ -23,10 +23,10 @@ public:
     void handle(char ch);
 
     // === constructor ==============================================
-    Parser(TurtleGraphic& turtle_graphic) : turtle_graphic_(turtle_graphic) {};
+    Parser(Turtle& turtle) : turtle_(turtle) {};
 
 private:
-    TurtleGraphic& turtle_graphic_;
+    Turtle& turtle_;
 };
 
 #endif

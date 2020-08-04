@@ -1,35 +1,20 @@
 #ifndef TEST_TUTRLE_HPP
 #define TEST_TUTRLE_HPP
 
-#include "turtle-graphic.hpp"
+#include "turtle.hpp"
 
 /*
 * Class to test the turtle behaviour - it will output the called functions via std::out
 */
-class TestTurtle : public TurtleGraphic {
+class TestTurtle : public Turtle {
 public:
     // === con/deconstructor ========================================
     ~TestTurtle() {};
 
-    // === configuration functions ==================================
-    void configure();
-    void init();
-
-    // === state functions ==========================================
-    void save_state() override;
-    void pop_state() override;
-
     // === drawing functions ========================================
-    void move_to(double x, double y) override;
-
-    void draw_line() override;
-    void draw_short_line() override;
-
+    void move() override;
+    void draw() override;
     void turn_right() override;
     void turn_left() override;
-
-    // === output/saving ============================================
-    bool save_to_png();
-    bool view_result();
 };
 #endif

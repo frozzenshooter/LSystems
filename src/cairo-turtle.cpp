@@ -81,33 +81,23 @@ void CairoTurtle::pop_state() {
 /*
 Moves the current position without drawing a line
 */
-void CairoTurtle::move_to(double x, double y) {
+void CairoTurtle::move() {
     if (is_initialised_) {
-        current_state_.set_x(x);
-        current_state_.set_y(y);
 
-        cairo_move_to(cr_, x, y);
+        //TODO
+       // current_state_.set_x(x);
+        //current_state_.set_y(y);
+
+        //cairo_move_to(cr_, x, y);
     }
 };
 
 /*
 Draws a line from the current position with the current direction
 */
-void CairoTurtle::draw_line() {
+void CairoTurtle::draw() {
     if (is_initialised_) {
         auto next_state = calculate_next_state(current_state_, 3.0);
-        cairo_line_to(cr_, next_state.get_x(), next_state.get_y());
-
-        current_state_ = next_state;
-    }
-};
-
-/*
-Draws a short line from the current position with the current direction
-*/
-void CairoTurtle::draw_short_line() {
-    if (is_initialised_) {
-        auto next_state = calculate_next_state(current_state_, 1.5);
         cairo_line_to(cr_, next_state.get_x(), next_state.get_y());
 
         current_state_ = next_state;
@@ -150,7 +140,7 @@ bool CairoTurtle::save_to_png() {
     if (is_initialised_) {
         // when the path is closed and you are not on the start position it will draw a line form the end position to the start position
         // move to the start so it wont draw this line
-        move_to(start_state_.get_x(), start_state_.get_y());
+       // move_to(start_state_.get_x(), start_state_.get_y());
         cairo_close_path(cr_);
         cairo_stroke(cr_);
 

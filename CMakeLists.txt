@@ -22,6 +22,7 @@ add_executable(
   src/test-turtle.cpp
 
   src/production.hpp
+  src/command-mapper.hpp
   src/l-system.hpp
   src/l-system-generation.hpp  
   src/cairo-turtle.hpp
@@ -29,7 +30,7 @@ add_executable(
   src/parser.hpp
   src/state.hpp
   src/test-turtle.hpp
-  src/turtle-graphic.hpp
+  src/turtle.hpp
 )
 
 link_directories(${Cairo_INCLUDE_DIRS})
