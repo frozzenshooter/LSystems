@@ -10,11 +10,11 @@ CairoTurtle::CairoTurtle() :
     current_state_(0.0, 0.0, 0.0),
     start_state_(0.0, 0.0, 0.0)
 {
-    //surface_ = cairo_recording_surface_create(CAIRO_CONTENT_COLOR_ALPHA, NULL);
+    //surface_ = cairo_recording_surface_create(CAIRO_CONTENT_COLOR, NULL);
     surface_ = cairo_image_surface_create(CAIRO_FORMAT_RGB24, 2000, 2000);
     cr_ = cairo_create(surface_);
    
-    // background white and lines black for now
+    // background white and lines black for now -> not needed for recoding 
     cairo_set_source_rgb(cr_, 1, 1, 1);
     cairo_paint(cr_);
     cairo_set_source_rgb(cr_, 0, 0, 0);
@@ -36,7 +36,7 @@ Moves the current position without drawing a line
 */
 void CairoTurtle::move() {
 
-        auto next_state = calculate_next_state(current_state_, 3.0);
+        auto next_state = calculate_next_state(current_state_, 1.0);
         cairo_move_to(cr_, next_state.get_x(), next_state.get_y());
         current_state_ = next_state;    
 };
@@ -46,7 +46,7 @@ Draws a line from the current position with the current direction
 */
 void CairoTurtle::draw() {
 
-        auto next_state = calculate_next_state(current_state_, 3.0);
+        auto next_state = calculate_next_state(current_state_, 1.0);
         cairo_line_to(cr_, next_state.get_x(), next_state.get_y());
         current_state_ = next_state;
     
@@ -91,6 +91,22 @@ void CairoTurtle::save_to_png() {
     cairo_move_to(cr_, start_state_.get_x(), start_state_.get_y());
     cairo_close_path(cr_);
     cairo_stroke(cr_);
+
+    //double x0, y0, width, height;
+    //cairo_recording_surface_ink_extents(surface_, &x0, &y0, &width, &height);
+
+    //auto w1 = 2000 / x0;
+    //auto h1 = 2000 / y0;
+    //cairo_scale(cr_, w1 , h1);
+    //cairo_identity_matrix(cr_);
+    //cairo_surface_t* target = cairo_image_surface_create(CAIRO_FORMAT_RGB24, 2000, 2000);
+    //std::cout << "width: " << width  << " - " << w1 << "; height: " << height << "- " << h1 <<std::endl;
+    //cairo_t* crt = cairo_create(target);
+    //cairo_set_source_rgb(crt, 1, 1, 1);
+    //cairo_paint(crt);
+    //cairo_set_source_rgb(crt, 0,0,0);
+    //cairo_set_source_surface(crt, surface_, -w1, -h1);
+    //cairo_stroke(crt);
     auto t = cairo_surface_write_to_png(surface_, "export_file.png");
     
     
@@ -98,9 +114,6 @@ void CairoTurtle::save_to_png() {
     //cairo_recording_surface_ink_extents(surface_, &x0, &y0, &width, &height);
     //auto sf2 = cairo_surface_create_similar_image(surface_, CAIRO_FORMAT_RGB24, width, height);
    
-
-
-
     //const char* outputfile = "export_file.png";
 
     //double x0, y0, width, height;

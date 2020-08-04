@@ -13,6 +13,7 @@
 #include <iostream>
 #include "l-system-generation.hpp"
 #include <fstream>
+#include "command-mapper.hpp"
 
 /*
 
@@ -61,18 +62,21 @@ int main() {
     CairoTurtle t;
     Parser p{ t };
 
-
     std::vector<char> result_l_system;
 
-    auto backin = std::back_insert_iterator(result_l_system);
+    //auto backin = std::back_insert_iterator(result_l_system);
 
-    calculate_l_system_generation<LSystem<char, std::string>, char, std::string, std::back_insert_iterator<std::vector<char>>>(l_system, 15, backin);
+    //calculate_l_system_generation<LSystem<char, std::string>, char, std::string, std::back_insert_iterator<std::vector<char>>>(l_system, 5, backin);
 
-    std::cout << "Vector size: " << result_l_system.size() << std::endl;
+    //std::cout << "Vector size: " << result_l_system.size() << std::endl;
 
-    for (auto c : result_l_system) {
-        p.handle(c);
-    }
+    //for (auto c : result_l_system) {
+    //    p.handle(c);
+    //}
+
+
+    CommandMappingIterator<char> mapit{t};
+    calculate_l_system_generation<LSystem<char, std::string>, char, std::string, CommandMappingIterator<char>>(l_system, 5, mapit);
 
     t.save_to_png();
 

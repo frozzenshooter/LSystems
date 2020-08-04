@@ -3,30 +3,64 @@
 
 #include "turtle.hpp"
 
-template<typename Predecessor, typename OutputIterator>
-class CommandMapper {
+template<typename Predecessor>
+class CommandMappingIterator {
 
-public:
-    //TODO why no pure virtual destructor?
-    virtual ~CommandMapper() {};
+public: 
 
-    virtual OutputIterator handle() = 0;
+    explicit CommandMappingIterator(CairoTurtle& turtle) noexcept : turtle_(turtle) {}
 
-    vooid set_turtle(const Turtle& turtle) {
+    void set_turtle(const Turtle& turtle) {
         turtle_ = turtle;
     }
 
+    CommandMappingIterator& operator=(const Predecessor& predecessor) {
+        handle(predecessor);
+        return *this;
+    }
+
+    CommandMappingIterator& operator=(Predecessor&& predecessor) {
+        handle(predecessor);
+        return *this;
+    }
+
+    CommandMappingIterator& operator*() noexcept {
+        return *this;
+    }
+
+    CommandMappingIterator& operator++() noexcept {
+        return *this;
+    }
+
+    CommandMappingIterator operator++(int) noexcept {
+        return *this;
+    }
+
 private:
+    void handle(const Predecessor& c) {
+        switch (c)
+        {
+        case 'F':
+            turtle_.draw();
+            break;
+        case '-':
+            turtle_.turn_left();
+            break;
+        case 'f':
+            turtle_.move();
+            break;
+        case '+':
+            turtle_.turn_right();
+            break;
+        default:
+            // do nothing
+            break;
+        }
+    }
 
-    Turtle turtle_;
+    // hier eine referenz weil sonst der destructor augerfuen wird -> evt mit pointer übergeben, damit man nicht den kopierkonstruiert und abbaut
+    CairoTurtle& turtle_;
 };
-
-
-// IDEE zuweisen erlauben und sobald ein increment gemacht wird, wird der alte wert ausgewertet -> aber problem beim letzten wert -> wie wird dieser gehandhabt
-// bzw wie wird die korrekte funktion aufgerufen??
-// zwischenklasse, die beim zuwesien eines wertes direkt den Turtle command aufruft -> = operator für diese Klasse überschreiben-> Quasi eine Value klasse, die jeden beleibeigen wert zugewiesen bekommen kann
-// der output iterator gibt einen pointer auf diese Klasse zurück und sobald ein assigment gemacht wird, wird einfach command aufgerufen
-// dadurch ist aber das Konzept des command mappers quatsch
 #endif
 
 
