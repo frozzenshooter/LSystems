@@ -11,7 +11,6 @@ void TestTurtle::draw() {
     std::cout << "[Draw-Call]: draw" << std::endl;
 };
 
-
 void TestTurtle::turn_right() {
     std::cout << "[Draw-Call]: turn_right" << std::endl;
 };
