@@ -1,14 +1,18 @@
-#ifndef COMMAND_MAPPER_HPP
-#define COMMAND_MAPPER_HPP
+#ifndef COMMAND_MAPPING_ITERATOR_HPP
+#define COMMAND_MAPPING_ITERATOR_HPP
 
 #include "turtle.hpp"
 
-// TODO: wihtout a template -> problem in the handle funtcion -> just offer another iterator afor another type
-// Rename and describe in paper
+/*
+The command mapping iterator represents an output iterator. This iterator receives chars and calls the mapped turtle function.
+
+This is a sample implementation for the use togheter with a L-system. 
+
+*/
 class CommandMappingIterator {
 public:
 
-    explicit CommandMappingIterator(Turtle& turtle) noexcept : turtle_(std::addressof(turtle)) {}
+    CommandMappingIterator(Turtle& turtle) noexcept : turtle_(std::addressof(turtle)) {}
 
     CommandMappingIterator& operator=(const char& c) {
         handle(c);
@@ -33,7 +37,7 @@ public:
     }
 
 private:
-    void handle(const char& c) {
+    void handle(char c) {
         switch (c)
         {
         case 'F':
@@ -54,8 +58,7 @@ private:
         }
     }
 
-    // hier eine referenz weil sonst der destructor augerfuen wird -> evt mit pointer übergeben, damit man nicht den kopierkonstruiert und abbaut
-    // TODO: andere Lösung wäre ein pointer -> damit kann man dann auch dne dynamischen polymorophismus garantieren-> HIer nochmals auführlich beschreiben
+    // only save pointer to allow different turtle implementations
     Turtle* turtle_;
 };
 #endif

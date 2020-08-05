@@ -1,18 +1,17 @@
-#include <iostream>
 
-#include "cairo-turtle.hpp"
-#include "test-turtle.hpp"
-#include "file-handler.hpp"
-#include <cairo.h>
-#include "l-system.hpp"
+
+#include <iostream>
 #include <string>
 #include <sstream>
-#include <map>
-
-#include <iostream>
-#include "l-system-generation.hpp"
 #include <fstream>
-#include "command-mapper.hpp"
+
+#include "file-handler.hpp"
+#include "l-system.hpp"
+#include "l-system-generation.hpp"
+#include "command-mapping-iterator.hpp"
+#include "test-turtle.hpp"
+#include "cairo-turtle.hpp"
+
 
 /*
 
