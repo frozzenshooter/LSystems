@@ -12,12 +12,14 @@ constexpr double MATH_PI = 3.14159265358979323846 ;
 /*
 * Class which uses the cairo graphics lib to implement turtle graphics behaviour
      //TODO furter improvements can contain the dynamic setting of color
-     // dynamic setting of line lenght and width
+
+     TODO usage erklären -> man kann nicht mehrfach zeichnen bei dieser implementierung
+
+             //FURTHER IMPROVEMENT: SCALING -> PICTURES SIZE INCREASES VERY FAST
 */
 class CairoTurtle : public Turtle {
 public:
 
-    // === con/destructors ==========================================
     CairoTurtle() :
         line_length_(3.0),
         line_width_(1.0),
@@ -105,21 +107,21 @@ public:
         angle_ = angle;
     }
 
-    void save_to_png() {
+    void save_to_png(const std::string& filename) {
+
         // when the path is closed and you are not on the start position it will draw a line form the end position to the start position
         // move to the start so it wont draw this line
         cairo_move_to(cr_, start_state_.get_x(), start_state_.get_y());
         cairo_close_path(cr_);
         cairo_stroke(cr_);
+
         cairo_restore(cr_);
 
-        //double x0, y0, width, height;
-        //cairo_recording_surface_ink_extents(recording_surface_, &x0, &y0, &width, &height);
-        // Problem with the recording surface -> wont return the correct size data -> bounding box calcuaction done by hand
-
-        // std::cout << "Max(" << x_max_ << ", " << y_max_ << " ); Min(" << x_min_ << ", " << y_min_ << "); WH(" << calw << ", " << calh << ");"<< std::endl;
-
-        bounding_box_.print();
+        // Normaly cairo provides a function, which will calculate the bounding box, but it returned only wrong values
+        // therefore a implementation with a custom bounding box is implemented
+        //
+        // double x0, y0, width, height;
+        // cairo_recording_surface_ink_extents(recording_surface_, &x0, &y0, &width, &height);
 
         // create an image surface to execute the recorded data
         cairo_surface_t* target = cairo_image_surface_create(CAIRO_FORMAT_RGB24, bounding_box_.get_width(), bounding_box_.get_height());
@@ -132,11 +134,9 @@ public:
         cairo_set_source_surface(crt, recording_surface_, 0, 0);
         cairo_paint(crt);
 
-        //FURTHER IMPROVEMENT: SCALING -> PICTURES SIZE INCREASES VERY FAST
-
-        auto t = cairo_surface_write_to_png(target, "export_file.png");
-
-        std::cout << cairo_status_to_string(t) << std::endl;
+        cairo_surface_write_to_png(target, filename.c_str());
+        // auto error = cairo_surface_write_to_png(target, filename);
+        // std::cout << cairo_status_to_string(t) << std::endl;
 
         // cleanup the image surface
         cairo_destroy(crt);

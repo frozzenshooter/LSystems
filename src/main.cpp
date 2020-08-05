@@ -78,7 +78,7 @@ int main() {
     CommandMappingIterator mapit{t};
     calculate_l_system_generation<LSystem<char, std::string>, char, std::string, CommandMappingIterator>(l_system, 9, mapit);
 
-    t.save_to_png();
+    t.save_to_png("export_file2.png");
 
     return 0;
 }
