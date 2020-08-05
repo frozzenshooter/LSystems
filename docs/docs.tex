@@ -123,13 +123,13 @@ $\alpha$ is the direction in which a turtle is facing, called heading
 \noindent  With the given turtle concept is it possible to interpret the result of an L-system. Therefore a mapping between the symbols in the alphabet and the commands which should be called is needed.
 This could be done by an arbitrary mapping between a nonterminal or a terminal and a command. For this paper the following mapping will be used, but the concept for the architecture includes the possibility to use other mappings in the future.
 
-\noindent For the mapping alphabet V is used, which is a slightly extended version of the basic version of a L-system:
+\noindent For the mapping alphabet V is used, which is a simple basic version of a L-system:
 
 \begin{center}
-V = (F, f, +, -, [,  ])
+V = (F, f, +, -)
 \end{center}
 
-This alphabet will be mapped with extended turtle commands:
+This alphabet will be mapped with these turtle commands:
 
 \begin{center}
 \begin{tabular}{ c l }
@@ -139,29 +139,34 @@ F & Draw a line in the facing direction  \\
 f & Move in the facing direction  \\  
 +& Turn right  \\  
 -& Turn left  \\  
-{[} & save the current state in a stack  \\  
-{]} & pop the last state form the stack and set it to the current state  \\
 
 \end{tabular}
 \end{center}
 
 This interpretation enables to draw the result of the L-system by iterating over every terminal and nonterminal of the result state and calling the mapped command. If no command is mapped the symbol will be skipped.
 
-\bigskip
-
-STACK ENTFERENEN UND NUR SIMPLEN WEG NUTZEN
-
-\bigskip
-
 \subsection{Examples}
-This section will present some examples for L-system grammars which create fractals. They use the introduced mapping of section \ref{section:turtle}.
+This section will present some examples for L-system grammars which create fractals. They were created with the implementation, described in section \ref{section:impl} under the use of the command mapping from section \ref{section:turtle}. 
+\footnote{The grammars and further examples can be found under: \fullcite{examples1997}}
   
-\subsubsection{Koch curve}
-This fractal will be generated with the simple axiom 'F' and just one production: F\rightarrow F+F--F+F 
+\subsubsection{Hilbert curve}
+This fractal will be generated with the simple axiom 'L' and tow productions: 
 
-\noindent The turtle will be initalized with an angle of 60° and an arbitrary length \textit{d} for a step.
+\begin{itemize}
+\item L\rightarrow +RF-LFL-FR+
+\item R\rightarrow-LF+RFR+FL-
+\end{itemize}
 
-\footnote{ADD A PICTURE and perhaps a source: http://mathforum.org/advanced/robertd/lsys2d.html}
+
+\noindent The turtle will be initalized with an angle of 90° and length \textit{d} of 5 for a step. The result is displayed in figure \ref{figure:Hilbert}.
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.6\columnwidth]{../graphs/Examples/hilbert.png}
+	\caption{Hilbert L-system - 7 generations}
+	\label{figure:Hilbert}
+\end{figure}
+ 
 
 \subsubsection{Sierpinski triangle}
 This fractal will be created with 'F' as axiom and two productions:
@@ -171,12 +176,17 @@ This fractal will be created with 'F' as axiom and two productions:
 \item Y\rightarrow XF-YF-X
 \end{itemize}
 
-\noindent The turtle will be initalized with an angle of 60° and an arbitrary length \textit{d} for a step.
+\noindent The turtle will be initalized with an angle of 60° and an arbitrary length \textit{d} for a step. The result is displayed in figure \ref{figure:Sierpinski}.
  
-\footnote{ADD A PICTURE and SOURCE}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.6\columnwidth]{../graphs/Examples/sierpinski.png}
+	\caption{Sierpinski L-system - 9 generations}
+	\label{figure:Sierpinski}
+\end{figure}
+ 
 
-
-\pagebreak
+\clearpage
 \section{Architecture}
 The primary goal of this paper is creating an architecture and an implementation of a L-system as described in section \ref{section:lindenmayer}. The focus of the architecture will be on flexibility and expandability and therefore is the following section splitted into several parts with discussions about different aspects of the final architecture.
 
@@ -291,11 +301,11 @@ There seems to be no difference, but in combination with the proposed next step 
 \noindent Another possible simplification is to neglect storing the generations of a L-system at all. Instead of saving the generation of a L-system in a datastructure, the result can be calculated on demand and never stored. The only data such a L-system would hold, would be the grammar itself. The calculation can be done with a recursive function, that will return the generation. Clearly an advantage is the reduction of needed storage space, but this reduction is only achived at the cost of recalculation for each generation. Whenever a generation is needed, it is nessecary to calculate again and it is not possible to use a previous result.
 If a generation is needed multiple times or if it is needed to setp forwards and backwards in the result, a solution could be to store the result in another object. This calculations also guarantees a flexiblity, because you can either only calculate the generation once and use the result directly, like in this case to call the turtle commands, or save it for later usage.
  
-The recursive function can be designed flexible in order to allow a simple exchange of a L-system datastructure. This results in two main components, the L-system datastructure and the function, which accepts a L-system datastructure and calculates the generation. The L-system, the function needs to accepts, has to fullfill some requirements, like to offer access functions. This will be discribed further in section \ref{section:impl}.
+The recursive function can be designed flexible in order to allow a simple exchange of a L-system datastructure. This results in two main components, the L-system datastructure and the function, which accepts a L-system datastructure and calculates the generation. The L-system, which the function receives, has to fullfill some requirements, like to offer access functions. This will be described in further detail in the implementation in section \ref{section:impl}.
  
 \bigskip
  
-\noindent There are the two possible ways to handle the L-system. The storage as a datastructure, based on a graph, and the recursive calculation. For this paper it is completely sufficient to calculate the generation on demand, because it is only necessary to call the turtle command once for each object of the L-system generation. As consequence no implementation of the graph is needed for this paper. Other use cases in the future might need to store the data. This would even be possible with the recursive function, when the result is stored in another object, for example a graph. The propsal for the L-system is shown in figure \ref{figure:lsystem_proposal}.
+\noindent There are the two possible ways to handle the L-system. The storage as a datastructure, based on a graph, and the recursive calculation. For this paper it is completely sufficient to calculate the generation on demand, because it is only necessary to call the turtle command once for each object of the L-system generation. As consequence no implementation of the graph is needed. Other use cases in the future might need to store the data. This would even be possible with the recursive function, when the result is stored in another object, for example a graph. The proposal for the L-system is shown in figure \ref{figure:lsystem_proposal}.
 
 \begin{figure}[h!]
 	\centering
@@ -305,52 +315,49 @@ The recursive function can be designed flexible in order to allow a simple excha
 \end{figure}
 
 \medskip
-\noindent The proposed L-system will just hold the grammar for a L-system, which will be given to the recursive function. This L-system can be used in a flexible way, because it can be configured without a restriction of the grammar. Additonal, there is only a general type restriction for the axiom and the prodcutions. The self-similarity and ergo the rewriting need to be represented by the types. The type of the axiom and the successor should have the same type, which is splittable in smaller parts. These parts must be comparable with the predecessor, which should have for that reason the same type.
-
+\noindent The proposed L-system will just hold the grammar for a L-system, which will be given to the recursive function. This L-system can be used in a flexible way, because it can be configured without a restriction of the grammar.Additonal, there is only a general type restriction for the axiom and the prodcutions. The types called Successor and Predeccessor can be choosen freely, but they need to fullfill formal requriements. The self-similarity and ergo the rewriting need to be represented by the types. The Successor type must consist of Successor objects itself, which can be splitted into objects of the Predecessor type. Each Predecessor object must be comparable to another Predecessor to be able to rewrite the L-system. 
+ The type of the axiom and the successor have the same type, in order to guarantee that they are splittable in smaller parts.
+ 
 To this point the discussion doesn't include how the turtle commands can be called. As already mentioned there must be mapping between the commands of turtle and the alphabet of the L-system. The mapping will be discussed further in section \ref{section:turtle_mapping} and for now we just asume a mapping exists in some way. When using a graph, it would be possible to call the turtle commands by accessing a generation data and interpret the objects.
 
-In this paper, the implementation is based on a recursive function. This function can call the turtle commands for a generation or more specific when the recursion depth is reached. How this will be done in detail is described in section \ref{section:impl}, but is based around the idea of an output iterator. The recursive function will receive an arbitrary output iterator and instead of interpreting the data in the function itself it will just hand over the objects of the generation to the iterator. This iterator can than interpret the objects as turtle commands and call them.  For other scenarios has the iterator no restrictions on what to do with the data and for example may be used to save data in a datastructure or print it in a file.
+Here the implementation is based on a recursive function. This function can call the turtle commands for a generation or more specific when the recursion depth is reached. How this will be done in detail is described in section \ref{section:impl}, but is based around the idea of an output iterator. The recursive function will receive an arbitrary output iterator and instead of interpreting the data in the function itself it will just hand over the objects of the generation to the iterator. This iterator can than interpret the objects as turtle commands and call them. The iterator has no restrictions on what to do with the data. For example the iterator may be used to save data in an arbitrary datastructure or print it in a file.
 
 Overall allows this concept, consiting of the L-system datastructure and the recursive funtion, a possible user a flexible field of operation. The recursive function and the L-system datastructure can be used completely independent. For this concept, these components will be used together, in combination with other components, like a turtle and a turtle command mapping.
 
 \subsection{Turtle}
-A quiet important component of the architecture is the turtle. The turtle has to offer the typical commands as described in section \ref{section:turtle}. A goal of this paper is the flexible use of the seperated components. The flexibility of the turtle should allow different Framworks as implementation, for example OpenGL or the Cairo graphics library. An abstract interface, with a minimal set of commands, will allow to implement a turtle for different frameworks. A turtle like this is not only bound to a special graphics framework, but can be even implemented for other usecases, like generating text on the console or a file.
-The most general or abstract version of a turtle offers the four minimal functions of a turtle, as shown in figure \ref{figure:minimal_turtle}.\footnote{HIER MUSS MAN EVT NOCH ERWEITERN UM AUCH POP UND SAVE STATE ANZUBIETEN - MUSS DANN ENTSPRECHEND GERADEGEZOGEN WERDEN}
+A quiet important component of the architecture is the turtle. The turtle has to offer the typical commands as described in section \ref{section:turtle}. A turtle should be so flexible that it is possible to implement it for different Framworks, for example OpenGL or the Cairo graphics library. An abstract interface, with a minimal set of commands, will allow to implement this. A turtle like this is not only bound to a special graphics framework, but can be even implemented for other usecases, like generating text on the console or a file.
+The most general or abstract version of a turtle offers the four minimal functions of a turtle, as shown in figure \ref{figure:minimal_turtle}.
 
 \begin{figure}[h!]
 	\centering
-	\includegraphics[width=0.7\columnwidth]{../graphs/LSystem/examples/class_simple_turtle.png}
+	\includegraphics[width=0.6\columnwidth]{../graphs/LSystem/examples/class_simple_turtle.png}
 	\caption{Minimal turtle}
 	\label{figure:minimal_turtle}
 \end{figure}
 
 \medskip
-\noindent More specialiced versions can offer more functions, depending on other needs and completly undependent of the paper usage of the turtle. For example an OpenGL implementation can offer more commands to represent a three dimensional trutle, like rotate around an axis. Additional to more commands, also different ways to configure a turtle can be offered for each specialization. Some possible implementations, in connection with this paper, will be described in section \ref{section:impl}.
+\noindent More specialiced versions can offer more functions, depending on other needs and completly undependent of the paper usage of the turtle. For example an OpenGL implementation can offer more commands to represent a three dimensional turtle, like rotate around an axis. Additional to more commands, also different ways to configure a turtle can be offered for each specialization. Some possible implementations, in connection with this paper, will be described in section \ref{section:impl}.
 
 Consequently the general interface is not only sufficient for this paper, but also for other usecases in the future.
 
-\subsection{Turtle command mapper}
+\subsection{Turtle command mapping}
 \label{section:turtle_mapping}
-It is nessecary to map a command to an object in order to interpret the result of a L-system. As mentioned in section \ref{section:lsystem_discussion} a recursive function will be used to calculate the result of a L-system. Until this point we just assumed there was a mapping between the members of the alphabet of the L-system and the commands which will be called. In this scenario the recursive function would call the mapped command the moment it calculates it. To make this call as flexible as possible and with a clear separation of functionality, another indirection is introduced, the command mapper.
-The command mapper is also an abstract interface with some general functionality. In figure \ref{figure:if_command_map} is the abstract interface of the command mapper displayed. The command mapper has a function which will return an output iterator. The output iterator receives data, interprets it according to the mapping and calls the specified command. The abstract interface enables different implementations and it is therefore possible to create a new mapping and just exchanged it.
+It is nessecary to map a command to an object in order to interpret the result of a L-system. As mentioned in section \ref{section:lsystem_discussion} a recursive function will be used to calculate the result of a L-system. Until this point we just assumed there was a mapping between the members of the alphabet of the L-system and the commands which will be called. In this scenario the recursive functionreceives an iterator which can handle the generated data. 
+The command mapping iterator is a simple output iterator, which will handle calls of the turtle commands. In figure \ref{figure:if_command_map} is the general concept of the iterator displayed. The output iterator receives data, interprets it according to the mapping and calls the specified command.
 
 \begin{figure}[h!]
 	\centering
-	\includegraphics[width=0.7\columnwidth]{../graphs/LSystem/examples/class_command_mapping.png}
+	\includegraphics[width=1\columnwidth]{../graphs/LSystem/examples/class_command_mapping_iterator.png}
 	\caption{Interface command mapper}
 	\label{figure:if_command_map}
 \end{figure}
 
-An output iterator is choosen because it integrates with the recursive function for the L-system. The function will receive the output iterator as parameter and just hands the result over to the iterator and therefore to the command mapper. The command mapper just has to search for to correct command and calls it.
-The indirection in form of the command mapper offers a clear separation between the calculation of the L-system generation and the handling of the data. In order to offer different mappings, new implementations of the mapper are nessecary.
-
-
-\footnote{Überlegen wie ein output iterotr umgestzt wird und evt nochmals anpassen - UML IST HIER NOCH NICHT KORREKT}
-\footnote{Evt nicht auf turtle beziehen, da man hier theroetisch auch andere sachen machen könnte - zum beispiel die Daten in eine Datei schreiben}
+The recursive function will receive this iterator as parameter and just hands the result over to the iterator. The command mapping just has to select the correct command and call it.
+The indirection in form of the command mapper offers a clear separation between the calculation of the L-system generation and the handling of the data. In order to offer different mappings, new implementations of the iterator are nessecary. In the implementation, in section \ref{section:impl}, there is a simple implementation of the iterator based on the grammar introduced in previous sections.
 
 
 \subsection{Configuration}
-Some of the discussed components in this paper can be configured. The configuration could either be done in code, for example by setting it with constants or in a dynamic way. A dynamic way would be possible by loading the configuration data from a stream, for example a filestream.
+Some of the discussed components in this paper can be configured. The configuration could either be done in code, for example by setting it with constants, or in a dynamic way. A dynamic way would be possible by loading the configuration data from a stream, for example a filestream.
 For the configuration of the introduced components it is sufficient to use simple key value pairs. For example such file could contain the configuration of a L-system:
 
 \medskip
