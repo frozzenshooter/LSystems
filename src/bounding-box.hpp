@@ -1,6 +1,11 @@
 #ifndef BOUNDING_BOX_HPP
 #define BOUNDING_BOX_HPP
 
+/*
+The bounding box represents a rectangle, build from to points.
+
+It offers to calculate the needed translation values, the width and the height to center an image in it.
+*/
 class BoundingBox {
 public:
     BoundingBox(double x_min = 0, double x_max = 0, double y_min = 0, double y_max = 0) : x_min_(x_min), x_max_(x_max), y_min_(y_min), y_max_(y_max) {}
