@@ -32,7 +32,7 @@ public:
         init();
     }
 
-    ~CairoTurtle() {
+    ~CairoTurtle() override {
         // Cleanup cairo data
         cairo_destroy(cr_);
         cairo_surface_destroy(recording_surface_);

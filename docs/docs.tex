@@ -379,17 +379,25 @@ When reading the data from a stream it is necessary to know what datatype the va
 \footnote{Hier muss man noch das genaue design beschrieben -> wie werden die daten übergeben bzw wie werden die daten gehalten oder werden die daten direkt übergeben }
 
 \subsection{Overview}
-This section will now give a short overview of the disscuessed components and their dependencies. The general approach for the design was a flexible use of the seperated comopnents. It should be possible to use each component on their own and even exchange a component and still guarantee the functionlity. Under the premises, that exchanged components still offer the same functions and data.
+This section will now give a short overview of the disscuessed components and their dependencies. The general approach for the design was a flexible use of the separated components. It should be possible to use each component on their own and even exchange a component and still guarantee the functionlity. Under the premises, that exchanged components still offer the same functionality and data. In figure \ref{figure:overview} a simplified overview of the dataflow is illustrated. 
 
-die funktion unabhängig vom daten handling nutzbar -> weiß nichts davon was der output iterator macht
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.4\columnwidth]{../graphs/LSystem/examples/overview.png}
+	\caption{Simplified overview over the data flow}
+	\label{figure:overview}
+\end{figure}
 
-verschiedene Mappings zwischen den turtle commands und den objecten im Lsyetm möglich
+\footnote{Configuration loader beschreiben}
 
-configurations daten aus datei unabhängig laden mittels einer statischen map
+The loaded data will be used to initalize the L-system. The L-system itself needs only to hold the grammar and and provide the access to it. The core of the L-system functionality is the recursive function, which will be used to calculate a L-system generation. This function offers a quiet flexible interface, because it should allow to use different L-system implementations, as long as the implementation provides a set of needed functions. These functions will be discussed in detail in section \ref{section:impl}. 
+Another key part of the recursive function is the support of an arbitrary output iterator to hand over the calculated generation. This introduces not only a flexible usage of the function itself, but integrates well with already existing containers. 
 
-turtle unabhängig nutzbar von den anderen komponenten -> ermöglicht beliebige nutzung und auhc durhc verschiedene implementierungen schnell austauschbar
-uml des gesmaten code notwendig
+The CommandMappingIterator is such an output iterator, which allows to use the provided interfaces to call the correct turtle command. Whenever data is handed over form the recursive function to the iterator, the iterator looks the data up and calls, if specified, the turtle command. The iterator here is  implemented for a determined mappping, but can be replaced by another implementation, as long as the implementation provides the typical output iterator functionality.
 
+The final component is the turtle, which is used as abstract interface. This interface enforces the absolut minimal set of functions a turtle has to fullfill. Each spezialisation of a turtle has to independent handle their configuration and additonal dependencies.
+
+As conclusion all the components can be exchanged with other objects, as long as they provide the needed interfaces. The needed interfaces will be described in detail in section \ref{section:impl} and addtional there are comments in the provided code.
 
 \pagebreak
 

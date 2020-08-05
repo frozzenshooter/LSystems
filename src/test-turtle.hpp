@@ -10,7 +10,7 @@
 class TestTurtle : public Turtle {
 public:
     // === con/deconstructor ========================================
-    ~TestTurtle() {};
+    ~TestTurtle() override {};
 
     // === drawing functions ========================================
     void move() override {
