@@ -403,16 +403,29 @@ As conclusion all the components can be exchanged with other objects, as long as
 
 \section{Implementation}
 \label{section:impl}
+This section provides the in detail description of the implementation for the components discussed in the previous sections. Addtional to the components other aspects of the implementation, like the build system are discussed.
+
 \subsection{Build System}
 \label{section:buildsystem}
-The first important point 
+The first important point for the implementation is the question what build system to choose or if a build system is even needed. A build system is needed or at least comfortable to use  because of two points. The first point is a fast way to build a complexer design and even extend it with libraries in a fast way. The second point is the use on different operating systems, which also plays a big role for the question what build system to choose.
+ 
+A typical build system for C++ projects are Makefiles, which include a description what and how to build. The problem with Makefiles is the restricted support on Windows, which results in either an inconvenient setup or to choose another build system.
+In this context CMake comes to mind, a generator for buildsystems. It is possible to define the project in a file and CMake can generate files for different build systems, on different operating systems. These resolves not even the problem with the use of Windows, but enables other developers to build it on the system their choice.
 
-\begin{itemize}
-	\item Cmake as buildsystem
-	\item reasons why cmake
-	\item problems ?
-\end{itemize}
 
+
+TODO: SETUP FOR THIS PROJECT
+PROBLEMS WITH WINDOWS -> DLLs
+
+
+
+\subsection{ConfigurationLoader}
+
+\subsection{LSystem}
+
+\subsection{Recursive function}
+
+\subsection{CommandMappingIterator}
 
 \subsection{TurtleGraphic}
 \subsubsection{TestTurtle}
@@ -422,7 +435,7 @@ SVG implementation
 
 
 \section{Tests}
-\section{Examples}
+\section{Example usage}
 \section{Problems and Restrictions}
 \section{Outlook}
 
