@@ -3,24 +3,21 @@
 
 #include "turtle.hpp"
 
-template<typename Predecessor>
+// TODO: wihtout a template -> problem in the handle funtcion -> just offer another iterator afor another type
+// Rename and describe in paper
 class CommandMappingIterator {
 
 public: 
 
-    explicit CommandMappingIterator(CairoTurtle& turtle) noexcept : turtle_(turtle) {}
+    explicit CommandMappingIterator(Turtle& turtle) noexcept : turtle_(std::addressof(turtle)) {}
 
-    void set_turtle(const Turtle& turtle) {
-        turtle_ = turtle;
-    }
-
-    CommandMappingIterator& operator=(const Predecessor& predecessor) {
-        handle(predecessor);
+    CommandMappingIterator& operator=(const char& c) {
+        handle(c);
         return *this;
     }
 
-    CommandMappingIterator& operator=(Predecessor&& predecessor) {
-        handle(predecessor);
+    CommandMappingIterator& operator=(char&& c) {
+        handle(c);
         return *this;
     }
 
@@ -37,20 +34,20 @@ public:
     }
 
 private:
-    void handle(const Predecessor& c) {
+    void handle(const char& c) {
         switch (c)
         {
         case 'F':
-            turtle_.draw();
+            turtle_->draw();
             break;
         case '-':
-            turtle_.turn_left();
+            turtle_->turn_left();
             break;
         case 'f':
-            turtle_.move();
+            turtle_->move();
             break;
         case '+':
-            turtle_.turn_right();
+            turtle_->turn_right();
             break;
         default:
             // do nothing
@@ -59,49 +56,7 @@ private:
     }
 
     // hier eine referenz weil sonst der destructor augerfuen wird -> evt mit pointer übergeben, damit man nicht den kopierkonstruiert und abbaut
-    // TODO: andere Lösung wäre ein pointer -> damit kann man dann auch dne dynamischen polymorophismus garantieren
-    CairoTurtle& turtle_;
+    // TODO: andere Lösung wäre ein pointer -> damit kann man dann auch dne dynamischen polymorophismus garantieren-> HIer nochmals auführlich beschreiben
+    Turtle* turtle_;
 };
 #endif
-
-
-
-//// CLASS TEMPLATE back_insert_iterator
-//template <class _Container>
-//class back_insert_iterator { // wrap pushes to back of container as output iterator
-//public:
-//    using iterator_category = output_iterator_tag;
-//    using value_type = void;
-//    using difference_type = void;
-//    using pointer = void;
-//    using reference = void;
-//
-//    using container_type = _Container;
-//
-//    explicit back_insert_iterator(_Container& _Cont) noexcept /* strengthened */ : container(_STD addressof(_Cont)) {}
-//
-//    back_insert_iterator& operator=(const typename _Container::value_type& _Val) {
-//        container->push_back(_Val);
-//        return *this;
-//    }
-//
-//    back_insert_iterator& operator=(typename _Container::value_type&& _Val) {
-//        container->push_back(_STD move(_Val));
-//        return *this;
-//    }
-//
-//    _NODISCARD back_insert_iterator& operator*() noexcept /* strengthened */ {
-//        return *this;
-//    }
-//
-//    back_insert_iterator& operator++() noexcept /* strengthened */ {
-//        return *this;
-//    }
-//
-//    back_insert_iterator operator++(int) noexcept /* strengthened */ {
-//        return *this;
-//    }
-//
-//protected:
-//    _Container* container; // pointer to container
-//};

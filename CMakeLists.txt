@@ -18,7 +18,6 @@ add_executable(
   src/l-system.cpp
   src/file-handler.cpp
   src/cairo-turtle.cpp
-  src/parser.cpp
   src/test-turtle.cpp
 
   src/production.hpp
@@ -27,7 +26,6 @@ add_executable(
   src/l-system-generation.hpp  
   src/cairo-turtle.hpp
   src/file-handler.hpp
-  src/parser.hpp
   src/state.hpp
   src/test-turtle.hpp
   src/turtle.hpp

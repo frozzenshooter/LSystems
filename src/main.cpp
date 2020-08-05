@@ -2,7 +2,6 @@
 
 #include "cairo-turtle.hpp"
 #include "test-turtle.hpp"
-#include "parser.hpp"
 #include "file-handler.hpp"
 #include <cairo.h>
 #include "l-system.hpp"
@@ -60,7 +59,6 @@ int main() {
     }
 
     CairoTurtle t;
-    Parser p{ t };
 
     std::vector<char> result_l_system;
 
@@ -77,8 +75,8 @@ int main() {
 
 
     // CUSTOM OUTPUT ITERATOR
-    CommandMappingIterator<char> mapit{t};
-    calculate_l_system_generation<LSystem<char, std::string>, char, std::string, CommandMappingIterator<char>>(l_system, 9, mapit);
+    CommandMappingIterator mapit{t};
+    calculate_l_system_generation<LSystem<char, std::string>, char, std::string, CommandMappingIterator>(l_system, 9, mapit);
 
     t.save_to_png();
 
