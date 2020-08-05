@@ -18,7 +18,7 @@ int main() {
 
     handler.load_configuration(input_stream);
 
-    handler.parse_file("test_file.ls");
+    handler.parse_file("test_file_3.ls");
 
     LSystem<char, std::string> l_system;
 
@@ -31,9 +31,10 @@ int main() {
 
     CairoTurtle t;
 
-    std::vector<char> result_l_system;
 
     // EXAMPLE WITH BACK INSERTER
+    // std::vector<char> result_l_system;
+
     //auto backin = std::back_insert_iterator(result_l_system);
 
     //calculate_l_system_generation<LSystem<char, std::string>, char, std::string, std::back_insert_iterator<std::vector<char>>>(l_system, 8, backin);
@@ -45,14 +46,17 @@ int main() {
     //}
 
     // CUSTOM OUTPUT ITERATOR
+    t.set_turning_angle(90);
+    t.set_line_lenght(5);
+
     CommandMappingIterator mapit{ t };
-    calculate_l_system_generation<LSystem<char, std::string>, char, std::string, CommandMappingIterator>(l_system, 9, mapit);
+    calculate_l_system_generation<LSystem<char, std::string>, char, std::string, CommandMappingIterator>(l_system, 5, mapit);
 
     t.save_to_png("export_file1.png");
 
     t.reset();
 
-    calculate_l_system_generation<LSystem<char, std::string>, char, std::string, CommandMappingIterator>(l_system, 9, mapit);
+    calculate_l_system_generation<LSystem<char, std::string>, char, std::string, CommandMappingIterator>(l_system, 5, mapit);
 
     t.save_to_png("export_file2.png");
 
