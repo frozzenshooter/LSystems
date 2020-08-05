@@ -18,7 +18,6 @@ add_executable(
   src/l-system.cpp
   src/file-handler.cpp
   src/cairo-turtle.cpp
-  src/test-turtle.cpp
 
   src/production.hpp
   src/command-mapper.hpp
