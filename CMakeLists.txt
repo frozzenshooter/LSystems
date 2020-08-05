@@ -15,7 +15,6 @@ add_executable(
   l_systems
 
   src/main.cpp
-  src/file-handler.cpp
   src/cairo-turtle.cpp
 
   src/production.hpp
