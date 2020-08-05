@@ -6,6 +6,7 @@
 #include <cairo.h>
 #include "State.hpp"
 #include "Turtle.hpp"
+#include "bounding-box.hpp"
 
 /*
 * Class which uses the cairo graphics lib to implement turtle graphics behaviour
@@ -16,7 +17,8 @@ public:
     // === con/destructors ==========================================
     CairoTurtle() :
         current_state_(0.0, 0.0, 0.0),
-        start_state_(0.0, 0.0, 0.0)
+        start_state_(0.0, 0.0, 0.0),
+        bounding_box_(0.0, 0.0, 0.0, 0.0)
     {
         //speichern der cairo pointer in unique pointer -> release um den raw pointer zu bekommen den man dann zum destroyen an cairo übergeben kann
         recording_surface_ = cairo_recording_surface_create(CAIRO_CONTENT_COLOR_ALPHA, NULL);
@@ -33,12 +35,6 @@ public:
 
         // get line width
         cairo_set_line_width(cr_, 1.0);
-
-        // init the bounding box
-        x_max_ = 0;
-        x_min_ = 0;
-        y_max_ = 0;
-        y_min_ = 0;
     }
 
     ~CairoTurtle() {
@@ -104,18 +100,16 @@ public:
         //cairo_recording_surface_ink_extents(recording_surface_, &x0, &y0, &width, &height);
         // Problem with the recording surface -> wont return the correct size data -> bounding box calcuaction done by hand
 
-        // width and height calculated
-        double calw = (x_max_ - x_min_);
-        double calh = (y_max_ - y_min_);
-
         // std::cout << "Max(" << x_max_ << ", " << y_max_ << " ); Min(" << x_min_ << ", " << y_min_ << "); WH(" << calw << ", " << calh << ");"<< std::endl;
 
+        bounding_box_.print();
+
         // create an image surface to execute the recorded data
-        cairo_surface_t* target = cairo_image_surface_create(CAIRO_FORMAT_RGB24, calw, calh);
+        cairo_surface_t* target = cairo_image_surface_create(CAIRO_FORMAT_RGB24, bounding_box_.get_width(), bounding_box_.get_height());
         cairo_t* crt = cairo_create(target);
 
         // Translate the surface so that the lines will be in the covered area fo the image surface
-        cairo_translate(crt, -x_min_, y_min_);
+        cairo_translate(crt, bounding_box_.get_translate_x(), bounding_box_.get_translate_y());
 
         // Paint the recorded commands to the image surface
         cairo_set_source_surface(crt, recording_surface_, 0, 0);
@@ -147,31 +141,21 @@ private:
     }
 
     void updateBoundingValues(const State& state) {
-        if (state.get_x() > x_max_) {
-            x_max_ = state.get_x();
-        }
-        else if (state.get_x() < x_min_) {
-            x_min_ = state.get_x();
-        }
-
-        if (state.get_y() > y_max_) {
-            y_max_ = state.get_y();
-        }
-        else if (state.get_y() < y_min_) {
-            y_min_ = state.get_y();
-        }
+        bounding_box_.update_x(state.get_x());
+        bounding_box_.update_y(state.get_y());
     };
+
     // === states ===================================================
     State current_state_;
     State start_state_;
     std::stack<State> states_;
+
+    BoundingBox bounding_box_;
 
     // === cairo pointers ===========================================
     cairo_surface_t* recording_surface_;
     cairo_t* cr_;
 
     //bounding
-
-    double x_max_, x_min_, y_max_, y_min_;
 };
 #endif
