@@ -14,6 +14,7 @@ class CairoTurtle : public Turtle {
 private:
     // === calcualtions =============================================
     State calculate_next_state(State current_state, double line_length);
+    void updateBoundingValues(const State& state);
 
 public:
     // === drawing functions ========================================
@@ -38,7 +39,11 @@ private:
     std::stack<State> states_;
 
     // === cairo pointers ===========================================
-    cairo_surface_t* surface_;
+    cairo_surface_t* recording_surface_;
     cairo_t* cr_;
+
+    //bounding
+
+    double x_max_, x_min_, y_max_, y_min_;
 };
 #endif

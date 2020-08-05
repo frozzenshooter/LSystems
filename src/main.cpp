@@ -65,7 +65,7 @@ int main() {
     // EXAMPLE WITH BACK INSERTER
     //auto backin = std::back_insert_iterator(result_l_system);
 
-    //calculate_l_system_generation<LSystem<char, std::string>, char, std::string, std::back_insert_iterator<std::vector<char>>>(l_system, 5, backin);
+    //calculate_l_system_generation<LSystem<char, std::string>, char, std::string, std::back_insert_iterator<std::vector<char>>>(l_system, 8, backin);
 
     //std::cout << "Vector size: " << result_l_system.size() << std::endl;
 
@@ -76,7 +76,7 @@ int main() {
 
     // CUSTOM OUTPUT ITERATOR
     CommandMappingIterator mapit{t};
-    calculate_l_system_generation<LSystem<char, std::string>, char, std::string, CommandMappingIterator>(l_system, 9, mapit);
+    calculate_l_system_generation<LSystem<char, std::string>, char, std::string, CommandMappingIterator>(l_system, 11, mapit);
 
     t.save_to_png();
 
