@@ -11,7 +11,6 @@
 * Class which uses the cairo graphics lib to implement turtle graphics behaviour
 */
 class CairoTurtle : public Turtle {
-
 public:
 
     // === con/destructors ==========================================
@@ -19,7 +18,6 @@ public:
         current_state_(0.0, 0.0, 0.0),
         start_state_(0.0, 0.0, 0.0)
     {
-
         //speichern der cairo pointer in unique pointer -> release um den raw pointer zu bekommen den man dann zum destroyen an cairo übergeben kann
         recording_surface_ = cairo_recording_surface_create(CAIRO_CONTENT_COLOR_ALPHA, NULL);
         cr_ = cairo_create(recording_surface_);
@@ -28,7 +26,7 @@ public:
         cairo_save(cr_);
 
         // Paint the background white and set the color for drawing to black
-        //TODO furter improvements can contain the dynamic setting of color 
+        //TODO furter improvements can contain the dynamic setting of color
         cairo_set_source_rgb(cr_, 1, 1, 1);
         cairo_paint(cr_);
         cairo_set_source_rgb(cr_, 0, 0, 0);
@@ -49,13 +47,9 @@ public:
         cairo_surface_destroy(recording_surface_);
     }
 
-
-
-
 public:
     // === drawing functions ========================================
     void move() override {
-
         auto next_state = calculate_next_state(current_state_, 3.0);
         cairo_move_to(cr_, next_state.get_x(), next_state.get_y());
         current_state_ = next_state;
@@ -65,7 +59,6 @@ public:
     }
 
     void draw() override {
-
         auto next_state = calculate_next_state(current_state_, 3.0);
         cairo_line_to(cr_, next_state.get_x(), next_state.get_y());
         current_state_ = next_state;
@@ -75,7 +68,6 @@ public:
     }
 
     void turn_right() override {
-
         auto angle = current_state_.get_angle();
 
         // No need to normailize angle because the only use is with sin/cos
@@ -88,7 +80,6 @@ public:
     }
 
     void turn_left() override {
-
         auto angle = current_state_.get_angle();
 
         // No need to normailize angle because the only use is with sin/cos
@@ -100,10 +91,8 @@ public:
         updateBoundingValues(current_state_);
     }
 
-
     // === output ============================================
     void save_to_png() {
-
         // when the path is closed and you are not on the start position it will draw a line form the end position to the start position
         // move to the start so it wont draw this line
         cairo_move_to(cr_, start_state_.get_x(), start_state_.get_y());
@@ -132,9 +121,7 @@ public:
         cairo_set_source_surface(crt, recording_surface_, 0, 0);
         cairo_paint(crt);
 
-
         //FURTHER IMPROVEMENT: SCALING -> PICTURES SIZE INCREASES VERY FAST
-
 
         auto t = cairo_surface_write_to_png(target, "export_file.png");
 
@@ -146,7 +133,7 @@ public:
     }
 
 private:
-    
+
     // === calcualtions =============================================
     State calculate_next_state(State current_state, double line_length) {
         auto angle = current_state.get_angle();
@@ -160,7 +147,6 @@ private:
     }
 
     void updateBoundingValues(const State& state) {
-
         if (state.get_x() > x_max_) {
             x_max_ = state.get_x();
         }

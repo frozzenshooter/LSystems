@@ -45,9 +45,6 @@ public:
     std::vector<Production<Predecessor, Successor>> production_rules_;
 };
 
-
-
-
 // === file handling ============================================
 template< typename Predecessor, typename Successor >
 void FileHandler<Predecessor, Successor>::load_configuration(std::istream& stream) {
@@ -66,9 +63,6 @@ void FileHandler<Predecessor, Successor>::load_configuration(std::istream& strea
         string_stream.str(line);
         ++index;
 
-
-
-
         /*
 
             New idea
@@ -77,13 +71,7 @@ void FileHandler<Predecessor, Successor>::load_configuration(std::istream& strea
 
         if (string_stream >> header) {
             // lookup header in table
-
-
-
-
         }
-
-
 
         if (string_stream >> header >> str_value) {
             std::cout << index << ": " << header << "- str_value: " << str_value << std::endl;

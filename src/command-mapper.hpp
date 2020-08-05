@@ -6,8 +6,7 @@
 // TODO: wihtout a template -> problem in the handle funtcion -> just offer another iterator afor another type
 // Rename and describe in paper
 class CommandMappingIterator {
-
-public: 
+public:
 
     explicit CommandMappingIterator(Turtle& turtle) noexcept : turtle_(std::addressof(turtle)) {}
 

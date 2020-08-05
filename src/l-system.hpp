@@ -5,7 +5,6 @@
 #include <unordered_map>
 #include <string>
 
-
 /*
 This class represents a L-system, consisting of the grammar(productions and axiom).
 
@@ -43,7 +42,6 @@ public:
     }
 
     std::template shared_ptr<Successor> get_successor(const Predecessor& predecessor) {
-
         //Verbessern, da das erzeugen eines shared pointers blöd ist -> evt nur pointer speichern??
         // bzw ist es effizient eine referenz zu bekommen und das dann mit make shared aufzurufen ? wird dafür dann das objekt genutzt bzw was passiert kann zur Laufzeit passieren
 
