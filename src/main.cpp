@@ -1,5 +1,3 @@
-
-
 #include <iostream>
 #include <string>
 #include <sstream>
@@ -14,7 +12,6 @@
 
 //TODO: exception handling
 int main() {
-
     FileHandler<char, std::string> handler;
 
     std::ifstream input_stream{ "test_file_space.ls" };
@@ -23,13 +20,11 @@ int main() {
 
     handler.parse_file("test_file.ls");
 
-
     LSystem<char, std::string> l_system;
 
     l_system.set_axiom(handler.start_axiom_);
 
     for (auto rule : handler.production_rules_) {
-
         Production p(rule.get_predecessor(), rule.get_successor());
         l_system.add_production(p);
     }
@@ -50,7 +45,7 @@ int main() {
     //}
 
     // CUSTOM OUTPUT ITERATOR
-    CommandMappingIterator mapit{t};
+    CommandMappingIterator mapit{ t };
     calculate_l_system_generation<LSystem<char, std::string>, char, std::string, CommandMappingIterator>(l_system, 9, mapit);
 
     t.save_to_png("export_file1.png");
@@ -60,7 +55,6 @@ int main() {
     calculate_l_system_generation<LSystem<char, std::string>, char, std::string, CommandMappingIterator>(l_system, 9, mapit);
 
     t.save_to_png("export_file2.png");
-
 
     return 0;
 }
