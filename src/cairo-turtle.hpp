@@ -1,21 +1,22 @@
 #ifndef CAIRO_TUTRLE_HPP
 #define CAIRO_TUTRLE_HPP
 
-#include <string>
-#include <stack>
 #include <cairo.h>
+#include <string>
 #include "State.hpp"
-#include "Turtle.hpp"
 #include "bounding-box.hpp"
+#include "Turtle.hpp"
 
-constexpr double MATH_PI = 3.14159265358979323846 ;
+constexpr double MATH_PI = 3.14159265358979323846;
+
 /*
-* Class which uses the cairo graphics lib to implement turtle graphics behaviour
-     //TODO furter improvements can contain the dynamic setting of color
+This class is a simple implementation of the turtle class using the graphics library cairo.
 
-     TODO usage erklären -> man kann nicht mehrfach zeichnen bei dieser implementierung
+The reset function is provided if the turtle is used multiple types. If reset isn't called the turtle will include further draw calls in the already existing path.
 
-             //FURTHER IMPROVEMENT: SCALING -> PICTURES SIZE INCREASES VERY FAST
+    //TODO furter improvements can contain the dynamic setting of color
+
+    //FURTHER IMPROVEMENT: SCALING -> PICTURES SIZE INCREASES VERY FAST
 */
 class CairoTurtle : public Turtle {
 public:
@@ -28,34 +29,17 @@ public:
         current_state_(0.0, 0.0, 0.0),
         start_state_(0.0, 0.0, 0.0)
     {
-        // Initalize cairo recording surface
-        recording_surface_ = cairo_recording_surface_create(CAIRO_CONTENT_COLOR_ALPHA, NULL);
-        cr_ = cairo_create(recording_surface_);
-
-        // Save the current state - able to restore it by the saving process
-        cairo_save(cr_);
-
-        // Paint the background white and set the color for drawing to black
-        cairo_set_source_rgb(cr_, 1, 1, 1);
-        cairo_paint(cr_);
-        cairo_set_source_rgb(cr_, 0, 0, 0);
-
-        // Set line width
-        cairo_set_line_width(cr_, line_width_);
+        init();
     }
 
     ~CairoTurtle() {
-
         // Cleanup cairo data
         cairo_destroy(cr_);
         cairo_surface_destroy(recording_surface_);
     }
 
-public:
-
     // Overrides
     void move() override {
-
         auto next_state = calculate_next_state(current_state_);
 
         cairo_move_to(cr_, next_state.get_x(), next_state.get_y());
@@ -107,8 +91,23 @@ public:
         angle_ = angle;
     }
 
-    void save_to_png(const std::string& filename) {
+    void reset() {
+        // delete old data
+        cairo_destroy(cr_);
+        cairo_surface_destroy(recording_surface_);
 
+        // reset turtle states
+        bounding_box_.set_x_min(0);
+        bounding_box_.set_x_max(0);
+        bounding_box_.set_y_min(0);
+        bounding_box_.set_y_max(0);
+        current_state_ = { 0.0, 0.0, 0.0 };
+        start_state_ = { 0.0, 0.0, 0.0 };
+
+        init();
+    }
+
+    void save_to_png(const std::string& filename) {
         // when the path is closed and you are not on the start position it will draw a line form the end position to the start position
         // move to the start so it wont draw this line
         cairo_move_to(cr_, start_state_.get_x(), start_state_.get_y());
@@ -145,11 +144,27 @@ public:
 
 private:
 
+    void init() {
+        // Initalize cairo recording surface
+        recording_surface_ = cairo_recording_surface_create(CAIRO_CONTENT_COLOR_ALPHA, NULL);
+        cr_ = cairo_create(recording_surface_);
+
+        // Save the current state - able to restore it by the saving process
+        cairo_save(cr_);
+
+        // Paint the background white and set the color for drawing to black
+        cairo_set_source_rgb(cr_, 1, 1, 1);
+        cairo_paint(cr_);
+        cairo_set_source_rgb(cr_, 0, 0, 0);
+
+        // Set line width
+        cairo_set_line_width(cr_, line_width_);
+    }
+
     /*
     Calculate the next state from a given state
     */
     State calculate_next_state(State state) {
-
         auto angle = state.get_angle();
         auto x_diff = sin(angle * MATH_PI / 180) * line_length_;
         auto y_diff = cos(angle * MATH_PI / 180) * line_length_;
@@ -168,7 +183,6 @@ private:
         bounding_box_.update_y(state.get_y());
     };
 
-
     // Configuration data
     double line_length_;
     double line_width_;
@@ -179,7 +193,6 @@ private:
 
     State current_state_;
     State start_state_;
-    std::stack<State> states_;
 
     // Cairo data
     cairo_surface_t* recording_surface_;

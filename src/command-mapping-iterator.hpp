@@ -6,8 +6,7 @@
 /*
 The command mapping iterator represents an output iterator. This iterator receives chars and calls the mapped turtle function.
 
-This is a sample implementation for the use togheter with a L-system. 
-
+This is a sample implementation for the use with the generation of a L-system.
 */
 class CommandMappingIterator {
 public:
