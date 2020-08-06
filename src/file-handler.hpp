@@ -226,7 +226,7 @@ void FileHandler<Predecessor, Successor>::print() const {
     std::cout << "start_axiom: " << start_axiom_ << std::endl;
 
     for (auto rule : production_rules_) {
-        std::cout << "rule: " << rule.get_predecessor() << " => " << rule.get_successor() << std::endl;
+        std::cout << "rule: " << rule.get_predecessor() << " => " << *rule.get_successor() << std::endl;
     }
 }
 

@@ -18,19 +18,19 @@ A string is a combination of chars and while rewriting each char of a successor 
 template<typename Predecessor, typename Successor>
 class Production {
 public:
-    Production(const Predecessor& predecessor, const Successor& successor) : predecessor_(predecessor), successor_(successor) {
+    Production(const Predecessor& predecessor, const Successor& successor) : predecessor_(predecessor), successor_(std::make_shared<Successor>(successor)) {
     }
 
     const Predecessor& get_predecessor() const {
         return predecessor_;
     }
 
-    const Successor& get_successor() const {
+    std::shared_ptr<Successor> get_successor() const {
         return successor_;
     }
 
 private:
     Predecessor predecessor_;
-    Successor successor_;
+    std::shared_ptr<Successor> successor_;
 };
 #endif

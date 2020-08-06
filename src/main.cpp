@@ -25,8 +25,7 @@ int main() {
     l_system.set_axiom(handler.start_axiom_);
 
     for (auto rule : handler.production_rules_) {
-        Production p(rule.get_predecessor(), rule.get_successor());
-        l_system.add_production(p);
+        l_system.add_production(rule.get_predecessor(), *(rule.get_successor()));
     }
 
     CairoTurtle t;
@@ -56,7 +55,7 @@ int main() {
 
     t.reset();
 
-    calculate_l_system_generation<LSystem<char, std::string>, char, std::string, CommandMappingIterator>(l_system, 5, mapit);
+    calculate_l_system_generation<LSystem<char, std::string>, char, std::string, CommandMappingIterator>(l_system, 9, mapit);
 
     t.save_to_png("export_file2.png");
 

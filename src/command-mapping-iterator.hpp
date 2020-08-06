@@ -11,7 +11,7 @@ This is a sample implementation for the use with the generation of a L-system.
 class CommandMappingIterator {
 public:
 
-    CommandMappingIterator(Turtle& turtle) noexcept : turtle_(std::addressof(turtle)) {}
+    explicit CommandMappingIterator(Turtle& turtle) noexcept : turtle_(std::addressof(turtle)) {}
 
     CommandMappingIterator& operator=(const char& c) {
         handle(c);
@@ -31,7 +31,7 @@ public:
         return *this;
     }
 
-    CommandMappingIterator operator++(int) noexcept {
+    CommandMappingIterator& operator++(int) noexcept {
         return *this;
     }
 
