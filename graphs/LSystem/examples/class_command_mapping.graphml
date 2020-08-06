@@ -25,11 +25,11 @@
           <y:UML clipContent="true" constraint="" hasDetailsColor="false" omitDetails="false" stereotype="" use3DEffect="true">
             <y:AttributeLabel xml:space="preserve"/>
             <y:MethodLabel xml:space="preserve">&lt;&lt;create&gt;&gt; CommandMappingIterator(turtle: Turtle): void
-+ operator=(const char&amp; c): CommandMappingIterator
-+ operator=(char&amp;&amp; c): CommandMappingIterator
-+ operator*(): CommandMappingIterator
-+ operator++(): CommandMappingIterator
-+ operator++(int) : CommandMappingIterator</y:MethodLabel>
++ operator=(const char&amp; c): CommandMappingIterator&amp;
++ operator=(char&amp;&amp; c): CommandMappingIterator&amp;
++ operator*(): CommandMappingIterator&amp;
++ operator++(): CommandMappingIterator&amp;
++ operator++(int) : CommandMappingIterator&amp;</y:MethodLabel>
           </y:UML>
         </y:UMLClassNode>
       </data>
@@ -50,7 +50,6 @@
       </data>
     </node>
     <edge id="e0" source="n0" target="n1">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>

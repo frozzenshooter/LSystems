@@ -190,20 +190,18 @@ This fractal will be created with 'F' as axiom and two productions:
 \section{Architecture}
 The primary goal of this paper is creating an architecture and an implementation of a L-system as described in section \ref{section:lindenmayer}. The focus of the architecture will be on flexibility and expandability and therefore is the following section splitted into several parts with discussions about different aspects of the final architecture.
 
-\footnote{HIER SOLLTE MAN EVT NOCH IRGENDWO DIE SEMANTSCIHE SCHNITTSTELLE ERWÄHNEN}
-
 \subsection{Requirements overview}
-The architecture for a L-system, as introduced in section \ref{section:lindenmayer}, has several requirements . This section will introduce the needed core requirements to get a flexible L-system and turtle.
+The architecture for a L-system, as introduced in section \ref{section:lindenmayer}, has several requirements. This section will introduce the needed core requirements for an architecture with a flexible L-system and turtle.
 
 \medskip
-\noindent The core of the concept is the L-system itfself, which has to guarantee a flexible usage. The L-system holds relevant data like the grammar, consisting of production rules and an axiom. The L-system should offer a way to configure a grammmar and guarantee the usage in different architectures without hardcoded grammars. The L-system should also offer to successively generate the next states of the configured grammar and access this generated result.
+\noindent The core of the concept is the L-system itfself, which is the base to guarantee a flexible use. The L-system holds relevant data like the grammar, consisting of productions and an axiom. The L-system should offer a way to configure a grammar and guarantee the usage in different architectures, without hardcoded grammars. The L-system has to be able to successively generate the next states with configured grammar and grant access to this generated result.
 
 \medskip
 
 \noindent The turtle is another key component, which will be used to interpret the result of a L-system. The turtle has to offer the typical turtle commands as introduced in section \ref{section:turtle}. In order to provide a turtle that is as extensible as possible, it should be possible to implement it flexibly. Therefore an interface should be offered, that enables a fast exchange of implementations. Depending on the implementation of a turtle, it should be possible to configure the turtle and change properties, like the color or line width.
 
 \medskip
-\noindent A mapping between the turtle commands and the L-system alphabet is an important part, so it is possible to call the correct turtle commands. Additional a function which is calling the mapped commands, after interpreting the L-system result, is needed to create an image of a plant or a fractal development state.
+\noindent A mapping between the turtle commands and the L-system alphabet is an important part, so it is possible to call the correct turtle commands. In order to create an image of a plant or a fractal development state, it is required that the mapped commands get called, after interpreting the L-system result.
 
 
 \subsection{L-system}
@@ -342,18 +340,121 @@ Consequently the general interface is not only sufficient for this paper, but al
 
 \subsection{Turtle command mapping}
 \label{section:turtle_mapping}
-It is nessecary to map a command to an object in order to interpret the result of a L-system. As mentioned in section \ref{section:lsystem_discussion} a recursive function will be used to calculate the result of a L-system. Until this point we just assumed there was a mapping between the members of the alphabet of the L-system and the commands which will be called. In this scenario the recursive functionreceives an iterator which can handle the generated data. 
-The command mapping iterator is a simple output iterator, which will handle calls of the turtle commands. In figure \ref{figure:if_command_map} is the general concept of the iterator displayed. The output iterator receives data, interprets it according to the mapping and calls the specified command.
+It is nessecary to map a command to an object in order to interpret the result of a L-system. As mentioned in section \ref{section:lsystem_discussion} a recursive function will be used to calculate the result of a L-system. Until this point we just assumed there was a mapping between the members of the alphabet of the L-system and the commands which will be called. In this scenario the recursive function receives an iterator, which can handle the generated data. 
+
+The command mapping iterator is an example of an output iterator, which will handle data interpretation and calls of turtle commands. In figure \ref{figure:if_command_map} is the a concept of this iterator displayed , which will handle a L-system based on strings and chars. Such an iterator receives data, interprets it according to the mapping and calls the specified command.
 
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width=1\columnwidth]{../graphs/LSystem/examples/class_command_mapping_iterator.png}
-	\caption{Interface command mapper}
+	\caption{C++ interface command mappin iterator}
 	\label{figure:if_command_map}
 \end{figure}
 
-The recursive function will receive this iterator as parameter and just hands the result over to the iterator. The command mapping just has to select the correct command and call it.
-The indirection in form of the command mapper offers a clear separation between the calculation of the L-system generation and the handling of the data. In order to offer different mappings, new implementations of the iterator are nessecary. In the implementation, in section \ref{section:impl}, there is a simple implementation of the iterator based on the grammar introduced in previous sections.
+The recursive function will receive this iterator as parameter and just hands the result over to it. The command mapping iterator just has to select the mapped turtle command and call it.
+
+The indirection in form of an iterator offers a clear separation between the calculation of the L-system generation and the handling of the data. In order to offer different mappings, new implementations of the iterator are nessecary. In the implementation, in section \ref{section:impl}, there is the implementation of the iterator example in figure \ref{figure:if_command_map} based on the grammar introduced in previous sections.
+
+The architecture is not only restricted to iterators comparable to command mapping iterator, but every output iterator can be used to receive the data and handle it differently.
+
+\subsection{Overview}
+This section will now give a short overview of the disscuessed components and their dependencies. The general approach for the design was a flexible use of the separated components. It should be possible to use each component on their own and even exchange a component and still guarantee the functionlity. Under the premises, that exchanged components still offer the same functionality and data. In figure \ref{figure:overview} a simplified overview of the dataflow is illustrated. 
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.4\columnwidth]{../graphs/LSystem/examples/overview.png}
+	\caption{Simplified overview over the data flow}
+	\label{figure:overview}
+\end{figure}
+
+\footnote{Configuration loader beschreiben}
+
+AT the beginning the L-system will be initalized. The L-system itself needs only to hold the grammar and and provide the access to it. The core of the L-system functionality is the recursive function, which will be used to calculate a L-system generation. This function offers a quiet flexible interface, because it should allow to use different L-system implementations, as long as the implementation provides a set of needed functions. These functions will be discussed in detail in section \ref{section:impl}. 
+Another key part of the recursive function is the support of an arbitrary output iterator to hand over the calculated generation. This introduces not only a flexible usage of the function itself, but integrates well with already existing containers. 
+
+The CommandMappingIterator is such an output iterator, which allows to use the provided interfaces to call the correct turtle command. Whenever data is handed over form the recursive function to the iterator, the iterator looks the data up and calls, if specified, the turtle command. The iterator here is  implemented for a determined mappping, but can be replaced by another implementation, as long as the implementation provides the typical output iterator functionality.
+
+The final component is the turtle, which is used as abstract interface. This interface enforces the absolut minimal set of functions a turtle has to fullfill. Each spezialisation of a turtle has to independent handle their configuration and additonal dependencies.
+
+As conclusion all the components can be exchanged with other objects, as long as they provide the needed interfaces. The needed interfaces will be described in detail in section \ref{section:impl} and addtional there are comments in the provided code.
+
+\pagebreak
+
+\section{Implementation}
+\label{section:impl}
+This section provides the in detail description of the implementation for the components discussed in the previous sections. Addtional to the components other aspects of the implementation, like the build system are discussed.
+
+\subsection{Build System}
+\label{section:buildsystem}
+The first important point for the implementation is the question what build system to choose or if a build system is even needed. A build system is needed or at least comfortable to use  because of two points. The first point is a fast way to build a complexer design and even extend it with libraries in a fast way. The second point is the use on different operating systems, which also plays a big role for the question what build system to choose.
+ 
+A typical build system for C++ projects are Makefiles, which include a description what and how to build. The problem with Makefiles is the restricted support on Windows, which results in either an inconvenient setup or to choose another build system.
+In this context CMake comes to mind, a generator for buildsystems. It is possible to define the project in a file and CMake can generate files for different build systems, on different operating systems. These resolves not even the problem with the use of Windows, but enables other developers to build it on the system their choice.
+
+The project setup is straightforward and consists mainly of the C++ version and the files to build. A more complicated part is the setup to use a library. A library is needed for the implementation of a specilization of a turtle, the CairoTurtle. This brought up some problems, because of the devlopment on a windows machine, where the library handling is done a bit different. After some research, a sample from J. Preshing \footnote{\fullcite{cairoinclude}} provided a working setup for CMake and he even provided some precompiled library files \footnote{\fullcite{cairodll}}, called dll on Windows. 
+The setup can be found in the provieded code and should work on different operating systems.\footnote{Only tested on a windows machine with some additional setup for convenience}
+
+\subsection{ConfigurationLoader}
+
+HIer noch abklären in welchem umfang das gemacht werden soll
+
+
+\pagebreak
+
+
+\subsection{LSystem}
+The different variants of L-system implementations are discussed in previous sections and this chapter only focuses on the proposed concept, consisting of a L-system, holding a grammar.
+
+The proposed L-system should be as flexible as possible and has therefore templates for the underlying types. The templates are called Predecessor and Successor, like the members of a production, for a reason. In order to guarantee a correct behaviour, they need to be the same type, because if they would differ, it wouldn't be possible to rewrite a L-system.
+
+\begin{lstlisting}
+template <typename Predecessor, typename Successor>
+class LSystem {
+    void set_axiom(const Successor& axiom) {
+        ...
+    }
+
+    std::template shared_ptr<Successor> get_axiom() {
+        ...
+    }
+
+    void add_production(const Production<Predecessor, Successor>& production) {
+       ...
+    }
+
+    std::template shared_ptr<Successor> get_successor(const Predecessor& predecessor) {
+        ...
+    }
+    
+private:
+    Successor axiom_;
+    std::unordered_map<Predecessor, Production<Predecessor, Successor>> production_rules_;
+}
+\end{lstlisting}
+
+\noindent These templates have some general restrictions, because of the formal properties of a L-system, like the self-similarity. In order to enable the rewriting, the Successor type needs to be consisting of smaller parts which also can Successors objects. A Successor object needs also to be splittable into Predecessor objects, this has the reason, that the recursive function needs to split an Successor object into parts and use a production on it.
+This might sound complex, but with the concrete example of a string as Successor and char as Predecessor it should be straightforward. A string can be splitted into smaller strings, fullfilling the first requriement. The string can be splitted into chars and therfore fullfills also the other requirment.
+
+This L-system implementation uses the production object, to handle the different rewriting rules. A production is also a templated object, but only as a simple data holder without special functionality. The productions are saved in a map for fast access, because the recursive function will call get\_successor() for each element, each Predecessor object, of a L-system generation.
+
+\subsection{Recursive function}
+The recursive function will call 
+
+
+\subsection{CommandMappingIterator}
+
+\subsection{TurtleGraphic}
+\subsubsection{TestTurtle}
+\subsubsection{CairoTurtle}
+\subsubsection{Further implementations}
+SVG implementation
+
+
+\section{Tests}
+\section{Example usage}
+\section{Problems and Restrictions}
+\section{Outlook}
+
 
 
 \subsection{Configuration}
@@ -376,68 +477,9 @@ rule Y XF-YF-X
 A solution for the multi value problem could be the use of a JSON object. A JSON object would allow to encapsulate the values without a restriction, but for this paper a simpler approach should be sufficient. As solution for the multi value objects is a simple separation of the values with a space. This is already shown in the example above, where a rule is splitted into three values.
 When reading the data from a stream it is necessary to know what datatype the values have and therefore a mapping between the keys and the value type is needed. This can be done by a static mapping in the code, which will also allow to solve this in a flexible way. At least so flexible that the mapping can be set in a central place at the code.
 
+With this enhancement, a dynamic way of using the architecture would be possible.
+
 \footnote{Hier muss man noch das genaue design beschrieben -> wie werden die daten übergeben bzw wie werden die daten gehalten oder werden die daten direkt übergeben }
-
-\subsection{Overview}
-This section will now give a short overview of the disscuessed components and their dependencies. The general approach for the design was a flexible use of the separated components. It should be possible to use each component on their own and even exchange a component and still guarantee the functionlity. Under the premises, that exchanged components still offer the same functionality and data. In figure \ref{figure:overview} a simplified overview of the dataflow is illustrated. 
-
-\begin{figure}[h!]
-	\centering
-	\includegraphics[width=0.4\columnwidth]{../graphs/LSystem/examples/overview.png}
-	\caption{Simplified overview over the data flow}
-	\label{figure:overview}
-\end{figure}
-
-\footnote{Configuration loader beschreiben}
-
-The loaded data will be used to initalize the L-system. The L-system itself needs only to hold the grammar and and provide the access to it. The core of the L-system functionality is the recursive function, which will be used to calculate a L-system generation. This function offers a quiet flexible interface, because it should allow to use different L-system implementations, as long as the implementation provides a set of needed functions. These functions will be discussed in detail in section \ref{section:impl}. 
-Another key part of the recursive function is the support of an arbitrary output iterator to hand over the calculated generation. This introduces not only a flexible usage of the function itself, but integrates well with already existing containers. 
-
-The CommandMappingIterator is such an output iterator, which allows to use the provided interfaces to call the correct turtle command. Whenever data is handed over form the recursive function to the iterator, the iterator looks the data up and calls, if specified, the turtle command. The iterator here is  implemented for a determined mappping, but can be replaced by another implementation, as long as the implementation provides the typical output iterator functionality.
-
-The final component is the turtle, which is used as abstract interface. This interface enforces the absolut minimal set of functions a turtle has to fullfill. Each spezialisation of a turtle has to independent handle their configuration and additonal dependencies.
-
-As conclusion all the components can be exchanged with other objects, as long as they provide the needed interfaces. The needed interfaces will be described in detail in section \ref{section:impl} and addtional there are comments in the provided code.
-
-\pagebreak
-
-\section{Implementation}
-\label{section:impl}
-This section provides the in detail description of the implementation for the components discussed in the previous sections. Addtional to the components other aspects of the implementation, like the build system are discussed.
-
-\subsection{Build System}
-\label{section:buildsystem}
-The first important point for the implementation is the question what build system to choose or if a build system is even needed. A build system is needed or at least comfortable to use  because of two points. The first point is a fast way to build a complexer design and even extend it with libraries in a fast way. The second point is the use on different operating systems, which also plays a big role for the question what build system to choose.
- 
-A typical build system for C++ projects are Makefiles, which include a description what and how to build. The problem with Makefiles is the restricted support on Windows, which results in either an inconvenient setup or to choose another build system.
-In this context CMake comes to mind, a generator for buildsystems. It is possible to define the project in a file and CMake can generate files for different build systems, on different operating systems. These resolves not even the problem with the use of Windows, but enables other developers to build it on the system their choice.
-
-
-
-TODO: SETUP FOR THIS PROJECT
-PROBLEMS WITH WINDOWS -> DLLs
-
-
-
-\subsection{ConfigurationLoader}
-
-\subsection{LSystem}
-
-\subsection{Recursive function}
-
-\subsection{CommandMappingIterator}
-
-\subsection{TurtleGraphic}
-\subsubsection{TestTurtle}
-\subsubsection{CairoTurtle}
-\subsubsection{Further implementations}
-SVG implementation
-
-
-\section{Tests}
-\section{Example usage}
-\section{Problems and Restrictions}
-\section{Outlook}
 
 \footnote{FÜR ALLE UMLS DIE MEMBER VARIABLEN UM DEN UNTERSTRICH ERGÄNZEN}
 \footnote{\fullcite{prusinkiewiczp.lindenmayera.2004}}

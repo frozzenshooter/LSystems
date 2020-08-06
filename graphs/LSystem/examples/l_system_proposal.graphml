@@ -26,7 +26,7 @@
             <y:AttributeLabel xml:space="preserve">+ axiom: Successor</y:AttributeLabel>
             <y:MethodLabel xml:space="preserve">+ set_axiom(axiom: Successor): void
 + get_axiom(): Successor
-+ add_productions(production: Production): void
++ add_production(production: Production): void
 + get_successor(predecessor: Predecessor) : Successor
 </y:MethodLabel>
           </y:UML>

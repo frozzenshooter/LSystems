@@ -6,6 +6,11 @@
 #include "cairo-turtle.hpp"
 
 //TODO: exception handling
+
+
+/*
+Shows example fractal generations under the use of a L-system and a cairo turtle.
+*/
 int main() {
 
     // Sierpinksi
@@ -22,7 +27,7 @@ int main() {
     CommandMappingIterator mapit{ cairo_turtle_sierpinksi };
 
     // Calculate and save sierpinski
-    calculate_l_system_generation<LSystem<char, std::string>, char, std::string, CommandMappingIterator>(l_system_sierpinksi, 9, mapit);
+    calculate_l_system_generation<LSystem, char, std::string, CommandMappingIterator>(l_system_sierpinksi, 9, mapit);
     cairo_turtle_sierpinksi.save_to_png("sierpinski.png");
 
 
@@ -41,7 +46,7 @@ int main() {
     CommandMappingIterator mapit_hilbert{ cairo_turtle_hilbert };
 
     // Calculate and save hilbert
-    calculate_l_system_generation<LSystem<char, std::string>, char, std::string, CommandMappingIterator>(l_system_hilbert, 7, mapit_hilbert);
+    calculate_l_system_generation<LSystem, char, std::string, CommandMappingIterator>(l_system_hilbert, 7, mapit_hilbert);
     cairo_turtle_hilbert.save_to_png("hilbert.png");
 
 
