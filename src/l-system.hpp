@@ -33,6 +33,7 @@ public:
     void add_production(const Predecessor& predeccessor, const Successor& successor) {
         auto it = productions_.find(predeccessor);
 
+        //TODO ist es der beste weg das mit einem const ref into make shared zu machen ?
         if (it == productions_.end()) {
             auto suc_ptr = std::make_shared<Successor>(successor);
 

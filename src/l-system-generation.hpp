@@ -15,11 +15,11 @@ void calculate_l_system_generation(LSystem<Predecessor, Successor>& l_system, in
         current_value = l_system.get_axiom();
     }
 
-    // Successor needs an iterator over its elements !!! -> NEEDS TO BE IN THE INTERFACE DESCRIPTION
+    // Successor needs an iterator over its elements !!! -> NEEDS TO BE IN THE INTERFACE DESCRIPTION -> begin / end functions
 
     for (auto part : *(current_value)) {
         if (generation > 0) {
-            // rewrite needed - find production result
+            // rewrite needed - get production result
             auto successor = l_system.get_successor(part);
 
             if (successor == nullptr) {

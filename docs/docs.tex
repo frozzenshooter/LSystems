@@ -302,7 +302,7 @@ The recursive function can be designed flexible in order to allow a simple excha
  
 \bigskip
  
-\noindent There are the two possible ways to handle the L-system. The storage as a datastructure, based on a graph, and the recursive calculation. For this paper it is completely sufficient to calculate the generation on demand, because it is only necessary to call the turtle command once for each object of the L-system generation. As consequence no implementation of the graph is needed. Other use cases in the future might need to store the data. This would even be possible with the recursive function, when the result is stored in another object, for example a graph. The proposal for the L-system is shown in figure \ref{figure:lsystem_proposal}.
+\noindent There are the two possible ways to handle the L-system. The storage as a datastructure, based on a graph, and the recursive calculation. For this paper, it is completely sufficient to calculate the generation on demand, because it is only necessary to call the turtle command once for each object of the L-system generation. As consequence no implementation of the graph is needed. Other use cases in the future might need to store the data. This would even be possible with the recursive function, when the result is stored in another object, for example a graph. The proposal for the L-system is shown in figure \ref{figure:lsystem_proposal}.
 
 \begin{figure}[h!]
 	\centering
@@ -383,19 +383,20 @@ This section provides the in detail description of the implementation for the co
 
 \subsection{Build System}
 \label{section:buildsystem}
-The first important point for the implementation is the question what build system to choose or if a build system is even needed. A build system is needed or at least comfortable to use  because of two points. The first point is a fast way to build a complexer design and even extend it with libraries in a fast way. The second point is the use on different operating systems, which also plays a big role for the question what build system to choose.
+The first important point for the implementation is the question what build system to choose or if a build system is even needed. A build system is needed or at least comfortable to use  because of two points. The first point is a fast way to build a complexer design and even extend it with libraries in a fast way. The second point, which also plays a big role for the question what build system to choose, is the choice of operating system.
  
 A typical build system for C++ projects are Makefiles, which include a description what and how to build. The problem with Makefiles is the restricted support on Windows, which results in either an inconvenient setup or to choose another build system.
-In this context CMake comes to mind, a generator for buildsystems. It is possible to define the project in a file and CMake can generate files for different build systems, on different operating systems. These resolves not even the problem with the use of Windows, but enables other developers to build it on the system their choice.
+In this context CMake comes to mind, a generator for buildsystems. It is possible to define the project in a file and CMake can generate files for different build systems, on different operating systems. These resolves not even the problem with the use of Windows, but enables other developers to build it on the system of their choice.
 
-The project setup is straightforward and consists mainly of the C++ version and the files to build. A more complicated part is the setup to use a library. A library is needed for the implementation of a specilization of a turtle, the CairoTurtle. This brought up some problems, because of the devlopment on a windows machine, where the library handling is done a bit different. After some research, a sample from J. Preshing \cite{cairoinclude} provided a working setup for CMake and he even provided some precompiled library files \cite{cairodll}, called dll on Windows. 
+The project setup is straightforward and consists mainly of the C++ version and the files to build the project. A more complicated part is the setup to use a library. A library is needed for the implementation of a specilization of a turtle, the CairoTurtle. This brought up some problems, because of the devlopment on a windows machine, where the library handling is done a bit different in comparison to Unix systems. After some research, a sample from J. Preshing \cite{cairoinclude} provided a working setup for CMake and he even provided some precompiled library files \cite{cairodll}, called dll on Windows. 
 The setup can be found in the provieded code and should work on different operating systems.\footnote{The build process is only tested on a windows machine with some additional setup for convenience, but should also work on Unix systems}
 
 \subsection{LSystem}
 The different variants of L-system implementations are discussed in previous sections and this chapter only focuses on the proposed concept, consisting of a L-system, holding a grammar.
 
-The proposed L-system should be as flexible as possible and has therefore templates for the underlying types. The templates are called Predecessor and Successor, like the members of a production, for a reason. In order to guarantee a correct behaviour, they need to be the same type, because if they would differ, it wouldn't be possible to rewrite a L-system.
+The proposed L-system should be as flexible as possible and has therefore templates for the underlying types. The templates are for a reason called Predecessor and Successor, like the members of a production.
 
+\medskip
 \begin{lstlisting}
 template <typename Predecessor, typename Successor>
 class LSystem {
@@ -417,18 +418,51 @@ class LSystem {
     
 private:
     std::shared_ptr<Successor> axiom_;
-    std::unordered_map<Predecessor, Production<Predecessor, Successor>> production_rules_;
+    std::unordered_map<Predecessor, std::shared_ptr<Successor>> productions_;
 }
 \end{lstlisting}
 
 \noindent These templates have some general restrictions, because of the formal properties of a L-system, like the self-similarity. In order to enable the rewriting, the Successor type needs to be consisting of smaller parts, which also are Successors objects. A Successor object needs also to be splittable into Predecessor objects, this has the reason, that the recursive function needs to split an Successor object into parts and use a production on it.
 This might sound complex, but with the concrete example of a string as Successor and char as Predecessor it should be straightforward. A string can be splitted into smaller strings, fullfilling the first requriement. The string can be splitted into chars and therfore fullfills also the other requirment.
 
-This L-system implementation uses the production object, to handle the different rewriting rules. A production is also a templated object, but only as a simple data holder without special functionality. The productions are saved in a map for fast access, because the recursive function will call get\_successor() for each element, each Predecessor object, of a L-system generation.
+This L-system implementation uses the production object, to handle the different rewriting rules. A production is also a templated object, but only as a simple data holder without special functionality. The productions are saved in a map th gain fast access, because the recursive function will call get\_successor() often. This will happen for each element, each Predecessor object, of a L-system generation. Because of that the amount of calls will increase enormously with every generation.
 
 \subsection{Recursive function}
-The recursive function will call 
+The recursive function purpose is to calculate a generation of a L-system. In order to fullfill its purpose the function needs to provide a quiet big amount of templates.
 
+\medskip
+\begin{lstlisting}
+template<template <typename, typename> class LSystem, typename Predecessor, typename Successor, typename OutputIterator>
+void calculate_l_system_generation(LSystem<Predecessor, Successor>& l_system, int generation, OutputIterator& output_iterator, std::shared_ptr<Successor> current_value = nullptr) {
+    if (current_value == nullptr) {
+        // inital value
+        current_value = l_system.get_axiom();
+    }
+
+    for (auto part : *(current_value)) {
+        if (generation > 0) {
+        
+            // rewrite needed - get production result
+            auto successor = l_system.get_successor(part);
+
+            if (successor == nullptr) {
+                // no production found, it is therefore a terminal and can be handed over directly
+                *output_iterator++ = part;
+            }
+            else {
+                calculate_l_system_generation<LSystem, Predecessor, Successor, OutputIterator>(l_system, generation - 1, output_iterator, successor);
+            }
+        }
+        else {
+            // max depth of recursion reached
+            *output_iterator++ = part;
+        }
+    }
+}
+
+\end{lstlisting}
+
+As shown in the listing the 
 
 \subsection{CommandMappingIterator}
 
