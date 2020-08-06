@@ -1,6 +1,8 @@
 #ifndef PRODUCTION_HPP
 #define PRODUCTION_HPP
 
+#include <memory>
+
 /*
 This class represents a production of the grammar of a L-system.
 A production will be used in the rewritng process of a L-system.

@@ -1,6 +1,8 @@
 #ifndef L_SYSTEM_GENERATION_HPP
 #define L_SYSTEM_GENERATION_HPP
 
+#include <memory>
+
 /*
     TODO
 

@@ -1,8 +1,4 @@
-#include <iostream>
 #include <string>
-#include <sstream>
-#include <fstream>
-
 #include "l-system.hpp"
 #include "l-system-generation.hpp"
 #include "command-mapping-iterator.hpp"
@@ -21,7 +17,7 @@ int main() {
     // setup turtle for sierpinksi triangle
     CairoTurtle cairo_turtle_sierpinksi;
     cairo_turtle_sierpinksi.set_turning_angle(60.0);
-    cairo_turtle_sierpinksi.set_line_lenght(1);
+    cairo_turtle_sierpinksi.set_line_lenght(3);
 
     CommandMappingIterator mapit{ cairo_turtle_sierpinksi };
 
@@ -45,18 +41,18 @@ int main() {
     CommandMappingIterator mapit_hilbert{ cairo_turtle_hilbert };
 
     // Calculate and save hilbert
-    calculate_l_system_generation<LSystem<char, std::string>, char, std::string, CommandMappingIterator>(l_system_sierpinksi, 7, mapit_hilbert);
+    calculate_l_system_generation<LSystem<char, std::string>, char, std::string, CommandMappingIterator>(l_system_hilbert, 7, mapit_hilbert);
     cairo_turtle_hilbert.save_to_png("hilbert.png");
 
 
-    // EXAMPLE WITH BACK INSERTER
-    // std::vector<char> result_l_system;
+    // Example with back inserter
+    //std::vector<char> result_l_system;
 
-    // auto backin = std::back_insert_iterator(result_l_system);
+    //auto backin = std::back_insert_iterator(result_l_system);
 
-    // calculate_l_system_generation<LSystem<char, std::string>, char, std::string, std::back_insert_iterator<std::vector<char>>>(l_system_sierpinksi, 8, backin);
+    //calculate_l_system_generation<LSystem<char, std::string>, char, std::string, std::back_insert_iterator<std::vector<char>>>(l_system_sierpinksi, 8, backin);
 
-    // std::cout << "Vector size: " << result_l_system.size() << std::endl;
+    //std::cout << "Vector size: " << result_l_system.size() << std::endl;
 
     return 0;
 }
