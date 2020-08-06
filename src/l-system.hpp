@@ -21,12 +21,13 @@ template <typename Predecessor, typename Successor>
 class LSystem {
 public:
     void set_axiom(const Successor& axiom) {
-        axiom_ = axiom;
+        axiom_ = std::make_shared<Successor>(axiom);
     }
 
-    // template is needed because of compiler error: https://docs.microsoft.com/en-us/cpp/error-messages/compiler-errors-1/compiler-error-c2143?f1url=https%3A%2F%2Fmsdn.microsoft.com%2Fquery%2Fdev16.query%3FappId%3DDev16IDEF1%26l%3DEN-US%26k%3Dk(C2143)%26rd%3Dtrue&view=vs-2019
     std::template shared_ptr<Successor> get_axiom() {
-        return std::make_shared<Successor>(axiom_);
+        // template is needed because of compiler error: https://docs.microsoft.com/en-us/cpp/error-messages/compiler-errors-1/compiler-error-c2143?f1url=https%3A%2F%2Fmsdn.microsoft.com%2Fquery%2Fdev16.query%3FappId%3DDev16IDEF1%26l%3DEN-US%26k%3Dk(C2143)%26rd%3Dtrue&view=vs-2019
+        
+        return axiom_;
     }
 
     void add_production(const Predecessor& predeccessor, const Successor& successor) {
@@ -39,17 +40,12 @@ public:
         }
         else {
             //TODO andere Exception nicht nur die Standard exception
-            throw new std::exception("Rule for the same non terminal already existing");
+            throw new std::exception("Rule for the same predecessor already exists");
         }
     }
 
     std::template shared_ptr<Successor> get_successor(const Predecessor& predecessor) {
-        //Verbessern, da das erzeugen eines shared pointers blöd ist -> evt nur pointer speichern??
-        // bzw ist es effizient eine referenz zu bekommen und das dann mit make shared aufzurufen ? wird dafür dann das objekt genutzt bzw was passiert kann zur Laufzeit passieren
-
-        // hier kann es zu problemen kommen -> es wird eine const ref übergeben und diese wird dann zurückgegeben und zu einem pointer gemacht -> damit hat man zugriff auf daten die const sein sollten
-        // an sich sollte man her entweder eine kopie übergeben oder einen anderen weg gehen
-        // evt production auch auf pointer umbauen. und diese gibt dann nur einen shared pointer zurück
+        // TODO: Bessere Lösung als pointer in porduction so umständlihc zu halten ??
 
         auto it = production_rules_.find(predecessor);
 
@@ -61,7 +57,7 @@ public:
     }
 
 private:
-    Successor axiom_;
+    std::shared_ptr<Successor> axiom_;
     std::unordered_map<Predecessor, Production<Predecessor, Successor>> production_rules_;
 };
 

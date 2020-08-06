@@ -176,7 +176,7 @@ This fractal will be created with 'F' as axiom and two productions:
 \item Y\rightarrow XF-YF-X
 \end{itemize}
 
-\noindent The turtle will be initalized with an angle of 60° and an arbitrary length \textit{d} for a step. The result is displayed in figure \ref{figure:Sierpinski}.
+\noindent The turtle will be initalized with an angle of 60° and length \textit{d} of 3 for a step. The result is displayed in figure \ref{figure:Sierpinski}.
  
 \begin{figure}[h!]
 	\centering
@@ -369,7 +369,7 @@ This section will now give a short overview of the disscuessed components and th
 
 \footnote{Configuration loader beschreiben}
 
-AT the beginning the L-system will be initalized. The L-system itself needs only to hold the grammar and and provide the access to it. The core of the L-system functionality is the recursive function, which will be used to calculate a L-system generation. This function offers a quiet flexible interface, because it should allow to use different L-system implementations, as long as the implementation provides a set of needed functions. These functions will be discussed in detail in section \ref{section:impl}. 
+At the beginning the L-system will be initalized. The L-system itself needs only to hold the grammar and and provide the access to it. The core of the L-system functionality is the recursive function, which will be used to calculate a L-system generation. This function offers a quiet flexible interface, because it should allow to use different L-system implementations, as long as the implementation provides a set of needed functions. These functions will be discussed in detail in section \ref{section:impl}. 
 Another key part of the recursive function is the support of an arbitrary output iterator to hand over the calculated generation. This introduces not only a flexible usage of the function itself, but integrates well with already existing containers. 
 
 The CommandMappingIterator is such an output iterator, which allows to use the provided interfaces to call the correct turtle command. Whenever data is handed over form the recursive function to the iterator, the iterator looks the data up and calls, if specified, the turtle command. The iterator here is  implemented for a determined mappping, but can be replaced by another implementation, as long as the implementation provides the typical output iterator functionality.
@@ -394,14 +394,6 @@ In this context CMake comes to mind, a generator for buildsystems. It is possibl
 The project setup is straightforward and consists mainly of the C++ version and the files to build. A more complicated part is the setup to use a library. A library is needed for the implementation of a specilization of a turtle, the CairoTurtle. This brought up some problems, because of the devlopment on a windows machine, where the library handling is done a bit different. After some research, a sample from J. Preshing \footnote{\fullcite{cairoinclude}} provided a working setup for CMake and he even provided some precompiled library files \footnote{\fullcite{cairodll}}, called dll on Windows. 
 The setup can be found in the provieded code and should work on different operating systems.\footnote{Only tested on a windows machine with some additional setup for convenience}
 
-\subsection{ConfigurationLoader}
-
-HIer noch abklären in welchem umfang das gemacht werden soll
-
-
-\pagebreak
-
-
 \subsection{LSystem}
 The different variants of L-system implementations are discussed in previous sections and this chapter only focuses on the proposed concept, consisting of a L-system, holding a grammar.
 
@@ -418,7 +410,7 @@ class LSystem {
         ...
     }
 
-    void add_production(const Production<Predecessor, Successor>& production) {
+    void add_production(const Predecessor& predeccessor, const Successor& successor) {
        ...
     }
 
@@ -427,7 +419,7 @@ class LSystem {
     }
     
 private:
-    Successor axiom_;
+    std::shared_ptr<Successor> axiom_;
     std::unordered_map<Predecessor, Production<Predecessor, Successor>> production_rules_;
 }
 \end{lstlisting}
@@ -481,6 +473,6 @@ With this enhancement, a dynamic way of using the architecture would be possible
 
 \footnote{Hier muss man noch das genaue design beschrieben -> wie werden die daten übergeben bzw wie werden die daten gehalten oder werden die daten direkt übergeben }
 
-\footnote{FÜR ALLE UMLS DIE MEMBER VARIABLEN UM DEN UNTERSTRICH ERGÄNZEN}
+\footnote{UML DIAGRAMME NOCHMALS ÜBERARBEITEN - nicht immer wirklcihes uml sondern tw zu sehr abhängig von der Implementierung}
 \footnote{\fullcite{prusinkiewiczp.lindenmayera.2004}}
 \end{document}

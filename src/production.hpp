@@ -27,7 +27,7 @@ public:
         return predecessor_;
     }
 
-    std::shared_ptr<Successor> get_successor() const {
+    std::shared_ptr<Successor> get_successor() {
         return successor_;
     }
 
