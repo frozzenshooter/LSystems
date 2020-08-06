@@ -17,14 +17,14 @@ add_executable(
   src/main.cpp
 
   src/production.hpp
-  src/command-mapping-iterator.hpp
   src/l-system.hpp
   src/l-system-generation.hpp  
-  src/cairo-turtle.hpp
-  src/file-handler.hpp
-  src/state.hpp
-  src/test-turtle.hpp
+  src/command-mapping-iterator.hpp
   src/turtle.hpp
+  src/state.hpp
+  src/cairo-turtle.hpp
+  src/test-turtle.hpp
+
 )
 
 link_directories(${Cairo_INCLUDE_DIRS})

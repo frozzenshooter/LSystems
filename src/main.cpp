@@ -3,7 +3,6 @@
 #include <sstream>
 #include <fstream>
 
-#include "file-handler.hpp"
 #include "l-system.hpp"
 #include "l-system-generation.hpp"
 #include "command-mapping-iterator.hpp"
@@ -12,52 +11,52 @@
 
 //TODO: exception handling
 int main() {
-    FileHandler<char, std::string> handler;
 
-    std::ifstream input_stream{ "test_file_space.ls" };
+    // Sierpinksi
+    LSystem<char, std::string> l_system_sierpinksi;
+    l_system_sierpinksi.set_axiom("X");
+    l_system_sierpinksi.add_production('X', "YF+XF+Y");
+    l_system_sierpinksi.add_production('Y', "XF-YF-X");
 
-    handler.load_configuration(input_stream);
+    // setup turtle for sierpinksi triangle
+    CairoTurtle cairo_turtle_sierpinksi;
+    cairo_turtle_sierpinksi.set_turning_angle(60.0);
+    cairo_turtle_sierpinksi.set_line_lenght(1);
 
-    handler.parse_file("test_file_3.ls");
+    CommandMappingIterator mapit{ cairo_turtle_sierpinksi };
 
-    LSystem<char, std::string> l_system;
+    // Calculate and save sierpinski
+    calculate_l_system_generation<LSystem<char, std::string>, char, std::string, CommandMappingIterator>(l_system_sierpinksi, 9, mapit);
+    cairo_turtle_sierpinksi.save_to_png("sierpinski.png");
 
-    l_system.set_axiom(handler.start_axiom_);
 
-    for (auto rule : handler.production_rules_) {
-        l_system.add_production(rule.get_predecessor(), *(rule.get_successor()));
-    }
+    // Hilbert
+    LSystem<char, std::string> l_system_hilbert;
+    l_system_hilbert.set_axiom("L");
+    l_system_hilbert.add_production('L', "+RF-LFL-FR+");
+    l_system_hilbert.add_production('R', "-LF+RFR+FL-");
 
-    CairoTurtle t;
+    // setup turtle for hilbert curve
+    CairoTurtle cairo_turtle_hilbert;
+    cairo_turtle_hilbert.set_turning_angle(90);
+    cairo_turtle_hilbert.set_line_lenght(5);
+
+    // Mapping iterator
+    CommandMappingIterator mapit_hilbert{ cairo_turtle_hilbert };
+
+    // Calculate and save hilbert
+    calculate_l_system_generation<LSystem<char, std::string>, char, std::string, CommandMappingIterator>(l_system_sierpinksi, 7, mapit_hilbert);
+    cairo_turtle_hilbert.save_to_png("hilbert.png");
 
 
     // EXAMPLE WITH BACK INSERTER
     // std::vector<char> result_l_system;
 
-    //auto backin = std::back_insert_iterator(result_l_system);
+    // auto backin = std::back_insert_iterator(result_l_system);
 
-    //calculate_l_system_generation<LSystem<char, std::string>, char, std::string, std::back_insert_iterator<std::vector<char>>>(l_system, 8, backin);
+    // calculate_l_system_generation<LSystem<char, std::string>, char, std::string, std::back_insert_iterator<std::vector<char>>>(l_system_sierpinksi, 8, backin);
 
-    //std::cout << "Vector size: " << result_l_system.size() << std::endl;
-
-    //for (auto c : result_l_system) {
-    //    p.handle(c);
-    //}
-
-    // CUSTOM OUTPUT ITERATOR
-    t.set_turning_angle(90);
-    t.set_line_lenght(5);
-
-    CommandMappingIterator mapit{ t };
-    calculate_l_system_generation<LSystem<char, std::string>, char, std::string, CommandMappingIterator>(l_system, 5, mapit);
-
-    t.save_to_png("export_file1.png");
-
-    t.reset();
-
-    calculate_l_system_generation<LSystem<char, std::string>, char, std::string, CommandMappingIterator>(l_system, 9, mapit);
-
-    t.save_to_png("export_file2.png");
+    // std::cout << "Vector size: " << result_l_system.size() << std::endl;
 
     return 0;
 }
