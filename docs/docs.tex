@@ -5,7 +5,7 @@
 \Homework{Lindenmayer systems - a C++ implementation}{Steffen Knoblauch}
 
 \begin{abstract}
-Lindenmayer Systems, short L-systems, are the result of \textbf{research from Lindenmayer et al.}\footnote{ZITIEREN} about the geometric features of plants.
+Lindenmayer Systems, short L-systems, are the result of research from Lindenmayer et al.\cite{prusinkiewiczp.lindenmayera.2004} about the geometric features of plants.
 L-systems are a concept to mathematicaly/formal describe and model the growth processes of plant development. They are not only restricted to the plant based developments, but can also be used to generate fractals.
 
 L-systems have an inital state and use rules, like a formal grammar, to transform or rather rewrite the current state to create the next state of the development from a plant or a fractal.
@@ -18,7 +18,7 @@ Goal of this paper is to design an architecture for L-systems, which includes an
 \pagebreak
 \section{Introduction}
 L-systems are a formal way to describe plant or fractal development and interpret the result as a graphic. In order provide a general understanding of Lsystems is this  paper organised in several topics. Section \ref{section:lindenmayer} is a short introduction to the general idea,  based around object rewriting, the grammar of L- systems and the interpretation of a L-system as graphic.
-After discussing the architecture and possible implementation steps, a final concept for an implementation is proposed.The code for this implementation is available via my github repository.\footnote{https://github.com/frozzenshooter/LSystems}
+After discussing the architecture and possible implementation steps, a final concept for an implementation is proposed.The code for this implementation is available via my github repository.\footnote{See https://github.com/frozzenshooter/LSystems}
 
 Finaly, there is a conclusion and an outlook for possible future extensions.
 
@@ -375,7 +375,7 @@ The final component is the turtle, which is used as abstract interface. This int
 
 As conclusion all the components can be exchanged with other objects, as long as they provide the needed interfaces. The needed interfaces will be described in detail in section \ref{section:impl} and addtional there are comments in the provided code.
 
-\pagebreak
+\clearpage
 
 \section{Implementation}
 \label{section:impl}
@@ -389,7 +389,7 @@ A typical build system for C++ projects are Makefiles, which include a descripti
 In this context CMake comes to mind, a generator for buildsystems. It is possible to define the project in a file and CMake can generate files for different build systems, on different operating systems. These resolves not even the problem with the use of Windows, but enables other developers to build it on the system of their choice.
 
 The project setup is straightforward and consists mainly of the C++ version and the files to build the project. A more complicated part is the setup to use a library. A library is needed for the implementation of a specilization of a turtle, the CairoTurtle. This brought up some problems, because of the devlopment on a windows machine, where the library handling is done a bit different in comparison to Unix systems. After some research, a sample from J. Preshing \cite{cairoinclude} provided a working setup for CMake and he even provided some precompiled library files \cite{cairodll}, called dll on Windows. 
-The setup can be found in the provieded code and should work on different operating systems.\footnote{The build process is only tested on a windows machine with some additional setup for convenience, but should also work on Unix systems}
+The setup can be found in the provided code and should work on different operating systems.\footnote{The build process is only tested on a windows machine with some additional setup for convenience, but should also work on Unix systems}
 
 \subsection{LSystem}
 The different variants of L-system implementations are discussed in previous sections and this chapter only focuses on the proposed concept, consisting of a L-system, holding a grammar.
@@ -464,14 +464,45 @@ void calculate_l_system_generation(LSystem<Predecessor, Successor>& l_system, in
 
 As shown in the listing the 
 
+\begin{enumerate}
+\item L-system as interface -> as long as some special functions are provided
+\item predec und successor -> auhc implizit um das L-system festzulegen
+\item output iterator -> so lange die output teratoren eigenschaften erfüllt sind dynamisch an alles übergeben -> solange der typ funktioniert - beispiel commandmappingiterator
+\item nullptr wenn man einfach nur L-system berechnen will -> wenn man es von einem bestimmten stand berechnen will kann man auch den startwert geben -> zb speichern in einem string und dann später weiterrechnen -> zwischenspeichern möglich
+\item rekursion -> wenn terminal erreicht wird kann man direkt übergeben ansonsten weiter in der rekursion bis man die maximale tiefe erreicht
+\end{enumerate}
+
 \subsection{CommandMappingIterator}
 
-\subsection{TurtleGraphic}
-\subsubsection{TestTurtle}
-\subsubsection{CairoTurtle}
-\subsubsection{Further implementations}
-SVG implementation
+\begin{enumerate}
+\item Output Iterator funktionen
+\item pointer auf turtle, damit man die entsprechenden Daten aufrufen kann 
+\item Problem: wenn die turtle nicht mehr funktioniert - pointer verweist auf etwas falsches, können die call aufrufe nicht mehr funktionieren 
+\end{enumerate}
 
+
+\subsection{TurtleGraphic}
+Hier erstmal abstraktes interface eklären dann auf beispiel implementierungen eingehen
+
+
+\subsubsection{TestTurtle}
+
+implementierung vorstellen -> zum einfachen ausgeben von text auf der concolse für aufrufe
+\subsubsection{CairoTurtle}
+
+\begin{enumerate}
+\item Cairo Lib vorstellen
+\item Implementeirung vorstellen - einfaches abbild der cairo lib
+\item Zusätzliche Funktionen, die benötigt werden vorstellen
+\item Probleme mit der Bounding box berechnung -> eigene einführung der Bounding box berechnung 
+\item Export als png, aber theoretisch kann man die turtle erweitern um zum beispiel opengl oder andere ausgabequellen zu bedienen
+\end{enumerate} 
+
+\subsubsection{Further implementations}
+Weitere mögliche implementierungen vorstellen
+
+SVG implementation - kann man aber theoretisch auch auf basis der cairo turtle machen
+Weitere implementeirungen - zb für 3D mittels von vulcan oder opengl oder ... (aber auch hierfür kann man für manches cairo als zwischenlib nutzen)
 
 \section{Tests}
 \section{Example usage}
@@ -502,10 +533,8 @@ When reading the data from a stream it is necessary to know what datatype the va
 
 With this enhancement, a dynamic way of using the architecture would be possible.
 
-\footnote{Hier muss man noch das genaue design beschrieben -> wie werden die daten übergeben bzw wie werden die daten gehalten oder werden die daten direkt übergeben }
 
 \footnote{UML DIAGRAMME NOCHMALS ÜBERARBEITEN - nicht immer wirklcihes uml sondern tw zu sehr abhängig von der Implementierung}
-\footnote{\fullcite{prusinkiewiczp.lindenmayera.2004}}
 
 \section{Sources}
 \printbibliography
