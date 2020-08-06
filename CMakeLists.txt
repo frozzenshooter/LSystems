@@ -16,7 +16,6 @@ add_executable(
 
   src/main.cpp
 
-  src/production.hpp
   src/l-system.hpp
   src/l-system-generation.hpp  
   src/command-mapping-iterator.hpp

@@ -26,13 +26,13 @@ Finaly, there is a conclusion and an outlook for possible future extensions.
 \label{section:lindenmayer}
 \subsection{History}
 \label{section:history}
-''[L-systems] were introduced in 1968 by Lindenmayer as a theoretical framwork for studying the development of simple multicellular organisms [...]'\footnote{\fullcite[Preface, p.~VI]{prusinkiewiczp.lindenmayera.2004}} and were later used in computer graphics to generate visuals of organisms and fractals.
+''[L-systems] were introduced in 1968 by Lindenmayer as a theoretical framwork for studying the development of simple multicellular organisms [...]'\cite[Preface, p.~VI]{prusinkiewiczp.lindenmayera.2004} and were later used in computer graphics to generate visuals of organisms and fractals.
 
-On the beginning the focus of L-systems theory was based on larger plant parts and the graphical interpretation used chains of rectangles to display a L-system. Further research into L-system extended the interpretations, resulting in a interpretation of a L-system state with a LOGO-style Turtle. These extension make it possible to model more complex plants and fractals and display them in a graphical way. \footnote{Cf. \fullcite[Chapter 1.3, p.~6]{prusinkiewiczp.lindenmayera.2004}}.
+On the beginning the focus of L-systems theory was based on larger plant parts and the graphical interpretation used chains of rectangles to display a L-system. Further research into L-system extended the interpretations, resulting in a interpretation of a L-system state with a LOGO-style Turtle. These extension make it possible to model more complex plants and fractals and display them in a graphical way. \cite[Cf. Chapter 1.3, p.~6]{prusinkiewiczp.lindenmayera.2004}.
 
 \subsection{General idea}
 \label{section:gerneralidea}
-The general idea of a L-system is the use of a rewriting system based on a formal grammar. The shape of a plant or a fractal consists of geometric pieces, for example a branch of a tree has several subbranches. ''When each piece of a shape is geometrically similar to the whole, both the shape and the cascade that generate it are called self-similar.''\footnote{\fullcite[Chapter 6, p.~34]{benoitmandelbrot1982} } The self-similartiy makes it possible to create a formal description for the plant or fractal generation as a formal grammar, further discussed in  section \ref{section:grammar}. The rewritng uses this formal description to generate the diffferent states of the development. ''In general, rewriting is a technique for defining complex objects by successively replacing parts of a simple initial object using a set of rewriting rules or productions.''\footnote{\fullcite[Chapter 1.1,  p.~1]{prusinkiewiczp.lindenmayera.2004}}. 
+The general idea of a L-system is the use of a rewriting system based on a formal grammar. The shape of a plant or a fractal consists of geometric pieces, for example a branch of a tree has several subbranches. ''When each piece of a shape is geometrically similar to the whole, both the shape and the cascade that generate it are called self-similar.''\cite[Chapter 6, p.~34]{benoitmandelbrot1982}The self-similartiy makes it possible to create a formal description for the plant or fractal generation as a formal grammar, further discussed in  section \ref{section:grammar}. The rewritng uses this formal description to generate the diffferent states of the development. ''In general, rewriting is a technique for defining complex objects by successively replacing parts of a simple initial object using a set of rewriting rules or productions.''\cite[Chapter 1.1,  p.~1]{prusinkiewiczp.lindenmayera.2004}. 
 
 For example this concept can be used to rewrite a inital string, called axiom, with defined rewriting rules.
 A simple example is the following grammar, which consits of only two nonterminals, A and B, and two production rules. 
@@ -52,7 +52,7 @@ This process can be successively repeated recursive for a arbitrary amount of ge
 
 \subsection{Grammar}
 \label{section:grammar}
-The definition of an L-system can be done similar to a Chomsky grammar, but there are some general differences. In Chomsky grammars the productions are applied sequentially, whereas in L-systems they can be applied parallel. This has some consequences for the formal properties of an L-system, for example a context-free L-system can produce a language which cannot be produced by a context-free Chomsky grammar.\footnote{Zitat abop vgl Seite 3  Abschnitt L-Systems}
+The definition of an L-system can be done similar to a Chomsky grammar, but there are some general differences. In Chomsky grammars the productions are applied sequentially, whereas in L-systems they can be applied parallel. This has some consequences for the formal properties of an L-system, for example a context-free L-system can produce a language which cannot be produced by a context-free Chomsky grammar.\cite[Cf. Chapter 1.1, p.~3]{prusinkiewiczp.lindenmayera.2004}
 
 \noindent This paper will only focus on a class of L-systems, the DOL-systems, which can be used for string based rewriting systems. This class is deterministic (D) and context-free (O) and can be formaly described  by a tuple:
 
@@ -68,7 +68,7 @@ P: set of productions
 
 \medskip
 \noindent A production conistst of a predecessor, a nonterminal symbol of the alphabet, and a successor, the replacment of the nonterminal in the next generation.
-To guarantee that the l-system is deterministic, there only can be one production for each nonterminal of the alphabet.The identity production is implicit a part of the set of productions.\footnote{Zitat vgl Seite 4 abop}
+To guarantee that the l-system is deterministic, there only can be one production for each nonterminal of the alphabet.The identity production is implicit a part of the set of productions.\cite[Cf. Chapter 1.2, p.~4f.]{prusinkiewiczp.lindenmayera.2004}
 
 \medskip
 
@@ -88,9 +88,9 @@ If in the process of rewriting a terminal symbol is found, there will be no expl
 \label{section:turtle}
 The L-systems introduced to this points are capable of creating a string based on a grammar. In order to create a graphic of a state of a L-system, the resulting state can be interpreted as commands of a turtle.
 
-\noindent A turtle is a concept introduced by the language Logo as a tool for computer graphics.\footnote{Zitat VGL. Seite 179 Chappter 10 Logo book}
+\noindent A turtle is a concept introduced by the language Logo as a tool for computer graphics.\cite[Cf. Chapter 10, p.~179]{harvey1997computer}
 
-\noindent A state of a turtle can be described as a tuple\footnote{Zitat vgl abop Seite 6 ff}:
+\noindent A state of a turtle can be described as a tuple\cite[Cf. Chapter 1.3, p.~6ff]{prusinkiewiczp.lindenmayera.2004}:
 
 \begin{center}
 S = (x,y, $\alpha$)
@@ -106,7 +106,7 @@ $\alpha$ is the direction in which a turtle is facing, called heading
 
 \medskip
 
-\noindent The walking path of the turtle is controlled by commands. Therefore a defined step size \textit{d} and an angle \textit{$\theta$ } is needed to calculate the next state of the turtle.
+\noindent The walking path of the turtle is controlled by commands. Therefore a defined step size \textit{d} and an angle \textit{$\theta$ } is needed to calculate the next state of the turtle. There are these general commands: \cite[Cf. Chapter 2]{goldman2004turtle}
 
 \begin{itemize}
 \item Draw: moves one step in the current facing direction drawing a line 
@@ -114,7 +114,6 @@ $\alpha$ is the direction in which a turtle is facing, called heading
 \item Right-turn: turns to the right by the angle $\theta$
 \item Left-turn: turns to the left by the angle $\theta$
 \end{itemize}
-\footnote{Zitat vlg cad book seitev 2 unteres drittel}
 
 \noindent Additional to the state of the turtle the state there is a state for the pen. The pen state consist of the color and its width, which will result in more colorfull or different pictures.
 
@@ -367,8 +366,6 @@ This section will now give a short overview of the disscuessed components and th
 	\label{figure:overview}
 \end{figure}
 
-\footnote{Configuration loader beschreiben}
-
 At the beginning the L-system will be initalized. The L-system itself needs only to hold the grammar and and provide the access to it. The core of the L-system functionality is the recursive function, which will be used to calculate a L-system generation. This function offers a quiet flexible interface, because it should allow to use different L-system implementations, as long as the implementation provides a set of needed functions. These functions will be discussed in detail in section \ref{section:impl}. 
 Another key part of the recursive function is the support of an arbitrary output iterator to hand over the calculated generation. This introduces not only a flexible usage of the function itself, but integrates well with already existing containers. 
 
@@ -391,8 +388,8 @@ The first important point for the implementation is the question what build syst
 A typical build system for C++ projects are Makefiles, which include a description what and how to build. The problem with Makefiles is the restricted support on Windows, which results in either an inconvenient setup or to choose another build system.
 In this context CMake comes to mind, a generator for buildsystems. It is possible to define the project in a file and CMake can generate files for different build systems, on different operating systems. These resolves not even the problem with the use of Windows, but enables other developers to build it on the system their choice.
 
-The project setup is straightforward and consists mainly of the C++ version and the files to build. A more complicated part is the setup to use a library. A library is needed for the implementation of a specilization of a turtle, the CairoTurtle. This brought up some problems, because of the devlopment on a windows machine, where the library handling is done a bit different. After some research, a sample from J. Preshing \footnote{\fullcite{cairoinclude}} provided a working setup for CMake and he even provided some precompiled library files \footnote{\fullcite{cairodll}}, called dll on Windows. 
-The setup can be found in the provieded code and should work on different operating systems.\footnote{Only tested on a windows machine with some additional setup for convenience}
+The project setup is straightforward and consists mainly of the C++ version and the files to build. A more complicated part is the setup to use a library. A library is needed for the implementation of a specilization of a turtle, the CairoTurtle. This brought up some problems, because of the devlopment on a windows machine, where the library handling is done a bit different. After some research, a sample from J. Preshing \cite{cairoinclude} provided a working setup for CMake and he even provided some precompiled library files \cite{cairodll}, called dll on Windows. 
+The setup can be found in the provieded code and should work on different operating systems.\footnote{The build process is only tested on a windows machine with some additional setup for convenience, but should also work on Unix systems}
 
 \subsection{LSystem}
 The different variants of L-system implementations are discussed in previous sections and this chapter only focuses on the proposed concept, consisting of a L-system, holding a grammar.
@@ -424,7 +421,7 @@ private:
 }
 \end{lstlisting}
 
-\noindent These templates have some general restrictions, because of the formal properties of a L-system, like the self-similarity. In order to enable the rewriting, the Successor type needs to be consisting of smaller parts which also can Successors objects. A Successor object needs also to be splittable into Predecessor objects, this has the reason, that the recursive function needs to split an Successor object into parts and use a production on it.
+\noindent These templates have some general restrictions, because of the formal properties of a L-system, like the self-similarity. In order to enable the rewriting, the Successor type needs to be consisting of smaller parts, which also are Successors objects. A Successor object needs also to be splittable into Predecessor objects, this has the reason, that the recursive function needs to split an Successor object into parts and use a production on it.
 This might sound complex, but with the concrete example of a string as Successor and char as Predecessor it should be straightforward. A string can be splitted into smaller strings, fullfilling the first requriement. The string can be splitted into chars and therfore fullfills also the other requirment.
 
 This L-system implementation uses the production object, to handle the different rewriting rules. A production is also a templated object, but only as a simple data holder without special functionality. The productions are saved in a map for fast access, because the recursive function will call get\_successor() for each element, each Predecessor object, of a L-system generation.
@@ -477,5 +474,6 @@ With this enhancement, a dynamic way of using the architecture would be possible
 \footnote{\fullcite{prusinkiewiczp.lindenmayera.2004}}
 
 \section{Sources}
+\printbibliography
 
 \end{document}

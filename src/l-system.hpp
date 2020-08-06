@@ -1,9 +1,9 @@
 #ifndef L_SYSTEM_HPP
 #define L_SYSTEM_HPP
 
-#include "production.hpp"
 #include <unordered_map>
 #include <string>
+#include <memory>
 
 /*
 This class represents a L-system, consisting of the grammar(productions and axiom).
@@ -31,26 +31,24 @@ public:
     }
 
     void add_production(const Predecessor& predeccessor, const Successor& successor) {
-        auto it = production_rules_.find(predeccessor);
+        auto it = productions_.find(predeccessor);
 
-        if (it == production_rules_.end()) {
-            Production production {predeccessor, successor };
+        if (it == productions_.end()) {
+            auto suc_ptr = std::make_shared<Successor>(successor);
 
-            production_rules_.insert(std::make_pair(predeccessor, production));
+            productions_.insert(std::make_pair(predeccessor, suc_ptr));
         }
         else {
             //TODO andere Exception nicht nur die Standard exception
-            throw new std::exception("Rule for the same predecessor already exists");
+            throw new std::exception("Production for the same predecessor already exists");
         }
     }
 
     std::template shared_ptr<Successor> get_successor(const Predecessor& predecessor) {
-        // TODO: Bessere Lösung als pointer in porduction so umständlihc zu halten ??
+        auto it = productions_.find(predecessor);
 
-        auto it = production_rules_.find(predecessor);
-
-        if (it != production_rules_.end()) {
-            return it->second.get_successor();
+        if (it != productions_.end()) {
+            return it->second;
         }
 
         return nullptr;
@@ -58,7 +56,7 @@ public:
 
 private:
     std::shared_ptr<Successor> axiom_;
-    std::unordered_map<Predecessor, Production<Predecessor, Successor>> production_rules_;
+    std::unordered_map<Predecessor, std::shared_ptr<Successor>> productions_;
 };
 
 #endif
