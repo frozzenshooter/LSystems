@@ -1,5 +1,5 @@
 \documentclass[english]{cpp-hmwk}
-   \usepackage{blindtext}
+\usepackage{blindtext}
 
 \begin{document}
 \Homework{Lindenmayer systems - a C++ implementation}{Steffen Knoblauch}
@@ -26,13 +26,13 @@ Finaly, there is a conclusion and an outlook for possible future extensions.
 \label{section:lindenmayer}
 \subsection{History}
 \label{section:history}
-''[L-systems] were introduced in 1968 by Lindenmayer as a theoretical framwork for studying the development of simple multicellular organisms [...]''\footnote{Zitiert ausd abop Preface - Abschnitt Modeling of Plants} and were later used in computer graphics to generate visuals of organisms and fractals.
+''[L-systems] were introduced in 1968 by Lindenmayer as a theoretical framwork for studying the development of simple multicellular organisms [...]'\footnote{\fullcite[Preface, p.~VI]{prusinkiewiczp.lindenmayera.2004}} and were later used in computer graphics to generate visuals of organisms and fractals.
 
-On the beginning the focus of L-systems theory was based on larger plant parts and the graphical interpretation used chains of rectangles to display a L-system. Further research into L-system extended the interpretations, resulting in a interpretation of a L-system state with a LOGO-style Turtle. These extension make it possible to model more complex plants and fractaals and display them in a graphical way. \footnote{Zitat abop Vgl. Seite 6 Chapter 1.3}
+On the beginning the focus of L-systems theory was based on larger plant parts and the graphical interpretation used chains of rectangles to display a L-system. Further research into L-system extended the interpretations, resulting in a interpretation of a L-system state with a LOGO-style Turtle. These extension make it possible to model more complex plants and fractals and display them in a graphical way. \footnote{Cf. \fullcite[Chapter 1.3, p.~6]{prusinkiewiczp.lindenmayera.2004}}.
 
 \subsection{General idea}
 \label{section:gerneralidea}
-The general idea of a L-system is the use of a rewriting system based on a formal grammar. The shape of a plant or a fractal consists of geometric pieces, for example a branch of a tree has several subbranches. ''When each piece of a shape is geometrically similar to the whole, both the shape and the cascade that generate it are called self-similar.''\footnote{Zitate The Nature of....  chapter 6 page 34 } The self-similartiy makes it possible to create a formal description for the plant or fractal generation as a formal grammar, further discussed in  section \ref{section:grammar}. The rewritng uses this formal description to generate the diffferent states of the development. ''In general, rewriting is a technique for defining complex objects by successively replacing parts of a simple initial object using a set of rewriting rules or productions.''\footnote{Zitiert von abop Chapter 1  - 1.1 Rewriting systems}. 
+The general idea of a L-system is the use of a rewriting system based on a formal grammar. The shape of a plant or a fractal consists of geometric pieces, for example a branch of a tree has several subbranches. ''When each piece of a shape is geometrically similar to the whole, both the shape and the cascade that generate it are called self-similar.''\footnote{\fullcite[Chapter 6, p.~34]{benoitmandelbrot1982} } The self-similartiy makes it possible to create a formal description for the plant or fractal generation as a formal grammar, further discussed in  section \ref{section:grammar}. The rewritng uses this formal description to generate the diffferent states of the development. ''In general, rewriting is a technique for defining complex objects by successively replacing parts of a simple initial object using a set of rewriting rules or productions.''\footnote{\fullcite[Chapter 1.1,  p.~1]{prusinkiewiczp.lindenmayera.2004}}. 
 
 For example this concept can be used to rewrite a inital string, called axiom, with defined rewriting rules.
 A simple example is the following grammar, which consits of only two nonterminals, A and B, and two production rules. 
@@ -475,4 +475,7 @@ With this enhancement, a dynamic way of using the architecture would be possible
 
 \footnote{UML DIAGRAMME NOCHMALS ÜBERARBEITEN - nicht immer wirklcihes uml sondern tw zu sehr abhängig von der Implementierung}
 \footnote{\fullcite{prusinkiewiczp.lindenmayera.2004}}
+
+\section{Sources}
+
 \end{document}
