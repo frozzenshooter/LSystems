@@ -577,6 +577,11 @@ In contrast to the TestTurtle the CairoTurtle has a more complex design with add
 \noindent Cairo is designed to produce consistent output on all output media[...].''\cite[Cf.]{cairohp}
 
 
+\noindent For this paper only a small part of the Cairo library will be used, with the goal to export a L-system fractal as png-file. In order to define the boundries of the implementation some general requirments need to be specified.The implementation of the turtle interface is self explanatory and enables the drawing itself. A generated graphic, in the context of this paper, can be influenced by the line length, the line width and the turning angle. Therefore the turtle should provide functions to configure these values.
+Furthermore the turtle should be able to export the graphic as png-file. Thereby the turtle can export the draw calls as file the size of the exported file is necessary. It would be possible to set a default size for a export file, but because of the dynamic generation the size of the fractal can vary and would be cut off parts of the result. To avoid this, the size of the file is determined using a bounding box, in which case the file is dynamically larger or smaller.\newline
+
+\noindent 
+
 
 \begin{enumerate}
 \item Cairo Lib vorstellen
@@ -585,6 +590,11 @@ In contrast to the TestTurtle the CairoTurtle has a more complex design with add
 \item Probleme mit der Bounding box berechnung -> eigene einführung der Bounding box berechnung 
 \item Export als png, aber theoretisch kann man die turtle erweitern um zum beispiel opengl oder andere ausgabequellen zu bedienen
 \end{enumerate} 
+
+
+Erklärung für state -> umsetzung mit einem path -> path ibetet aber keine funktion roatte an und somit muss man den winkel eigenständig bereechnen wofür man eigene berechnungnen machen muss
+
+reset erklären -> bei mehrfach nutzung - sont werden die bilder kombiniert -> was auch nciht gewünscht ist
 
 \subsubsection{Further implementations}
 Weitere mögliche implementierungen vorstellen
@@ -624,7 +634,6 @@ With this enhancement, a dynamic way of using the architecture would be possible
 
 \footnote{UML DIAGRAMME NOCHMALS ÜBERARBEITEN - nicht immer wirklcihes uml sondern tw zu sehr abhängig von der Implementierung}
 
-\section{Sources}
 \printbibliography
 
 \end{document}

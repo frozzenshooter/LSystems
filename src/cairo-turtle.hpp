@@ -7,7 +7,7 @@
 #include "bounding-box.hpp"
 #include "Turtle.hpp"
 
-constexpr double MATH_PI = 3.14159265358979323846;
+constexpr double CAIRO_PI = 3.14159265358979323846;
 
 /*
 This class is a simple implementation of the turtle class using the graphics library cairo.
@@ -166,8 +166,8 @@ private:
     */
     State calculate_next_state(State state) {
         auto angle = state.get_angle();
-        auto x_diff = sin(angle * MATH_PI / 180) * line_length_;
-        auto y_diff = cos(angle * MATH_PI / 180) * line_length_;
+        auto x_diff = sin(angle * CAIRO_PI / 180) * line_length_;
+        auto y_diff = cos(angle * CAIRO_PI / 180) * line_length_;
 
         auto next_x = state.get_x() + x_diff;
         auto next_y = state.get_y() + y_diff;
