@@ -481,21 +481,102 @@ The last parameter is the current\_value which will be used to hand over the res
 
 \subsection{CommandMappingIterator}
 
-\begin{enumerate}
-\item Output Iterator funktionen
-\item pointer auf turtle, damit man die entsprechenden Daten aufrufen kann 
-\item Problem: wenn die turtle nicht mehr funktioniert - pointer verweist auf etwas falsches, können die call aufrufe nicht mehr funktionieren 
-\end{enumerate}
+The CommandMappingItertator is a sample for an implementation for an output itertator which interprets the result of a L-system and calls the specified commands. 
 
+\medskip
+\begin{lstlisting}
+
+class CommandMappingIterator {
+public:
+
+    explicit CommandMappingIterator(Turtle& turtle) noexcept : turtle_(std::addressof(turtle)) {}
+
+    CommandMappingIterator& operator=(const char& c) {
+        handle(c);
+        return *this;
+    }
+
+    CommandMappingIterator& operator=(char&& c) {
+        handle(c);
+        return *this;
+    }
+
+    CommandMappingIterator& operator*() noexcept { ... }
+    CommandMappingIterator& operator++() noexcept { ...}
+    CommandMappingIterator& operator++(int) noexcept { ... }
+
+private:
+    void handle(char c) {
+        switch (c)
+        {
+        case 'F':
+            turtle_->draw();
+            break;
+        case '-':
+            turtle_->turn_left();
+            break;
+        case 'f':
+            turtle_->move();
+            break;
+        case '+':
+            turtle_->turn_right();
+            break;
+        default:
+            // do nothing
+            break;
+        }
+    }
+
+    // only save pointer to allow different turtle implementations
+    Turtle* turtle_;
+};
+
+\end{lstlisting}
+
+\noindent This iterator receives the obligatory turtle in the constructor and uses it later on to call the mapped commands. The focus of this implementation is based on the simple grammar from previous sections. Because of this the implementation only allows the use of chars and interprets them as turtle commands. This implementation allows the use of diffferent turtle implemenntations, in order to still provide flexibility.
 
 \subsection{TurtleGraphic}
-Hier erstmal abstraktes interface eklären dann auf beispiel implementierungen eingehen
 
+The central interface of the turtle is an abstract class, which provides only a minimal set of functions and is for example able to draw a fractal.
+
+\medskip
+\begin{lstlisting}
+class Turtle {
+public:
+    virtual ~Turtle() {};
+    virtual void move() = 0;
+    virtual void draw() = 0;
+    virtual void turn_right() = 0;
+    virtual void turn_left() = 0;
+};
+\end{lstlisting}
+
+\noindent There will be two implementations of this interface provided in this paper. 
 
 \subsubsection{TestTurtle}
 
-implementierung vorstellen -> zum einfachen ausgeben von text auf der concolse für aufrufe
+The first implementation is a turtle called TestTurtle. This turtle is quiet simple and can be used to print the called functions to the console and showcase the made calls.
+It just implements the minimal set of functions from the interface and outputs the called command. For example, such a command is implemented like this:
+
+\medskip
+\begin{lstlisting}
+...
+void draw() override {
+    std::cout << "[Draw-Call]: draw" << std::endl;
+}
+...
+\end{lstlisting}
+
 \subsubsection{CairoTurtle}
+In contrast to the TestTurtle the CairoTurtle has a more complex design with additonal needed functionality. This turtle is based on the graphics library Cairo.
+
+
+\noindent ``Cairo is a 2D graphics library with support for multiple output devices. Currently supported output targets include the X Window System (via both Xlib and XCB), Quartz, Win32, image buffers, PostScript, PDF, and SVG file output. Experimental backends include OpenGL, BeOS, OS/2, and DirectFB.
+
+
+\noindent Cairo is designed to produce consistent output on all output media[...].''\cite[Cf.]{cairohp}
+
+
 
 \begin{enumerate}
 \item Cairo Lib vorstellen

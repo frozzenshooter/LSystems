@@ -6,6 +6,9 @@
 /*
     TODO
 
+
+    TODO: MUSS MAN EVT BEIM OUTPUT ITERATOR NOCH EINE KLAMMER ZWECKS DEM INCREMENT MACHEN ??
+
     erklärung warum nullptr
 */
 template<template <typename, typename> class LSystem, typename Predecessor, typename Successor, typename OutputIterator>
