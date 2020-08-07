@@ -580,21 +580,28 @@ In contrast to the TestTurtle the CairoTurtle has a more complex design with add
 \noindent For this paper only a small part of the Cairo library will be used, with the goal to export a L-system fractal as png-file. In order to define the boundries of the implementation some general requirments need to be specified.The implementation of the turtle interface is self explanatory and enables the drawing itself. A generated graphic, in the context of this paper, can be influenced by the line length, the line width and the turning angle. Therefore the turtle should provide functions to configure these values.
 Furthermore the turtle should be able to export the graphic as png-file. Thereby the turtle can export the draw calls as file the size of the exported file is necessary. It would be possible to set a default size for a export file, but because of the dynamic generation the size of the fractal can vary and would be cut off parts of the result. To avoid this, the size of the file is determined using a bounding box, in which case the file is dynamically larger or smaller.\newline
 
-\noindent 
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=1\columnwidth]{../graphs/LSystem/examples/class_cairo_turtle.png}
+	\caption{Cairo turtle concept}
+	\label{figure:cairoturtle}
+\end{figure}
+
+-> in figur .. sieht man nun das konzept für eine Cairo turtle ( es fehlen noch weitere funktionen in der implementierung aber dazu später mehr)
 
 
-\begin{enumerate}
-\item Cairo Lib vorstellen
-\item Implementeirung vorstellen - einfaches abbild der cairo lib
-\item Zusätzliche Funktionen, die benötigt werden vorstellen
-\item Probleme mit der Bounding box berechnung -> eigene einführung der Bounding box berechnung 
-\item Export als png, aber theoretisch kann man die turtle erweitern um zum beispiel opengl oder andere ausgabequellen zu bedienen
-\end{enumerate} 
+erklären was eine surface target etc ist und dann path erklären -> damit kann man dann auf den status schließen und diesen erklären
 
 
 Erklärung für state -> umsetzung mit einem path -> path ibetet aber keine funktion roatte an und somit muss man den winkel eigenständig bereechnen wofür man eigene berechnungnen machen muss
 
-reset erklären -> bei mehrfach nutzung - sont werden die bilder kombiniert -> was auch nciht gewünscht ist
+Erkllären warum bounding boxen notwendig sind -> neu eingführte funktion erklräen -> update bdouning box
+
+-> erklären warum reset vorhanden ist <=> man kann mehrfach zeichnen bzw so werden die dateien nciht kombiniert
+
+-> erklären warum nur einen raw pointer -> hat keinen mehrwert, da das aufräumen von cairo gemacht wird und man damit selber keinen mehrwert hat
+
+
 
 \subsubsection{Further implementations}
 Weitere mögliche implementierungen vorstellen
@@ -605,6 +612,11 @@ Weitere implementeirungen - zb für 3D mittels von vulcan oder opengl oder ... (
 \section{Tests}
 \section{Example usage}
 \section{Problems and Restrictions}
+
+bounding box enthält keine padding berechnung damit dicke der linie auch berücksichtigt wird
+configuration momentan statisch im Code
+bounding box nur ein workaround
+
 \section{Outlook}
 
 
