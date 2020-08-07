@@ -392,6 +392,7 @@ The project setup is straightforward and consists mainly of the C++ version and 
 The setup can be found in the provided code and should work on different operating systems.\footnote{The build process is only tested on a windows machine with some additional setup for convenience, but should also work on Unix systems}
 
 \subsection{LSystem}
+\label{section:impl_l_system}
 The different variants of L-system implementations are discussed in previous sections and this chapter only focuses on the proposed concept, consisting of a L-system, holding a grammar.
 
 The proposed L-system should be as flexible as possible and has therefore templates for the underlying types. The templates are for a reason called Predecessor and Successor, like the members of a production.
@@ -428,7 +429,7 @@ This might sound complex, but with the concrete example of a string as Successor
 This L-system implementation uses the production object, to handle the different rewriting rules. A production is also a templated object, but only as a simple data holder without special functionality. The productions are saved in a map th gain fast access, because the recursive function will call get\_successor() often. This will happen for each element, each Predecessor object, of a L-system generation. Because of that the amount of calls will increase enormously with every generation.
 
 \subsection{Recursive function}
-The recursive function purpose is to calculate a generation of a L-system. In order to fullfill its purpose the function needs to provide a quiet big amount of templates.
+The recursive function purpose is to calculate a generation of a L-system. In order to fullfill its purpose the function provides multiple template parameters.
 
 \medskip
 \begin{lstlisting}
@@ -439,7 +440,7 @@ void calculate_l_system_generation(LSystem<Predecessor, Successor>& l_system, in
         current_value = l_system.get_axiom();
     }
 
-    for (auto part : *(current_value)) {
+    for (auto&& part : *(current_value)) {
         if (generation > 0) {
         
             // rewrite needed - get production result
@@ -462,15 +463,21 @@ void calculate_l_system_generation(LSystem<Predecessor, Successor>& l_system, in
 
 \end{lstlisting}
 
-As shown in the listing the 
+\noindent As shown in the listing there are several parameters needed for the calculation of a  L-system. The first parameter is the L-system itself, which can be exchanged with any L-system implementation, as long as it provides general functionality. The L-system must have at least these functions:
 
-\begin{enumerate}
-\item L-system as interface -> as long as some special functions are provided
-\item predec und successor -> auhc implizit um das L-system festzulegen
-\item output iterator -> so lange die output teratoren eigenschaften erfüllt sind dynamisch an alles übergeben -> solange der typ funktioniert - beispiel commandmappingiterator
-\item nullptr wenn man einfach nur L-system berechnen will -> wenn man es von einem bestimmten stand berechnen will kann man auch den startwert geben -> zb speichern in einem string und dann später weiterrechnen -> zwischenspeichern möglich
-\item rekursion -> wenn terminal erreicht wird kann man direkt übergeben ansonsten weiter in der rekursion bis man die maximale tiefe erreicht
-\end{enumerate}
+\begin{itemize}
+\item std::shared\_ptr<Successor> get\_axiom()
+\item std::shared\_ptr<Successor> get\_successor(const Predecessor\& predecessor)
+\end{itemize}
+
+\noindent These functions will use the grammar of an arbitrary L-system to calculate the result generation. In order to guarantee the same type for all components, both functions have the template for a Predecessor and a Successor type, which will also be used to define the L-system itself. The Successor and Predecessor type have some general restriction as described in section \ref{section:impl_l_system}.\newline
+There are additional requriements for the Successor type, because of the use in a ranged based for loop. For example, there has to be access to the begin and end of the type. The part has also to be a Predecessor object, because of the use with the get\_successor function of the L-system.
+
+The second parameter is the generation, which will be used to hand over the depth of the recursion. The value will be decremented and used for the next recursion step.
+
+The OutputIterator type is self explanatory and has to fullfill all the requirments of an arbitrary output iterator. If these requirements are fullfille, it is possible that the iterator can handle the L-system result in each way it needs to be used. For example to store it or to call a turtle function.
+
+The last parameter is the current\_value which will be used to hand over the results of previous recursion steps. On default it will be initalized with a nullptr and therefore start the calculation with the axiom of the L-system grammmar. Other use cases are also fullfilled, because it is possible to start a recursivce calculation on a arbitrary generation. The current\_value could be a already stored generation of a L-system. This generation can be be handed over to the function in order to calculate more generations and get a more detailed result. As consequence it is possible to cache a generation and use it later again.
 
 \subsection{CommandMappingIterator}
 

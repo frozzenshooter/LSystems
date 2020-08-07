@@ -17,7 +17,7 @@ void calculate_l_system_generation(LSystem<Predecessor, Successor>& l_system, in
 
     // Successor needs an iterator over its elements !!! -> NEEDS TO BE IN THE INTERFACE DESCRIPTION -> begin / end functions
 
-    for (auto part : *(current_value)) {
+    for (auto&& part : *(current_value)) {
         if (generation > 0) {
             // rewrite needed - get production result
             auto successor = l_system.get_successor(part);
