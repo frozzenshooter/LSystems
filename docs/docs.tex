@@ -145,6 +145,7 @@ f & Move in the facing direction  \\
 This interpretation enables to draw the result of the L-system by iterating over every terminal and nonterminal of the result state and calling the mapped command. If no command is mapped the symbol will be skipped.
 
 \subsection{Examples}
+\label{section:examples}
 This section will present some examples for L-system grammars which create fractals. They were created with the implementation, described in section \ref{section:impl} under the use of the command mapping from section \ref{section:turtle}. 
 \footnote{The grammars and further examples can be found under: \fullcite{examples1997}}
   
@@ -577,8 +578,15 @@ In contrast to the TestTurtle the CairoTurtle has a more complex design with add
 \noindent Cairo is designed to produce consistent output on all output media[...].''\cite[Cf.]{cairohp}
 
 
-\noindent For this paper only a small part of the Cairo library will be used, with the goal to export a L-system fractal as png-file. In order to define the boundries of the implementation some general requirments need to be specified.The implementation of the turtle interface is self explanatory and enables the drawing itself. A generated graphic, in the context of this paper, can be influenced by the line length, the line width and the turning angle. Therefore the turtle should provide functions to configure these values.
-Furthermore the turtle should be able to export the graphic as png-file. Thereby the turtle can export the draw calls as file the size of the exported file is necessary. It would be possible to set a default size for a export file, but because of the dynamic generation the size of the fractal can vary and would be cut off parts of the result. To avoid this, the size of the file is determined using a bounding box, in which case the file is dynamically larger or smaller.\newline
+\noindent For this paper only a small part of the Cairo library will be used, with the goal to export a L-system fractal as png-file. In order to define the boundries of the implementation some general requirments need to be specified.
+
+The implementation of the turtle interface is self explanatory and enables the drawing of a graphic. In the context of this paper, such a graphic can be influenced by the line length, the line width and the turning angle and the turtle should therefore provide functions to configure these values.
+
+Furthermore the turtle should be able to export a graphic as png-file. It would be possible to set a default size for a export file, but because of the dynamic generation the size of the fractal can vary and would influence the size. There are severeal solutions for this, for example to cut off parts of the graphic to fit a certain file size, which would also loose data. To avoid this, the size of the file is determined using a bounding box, in which case the file is dynamically larger or smaller.\newline
+
+\noindent Cairo offers a quiet complex drawing model, but only some general concepts are needed for this paper. The first concept is a surface, which is the object which will be drawn on. For example a surface migth be tied to a image format like png. The process of drawing will be done with a Cairo context, which keeps track of the rendering state. There is a special surface, called recording surface, this surface records the draw calls done by the context. The recorded draw calls can later be applied to another surface, in our case to a image surface, which can be exported as png.
+
+The context offers different functions to draw and create a path. A path is not a drawn object, but more like a blueprint for a line, which will be drawn with the stroke call. The context offers a line\_to and a move\_to function, which only draw to coordinates and not only a step in the facing direction. The context also doesn't offer a function to turn and it is neseccary. In order to offer the turtle function ir is neseccary to hold the state of the turtle in the turtle itself. For this purpose an additonal class is introduced, the State. The current state of the turtle will be updated for each draw call and saves the current facing direction and positon. Whenever a draw call is made, the next sate will be calculated and the path extended. This results in the class illustrated in figure \ref{figure:cairoturtle}.
 
 \begin{figure}[h!]
 	\centering
@@ -587,38 +595,23 @@ Furthermore the turtle should be able to export the graphic as png-file. Thereby
 	\label{figure:cairoturtle}
 \end{figure}
 
--> in figur .. sieht man nun das konzept für eine Cairo turtle ( es fehlen noch weitere funktionen in der implementierung aber dazu später mehr)
+\noindent In this figure the the conetxt and the surface from Cairo aren't mentioned yet. These objects will be stored as raw pointers, because they will always be used as such. Addtional is the creation and destruction handled by Cairo functions and therefore smartpointers wouldn't add an advantage.\newline
 
+\noindent Cairo offers a function to calculate the bounding box of a recording surface. The function should return the values of an rectangle, including the made draw calls on this surface, but the function didn't return the correct bouding box. In order to get the correct bouding box, an addtional class is introduced - the bounding box. The turtle will hold this class and update it on each draw call. When the save function is called the bounding box will return the size and the translation values to center the graphic for the output file.
 
-erklären was eine surface target etc ist und dann path erklären -> damit kann man dann auf den status schließen und diesen erklären
+\noindent At the moment the turtle allows to draw multiple objects, but there is no possibility to delete previous draw calls. If a second object is drawn with the same turtle instance, both objects will be included in the final image. To prevent this, the reset function is offered, which reinitializes the turtle.
 
-
-Erklärung für state -> umsetzung mit einem path -> path ibetet aber keine funktion roatte an und somit muss man den winkel eigenständig bereechnen wofür man eigene berechnungnen machen muss
-
-Erkllären warum bounding boxen notwendig sind -> neu eingführte funktion erklräen -> update bdouning box
-
--> erklären warum reset vorhanden ist <=> man kann mehrfach zeichnen bzw so werden die dateien nciht kombiniert
-
--> erklären warum nur einen raw pointer -> hat keinen mehrwert, da das aufräumen von cairo gemacht wird und man damit selber keinen mehrwert hat
-
-
+The implementation of the turtle can be found in the provided source code and at my github repository.\footnote{See https://github.com/frozzenshooter/LSystems}
 
 \subsubsection{Further implementations}
-Weitere mögliche implementierungen vorstellen
-
-SVG implementation - kann man aber theoretisch auch auf basis der cairo turtle machen
-Weitere implementeirungen - zb für 3D mittels von vulcan oder opengl oder ... (aber auch hierfür kann man für manches cairo als zwischenlib nutzen)
+The abstract turtle class allows further implementations, for example to export a svg file. This could be also done with the Cairo turtle, by including another export function, but a more lightweight solution would be also possible. For example by directly generating the svg components. Another possible enhancement would be the use of OpenGL and draw in a 3D environment. For this the turtle has to provide further functions, like the rotation around axis. For example by providing the needed transformation matrices. Overall the turtle interface should provide enough flexibility to implement an arbitrary trutle with any graphic framework.
 
 \section{Tests}
+
 \section{Example usage}
-\section{Problems and Restrictions}
+The provided sample code provides a simple example for the already shown examples in section \ref{section:examples}. The example will use the introduced architecture, consiting of the cairo turtle, the command mapping iterator and the L-system with the recursive function. 
 
-bounding box enthält keine padding berechnung damit dicke der linie auch berücksichtigt wird
-configuration momentan statisch im Code
-bounding box nur ein workaround
-
-\section{Outlook}
-
+\section{Future enhancements}
 
 
 \subsection{Configuration}
@@ -644,8 +637,16 @@ When reading the data from a stream it is necessary to know what datatype the va
 With this enhancement, a dynamic way of using the architecture would be possible.
 
 
+\section{Conclusion}
+The introduced architcture enables a flexible use of all introduced components. With the formal restrictions different L-systems can be used and calculated. The iterator supports different ways of use for the result of a L-system, like the graphic generation with a turtle. The turtle enables different implementations and supports therefore all kinds of frameworks. 
+
+\noindent Even with this flexible concept, there are remaining problems. The already mentioned bounding box in the Cairo turtle is only a workaround for the not working function from the Cairo library. This bounding box also doesn't consider the width of the lines and because of that should include a dynamic padding. Another not ideal point is the static configuration of a L-system in teh code as mentioned in the further enhancements. 
+
+\noindent Overall the concept provides a flexible and easy extensible implementaion of L-systems.
+
 \footnote{UML DIAGRAMME NOCHMALS ÜBERARBEITEN - nicht immer wirklcihes uml sondern tw zu sehr abhängig von der Implementierung}
 
+\pagebreak
 \printbibliography
 
 \end{document}

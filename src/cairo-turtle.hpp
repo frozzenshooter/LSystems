@@ -26,8 +26,7 @@ public:
         line_width_(1.0),
         angle_(60.0),
         bounding_box_(0.0, 0.0, 0.0, 0.0),
-        current_state_(0.0, 0.0, 0.0),
-        start_state_(0.0, 0.0, 0.0)
+        current_state_(0.0, 0.0, 0.0)
     {
         init();
     }
@@ -102,7 +101,6 @@ public:
         bounding_box_.set_y_min(0);
         bounding_box_.set_y_max(0);
         current_state_ = { 0.0, 0.0, 0.0 };
-        start_state_ = { 0.0, 0.0, 0.0 };
 
         init();
     }
@@ -110,7 +108,7 @@ public:
     void save_to_png(const std::string& filename) {
         // when the path is closed and you are not on the start position it will draw a line form the end position to the start position
         // move to the start so it wont draw this line
-        cairo_move_to(cr_, start_state_.get_x(), start_state_.get_y());
+        cairo_move_to(cr_, 0.0, 0.0);
         cairo_close_path(cr_);
         cairo_stroke(cr_);
 
@@ -133,13 +131,15 @@ public:
         cairo_set_source_surface(crt, recording_surface_, 0, 0);
         cairo_paint(crt);
 
-        cairo_surface_write_to_png(target, filename.c_str());
-        // auto error = cairo_surface_write_to_png(target, filename);
-        // std::cout << cairo_status_to_string(t) << std::endl;
+        auto errorcode = cairo_surface_write_to_png(target, filename.c_str());
 
         // cleanup the image surface
         cairo_destroy(crt);
         cairo_surface_destroy(target);
+
+        if (errorcode != CAIRO_STATUS_SUCCESS) {
+            throw new std::exception("Saving process failed.");
+        }
     }
 
 private:
@@ -192,7 +192,6 @@ private:
     BoundingBox bounding_box_;
 
     State current_state_;
-    State start_state_;
 
     // Cairo data
     cairo_surface_t* recording_surface_;
