@@ -21,6 +21,7 @@ add_executable(
   src/command-mapping-iterator.hpp
   src/turtle.hpp
   src/state.hpp
+  src/bounding-box.hpp
   src/cairo-turtle.hpp
   src/test-turtle.hpp
 )
@@ -57,6 +58,7 @@ add_executable(
   src/command-mapping-iterator.hpp
   src/turtle.hpp
   src/state.hpp
+  src/bounding-box.hpp
   src/cairo-turtle.hpp
   src/test-turtle.hpp
 )

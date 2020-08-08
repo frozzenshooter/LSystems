@@ -91,13 +91,6 @@ public:
         }
     }
 
-    void print() const {
-        std::cout << "Min(" << x_min_ << ", " << y_min_ << ")" << std::endl;
-        std::cout << "Max(" << x_max_ << ", " << y_max_ << ")" << std::endl;
-        std::cout << "Width: " << get_width() << std::endl;
-        std::cout << "Height: " << get_height() << std::endl;
-    }
-
 private:
 
     double x_min_, x_max_, y_min_, y_max_;

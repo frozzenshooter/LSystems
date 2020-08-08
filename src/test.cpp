@@ -49,7 +49,7 @@ public:
 
 
 /*
-Testcases for C0 coverage
+Testcases (only for C0 coverage)
 */
 int main() {
 
@@ -239,7 +239,57 @@ int main() {
     // CAIRO TURTLE TESTCASES
 
     test(++test_id, "Cairo turle", []() {
+        CairoTurtle cairo_turtle;
 
+        cairo_turtle.set_line_lenght(150.0);
+        cairo_turtle.set_line_width(2.0);
+        cairo_turtle.set_turning_angle(90);
+
+        // sample calls which will be deleted
+        cairo_turtle.draw();
+        cairo_turtle.move();
+        cairo_turtle.turn_right();
+        cairo_turtle.turn_left();
+        cairo_turtle.draw();
+
+        // delet current data
+        cairo_turtle.reset();
+
+        // draw two rectangles
+        cairo_turtle.draw();
+        cairo_turtle.turn_right();
+        cairo_turtle.draw();
+        cairo_turtle.turn_right();
+        cairo_turtle.draw();
+        cairo_turtle.turn_right();
+        cairo_turtle.draw();
+        cairo_turtle.turn_right();
+        cairo_turtle.draw();
+        cairo_turtle.turn_left();
+        cairo_turtle.draw();
+        cairo_turtle.turn_left();
+        cairo_turtle.draw();
+        cairo_turtle.turn_left();
+        cairo_turtle.draw();
+        cairo_turtle.turn_left();
+        cairo_turtle.draw();
+
+        // fail the savin process with illegal filename
+        bool excpetionThrown = false;
+        try {
+
+            cairo_turtle.save_to_png("//\\//\\two_rectangles.png");
+        }
+        catch (...) {
+            excpetionThrown = true;
+        }
+
+        if (!excpetionThrown) {
+            throw new std::exception("Save to png didn't return an exception for an impossible save process");
+        }
+
+        // correct save process
+        cairo_turtle.save_to_png("two_rectangles.png");
 
         }
     );
