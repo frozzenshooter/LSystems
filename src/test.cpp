@@ -319,7 +319,7 @@ int main() {
     );
 
 
-    std::cout << "Tests completed" << std::endl;
+    std::cout << std::endl << "Tests completed" << std::endl;
  
     return 0;
 }
