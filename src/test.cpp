@@ -277,7 +277,6 @@ int main() {
         // fail the savin process with illegal filename
         bool excpetionThrown = false;
         try {
-
             cairo_turtle.save_to_png("//\\//\\two_rectangles.png");
         }
         catch (...) {
@@ -293,6 +292,32 @@ int main() {
 
         }
     );
+
+    // BOUNDING BOX TESTCASES
+    test(++test_id, "Cairo turle", []() {
+        BoundingBox bb;
+
+        bb.set_x_min(0);
+        bb.set_y_min(0);
+        bb.set_x_max(10);
+        bb.set_y_max(10);
+        auto val = bb.get_translate_x();
+        val = bb.get_translate_y();
+
+        bb.set_x_min(-10);
+        bb.set_y_min(-10);
+        bb.set_x_max(0);
+        bb.set_y_max(0);
+        val = bb.get_translate_x();
+        val = bb.get_translate_y();
+
+        val = bb.get_x_min();
+        val = bb.get_x_max();
+        val = bb.get_y_min();
+        val = bb.get_y_max();
+        }
+    );
+
 
     std::cout << "Tests completed" << std::endl;
  

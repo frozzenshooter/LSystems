@@ -41,20 +41,18 @@ public:
 
     // Overrides
     void move() override {
-        auto next_state = calculate_next_state(current_state_);
+        calculate_next_state(current_state_);
 
-        cairo_move_to(cr_, next_state.get_x(), next_state.get_y());
-        current_state_ = next_state;
+        cairo_move_to(cr_, current_state_.get_x(), current_state_.get_y());
 
         // update the bouding box for later calculations
         updateBoundingValues(current_state_);
     }
 
     void draw() override {
-        auto next_state = calculate_next_state(current_state_);
+        calculate_next_state(current_state_);
 
-        cairo_line_to(cr_, next_state.get_x(), next_state.get_y());
-        current_state_ = next_state;
+        cairo_line_to(cr_, current_state_.get_x(), current_state_.get_y());
 
         // update the bouding box for later calculations
         updateBoundingValues(current_state_);
@@ -164,9 +162,12 @@ private:
     }
 
     /*
-    Calculate the next state from a given state
+    Calculate the next state from a given state 
+    
+    
+    TODO: DONT CREATE A NEW STATE ALL THE TIME -> JUST SET THE VALUES
     */
-    State calculate_next_state(State state) {
+    void calculate_next_state(State& state) {
         auto angle = state.get_angle();
         auto x_diff = sin(angle * CAIRO_PI / 180) * line_length_;
         auto y_diff = cos(angle * CAIRO_PI / 180) * line_length_;
@@ -174,7 +175,10 @@ private:
         auto next_x = state.get_x() + x_diff;
         auto next_y = state.get_y() + y_diff;
 
-        return { next_x, next_y, angle };
+        state.set_x(next_x);
+        state.set_y(next_y);
+
+        return;
     }
 
     /*

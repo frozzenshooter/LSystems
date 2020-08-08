@@ -52,8 +52,7 @@ public:
     void update_x(double x) {
         if (x > x_max_) {
             x_max_ = x;
-        }
-        else if (x < x_min_) {
+        } else if (x < x_min_) {
             x_min_ = x;
         }
     }
@@ -61,8 +60,7 @@ public:
     void update_y(double y) {
         if (y > y_max_) {
             y_max_ = y;
-        }
-        else if (y < y_min_) {
+        } else if (y < y_min_) {
             y_min_ = y;
         }
     }
@@ -73,10 +71,9 @@ public:
     double get_translate_x() const {
         if (x_min_ < 0) {
             return -x_min_;
-        }
-        else {
-            return x_min_;
-        }
+        } 
+
+        return x_min_; 
     }
 
     /*
@@ -85,10 +82,9 @@ public:
     double get_translate_y() const {
         if (y_min_ < 0) {
             return -y_min_;
-        }
-        else {
-            return y_min_;
-        }
+        } 
+        
+        return y_min_;       
     }
 
 private:
