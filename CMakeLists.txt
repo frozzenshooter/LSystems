@@ -23,7 +23,6 @@ add_executable(
   src/state.hpp
   src/cairo-turtle.hpp
   src/test-turtle.hpp
-
 )
 
 link_directories(${Cairo_INCLUDE_DIRS})
@@ -46,5 +45,27 @@ if(WIN32)
     endforeach()
 endif()
 
-
 #Source for cmake + dlls: https://github.com/preshing/CairoSample/blob/master/CMakeLists.txt
+
+add_executable(
+  l_systems_test
+
+  src/test.cpp
+
+  src/l-system.hpp
+  src/l-system-generation.hpp  
+  src/command-mapping-iterator.hpp
+  src/turtle.hpp
+  src/state.hpp
+  src/cairo-turtle.hpp
+  src/test-turtle.hpp
+)
+
+link_directories(${Cairo_INCLUDE_DIRS})
+target_include_directories(l_systems_test PRIVATE ${Cairo_INCLUDE_DIRS})
+target_link_libraries(l_systems_test PRIVATE ${Cairo_LIBS})
+
+# use c++ 17
+set_property(TARGET l_systems_test PROPERTY CXX_STANDARD 17)
+
+
