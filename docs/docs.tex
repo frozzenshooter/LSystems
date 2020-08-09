@@ -9,18 +9,18 @@ Lindenmayer Systems, short L-systems, are the result of research from Lindenmaye
 L-systems are a concept to mathematicaly/formal describe and model the growth processes of plant development. They are not only restricted to the plant based developments, but can also be used to generate fractals.
 
 L-systems have an inital state and use rules, like a formal grammar, to transform or rather rewrite the current state to create the next state of the development from a plant or a fractal.
-It is therefore possible to successive calculate each state of the development.
-Such a state of a L-system can be interpreted as commands for a turtle graphic, which creates the opportunity to draw the created fractals or plant states. 
+Therefore it is possible to successive calculate each state of the development.
+This state can be interpreted as commands for a turtle graphic, which creates the opportunity to draw the created fractals or plant states. 
 
-Goal of this paper is to design an architecture for L-systems, which includes an implementation for L-systems, their creation and an interface for a turtle graphic. The interface should enable the polymorphic use of different turtle graphic implementations and enable drawing of the L-system state.
+Goal of this paper is to design an architecture for L-systems, which includes an implementation for L-systems, their calculation and an interface for a turtle graphic. The interface should enable the polymorphic use of different turtle graphic implementations and enable drawing of a state.
 \end{abstract}
 
 \pagebreak
 \section{Introduction}
-L-systems are a formal way to describe plant or fractal development and interpret the result as a graphic. In order provide a general understanding of Lsystems is this  paper organised in several topics. Section \ref{section:lindenmayer} is a short introduction to the general idea,  based around object rewriting, the grammar of L- systems and the interpretation of a L-system as graphic.
-After discussing the architecture and possible implementation steps, a final concept for an implementation is proposed.The code for this implementation is available via my github repository.\footnote{See https://github.com/frozzenshooter/LSystems}
+L-systems are a formal way to describe plant or fractal development and interpret the result as a graphic. This paper aims not only to provide an overview of Lsystems, but also includes the discussion about the architecture and is organised as follows. Section \ref{section:lindenmayer} briefly introduces the general idea,  based around object rewriting, the grammar of L- systems and the interpretation of a L-system as graphic.
+After discussing the architecture and possible implementation steps, a final concept for an implementation is proposed.The code for this implementation is available via a github repository.\footnote{See https://github.com/frozzenshooter/LSystems}
 
-Finaly, there is a conclusion and an outlook for possible future extensions.
+The remainder of the paper provides some examples and a conclusion with future enhancements.
 
 \section{Lindenmayer systems}
 \label{section:lindenmayer}
@@ -28,7 +28,7 @@ Finaly, there is a conclusion and an outlook for possible future extensions.
 \label{section:history}
 ''[L-systems] were introduced in 1968 by Lindenmayer as a theoretical framwork for studying the development of simple multicellular organisms [...]'\cite[Preface, p.~VI]{prusinkiewiczp.lindenmayera.2004} and were later used in computer graphics to generate visuals of organisms and fractals.
 
-On the beginning the focus of L-systems theory was based on larger plant parts and the graphical interpretation used chains of rectangles to display a L-system. Further research into L-system extended the interpretations, resulting in a interpretation of a L-system state with a LOGO-style Turtle. These extension make it possible to model more complex plants and fractals and display them in a graphical way. \cite[Cf. Chapter 1.3, p.~6]{prusinkiewiczp.lindenmayera.2004}.
+On the beginning the focus of L-systems theory was based on larger plant parts and the graphical interpretation used chains of rectangles to display a L-system. Further research into L-system resulted in new interpretations and extensions. For example an interpretation of a L-system state with a LOGO-style Turtle. These extensions make it possible to model more complex plants and fractals and display them in a graphical way. \cite[Cf. Chapter 1.3, p.~6]{prusinkiewiczp.lindenmayera.2004}.
 
 \subsection{General idea}
 \label{section:gerneralidea}
