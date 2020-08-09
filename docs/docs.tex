@@ -606,10 +606,12 @@ The implementation of the turtle can be found in the provided source code and at
 \subsubsection{Further implementations}
 The abstract turtle class allows further implementations, for example to export a svg file. This could be also done with the Cairo turtle, by including another export function, but a more lightweight solution would be also possible. For example by directly generating the svg components. Another possible enhancement would be the use of OpenGL and draw in a 3D environment. For this the turtle has to provide further functions, like the rotation around axis. For example by providing the needed transformation matrices. Overall the turtle interface should provide enough flexibility to implement an arbitrary trutle with any graphic framework.
 
-\section{Tests}
-
 \section{Example usage}
 The provided sample code provides a simple example for the already shown examples in section \ref{section:examples}. The example will use the introduced architecture, consiting of the cairo turtle, the command mapping iterator and the L-system with the recursive function. 
+
+\section{Testing}
+
+For the introduced components there are test cases for a C0-coverage. The test cases are defined in an additional executable. The additional executable is also defined with CMake and provides an independent usage of teh test project and the L-system project, containing the examples.
 
 \section{Future enhancements}
 
