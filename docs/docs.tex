@@ -18,7 +18,7 @@ Goal of this paper is to design an architecture for L-systems, which includes an
 \pagebreak
 \section{Introduction}
 L-systems are a formal way to describe plant or fractal development and interpret the result as a graphic. This paper aims not only to provide an overview of Lsystems, but also includes the discussion about the architecture and is organised as follows. Section \ref{section:lindenmayer} briefly introduces the general idea,  based around object rewriting, the grammar of L- systems and the interpretation of a L-system as graphic.
-After discussing the architecture and possible implementation steps, a final concept for an implementation is proposed.The code for this implementation is available via a github repository.\footnote{See https://github.com/frozzenshooter/LSystems}
+After discussing the architecture and possible implementation steps, a final concept for an implementation is proposed. The code for this implementation is available via a github repository.\footnote{See https://github.com/frozzenshooter/LSystems}
 
 The remainder of the paper provides some examples and a conclusion with future enhancements.
 
@@ -28,15 +28,15 @@ The remainder of the paper provides some examples and a conclusion with future e
 \label{section:history}
 ''[L-systems] were introduced in 1968 by Lindenmayer as a theoretical framwork for studying the development of simple multicellular organisms [...]'\cite[Preface, p.~VI]{prusinkiewiczp.lindenmayera.2004} and were later used in computer graphics to generate visuals of organisms and fractals.
 
-On the beginning the focus of L-systems theory was based on larger plant parts and the graphical interpretation used chains of rectangles to display a L-system. Further research into L-system resulted in new interpretations and extensions. For example an interpretation of a L-system state with a LOGO-style Turtle. These extensions make it possible to model more complex plants and fractals and display them in a graphical way. \cite[Cf. Chapter 1.3, p.~6]{prusinkiewiczp.lindenmayera.2004}.
+In the beginning the focus of L-systems theory was based on larger plant parts and the graphical interpretation used chains of rectangles to display a L-system. Further research into L-system resulted in new interpretations and extensions. For example an interpretation of a L-system state with a LOGO-style Turtle. These extensions make it possible to model more complex plants and fractals and display them in a graphical way. \cite[Cf. Chapter 1.3, p.~6]{prusinkiewiczp.lindenmayera.2004}.
 
 \subsection{General idea}
 \label{section:gerneralidea}
-The general idea of a L-system is the use of a rewriting system based on a formal grammar. The shape of a plant or a fractal consists of geometric pieces, for example a branch of a tree has several subbranches. ''When each piece of a shape is geometrically similar to the whole, both the shape and the cascade that generate it are called self-similar.''\cite[Chapter 6, p.~34]{benoitmandelbrot1982}The self-similartiy makes it possible to create a formal description for the plant or fractal generation as a formal grammar, further discussed in  section \ref{section:grammar}. The rewritng uses this formal description to generate the diffferent states of the development. ''In general, rewriting is a technique for defining complex objects by successively replacing parts of a simple initial object using a set of rewriting rules or productions.''\cite[Chapter 1.1,  p.~1]{prusinkiewiczp.lindenmayera.2004}. 
+The use of a rewriting system, based on a formal grammar, is the general idea of a L-system. The shape of a plant or a fractal consists of geometric pieces, for example a branch of a tree has several subbranches. ''When each piece of a shape is geometrically similar to the whole, both the shape and the cascade that generate it are called self-similar.''\cite[Chapter 6, p.~34]{benoitmandelbrot1982} The self-similaritiy makes it possible to create a formal description for the plant or fractal generation as a formal grammar, further discussed in section \ref{section:grammar}. Rewriting uses this formal description to generate the diffferent states of the development. ''In general, rewriting is a technique for defining complex objects by successively replacing parts of a simple initial object using a set of rewriting rules or productions.''\cite[Chapter 1.1,  p.~1]{prusinkiewiczp.lindenmayera.2004}. 
 
-For example this concept can be used to rewrite a inital string, called axiom, with defined rewriting rules.
-A simple example is the following grammar, which consits of only two nonterminals, A and B, and two production rules. 
-The first rule is A\rightarrow AB, the second rule is B\rightarrow A. The arrow '\rightarrow' symbols the replacement, the rewriting, of the object on the left with the object of the right of the arrow.
+This concept can be used to rewrite an inital string, called axiom, with specific rewriting rules.
+A simple example is the following grammar, which consits of only two nonterminals, A and B, and two productions. 
+The first production is A\rightarrow AB, the second one is B\rightarrow A. The arrow '\rightarrow' symbols the replacement, the rewriting, of the object on the left with the object on the right of the arrow.
 The L-system has as axiom the value 'A' and will be expanded with these rules, creating the results in figure \ref{figure:simple_lsystem}.
 
 \begin{figure}[h!]
@@ -46,13 +46,13 @@ The L-system has as axiom the value 'A' and will be expanded with these rules, c
 	\label{figure:simple_lsystem}
 \end{figure}
 
-The first step is to use rule one, which replaces the nonterminal A with AB, resulting in the first generation. The result of the first generation ('AB') will be used to generate the second generation. For all nonterminals the productions will be parallel applied. In this case the nonterminals A and B will be replaced, because both have existing production rules. This results in the second generation with 'ABA' as result.
+As first step, using rule one, the nonterminal A is replaced with AB, resulting in the first generation. The result of the first generation process ('AB') will be used to determine the second generation. For all nonterminals the productions can be parallel applied. In this case, the nonterminals A and B will be replaced, because both have existing productions. This results in the second generation with 'ABA' as result.
 
-This process can be successively repeated recursive for a arbitrary amount of generations and create a fractal or plant with self-similar pieces. The more generations are calculated, the more detailed is the resulting state. 
+This process can be successively and recursively repeated for an arbitrary amount of generations and create a fractal or plant with self-similar parts. The more generations are calculated, the more detailed is the resulting state. 
 
 \subsection{Grammar}
 \label{section:grammar}
-The definition of an L-system can be done similar to a Chomsky grammar, but there are some general differences. In Chomsky grammars the productions are applied sequentially, whereas in L-systems they can be applied parallel. This has some consequences for the formal properties of an L-system, for example a context-free L-system can produce a language which cannot be produced by a context-free Chomsky grammar.\cite[Cf. Chapter 1.1, p.~3]{prusinkiewiczp.lindenmayera.2004}
+The definition of an L-system can be done similar to a Chomsky grammar, but there are some general differences. In Chomsky grammars, the productions are applied sequentially, whereas in L-systems they can be applied parallel. This has some consequences for the formal properties of an L-system, for example a context-free L-system can produce a language which cannot be produced by a context-free Chomsky grammar.\cite[Cf. Chapter 1.1, p.~3]{prusinkiewiczp.lindenmayera.2004}
 
 \noindent This paper will only focus on a class of L-systems, the DOL-systems, which can be used for string based rewriting systems. This class is deterministic (D) and context-free (O) and can be formaly described  by a tuple:
 
@@ -60,33 +60,33 @@ The definition of an L-system can be done similar to a Chomsky grammar, but ther
 G = (V, $\omega$, P)
 \end{center}
 
-V: set of symbols as alphabet of the l-system - consiting of terminals and non terminals
+V: set of symbols as alphabet of the L-system - consisting of terminals and non terminals
 
 $\omega$: axiom - nonempty word of the alphabet, which should contain at least one nonterminal
 
 P: set of productions
 
 \medskip
-\noindent A production conistst of a predecessor, a nonterminal symbol of the alphabet, and a successor, the replacment of the nonterminal in the next generation.
-To guarantee that the l-system is deterministic, there only can be one production for each nonterminal of the alphabet.The identity production is implicit a part of the set of productions.\cite[Cf. Chapter 1.2, p.~4f.]{prusinkiewiczp.lindenmayera.2004}
+\noindent A production consists of a predecessor, a nonterminal symbol of the alphabet, and a successor, the replacment of the nonterminal in the next generation.
+To guarantee the deterministic characteristic of a L-system, it is relveant that there is only one production for each nonterminal of the alphabet.The identity production is implicit a part of the set of productions.\cite[Cf. Chapter 1.2, p.~4f.]{prusinkiewiczp.lindenmayera.2004}
 
 \medskip
 
-If in the process of rewriting a terminal symbol is found, there will be no explicit production applied, but rather the identity production is applied. Terminals will therefore remain in future generations and won't extend an L-system with a production.
+If in the process of rewriting a terminal symbol is found, there will be no explicit production applied, but rather the identity production is applied. Terminals will therefore remain in future generations and won't extend the result further.
 
 \medskip
 
-\noindent As mentioned in section \ref{section:history} there are other extensions of a basic L-systems. The extensions introduce more possiblities for the generation process, like a non-deterministic behaviour. These extensions result in new grammars which can represent much complexer plants or fractals:
+\noindent As mentioned in section \ref{section:history} there are other extensions of a basic L-system. The extensions introduce more possiblities for the generation process, like a non-deterministic behaviour. These extensions result in new grammars, which can represent more complex plants or fractals:
 
 \begin{itemize}
-\item Stochastic grammars: the system isn't deterministic anymore, because there can be multiple production rules for the same nonterminal with a probaility which results in a randomisation of the generation
-\item Context senstive grammars: production not only look for the nonterminal, they rather look for the symbols bevor and after the current symbol to process, the context.
+\item Stochastic grammars: the system isn't deterministic anymore, because there can be multiple productions with a probaility for the same nonterminal, which results in a randomisation of the generation
+\item Context senstive grammars: productions don't only look for the nonterminal, they rather look for the symbols bevor and after the current symbol to process, the context
 \item Parametric grammars: it is possible to set additional parameters for a symbol to influence the generation or the evaluation of the data
 \end{itemize}
 
 \subsection{Interpretation as turtle commands}
 \label{section:turtle}
-The L-systems introduced to this points are capable of creating a string based on a grammar. In order to create a graphic of a state of a L-system, the resulting state can be interpreted as commands of a turtle.
+The L-systems introduced to this point are capable of creating a string, based on a grammar. In order to create a graphic of a L-system state, this state can be interpreted as commands of a turtle.
 
 \noindent A turtle is a concept introduced by the language Logo as a tool for computer graphics.\cite[Cf. Chapter 10, p.~179]{harvey1997computer}
 
@@ -102,11 +102,11 @@ $\alpha$ is the direction in which a turtle is facing, called heading
 
 \medskip
 
-\noindent A turtle can move in the Cartesian coordinate system by altering the current state.You can think of it as a real turtle with a pen attached to it, walking on a paper. While moving in the coordinate system, or on the paper, the turtle can draw lines. Given this concept the turtle can receive different commands. The commands let the turtle walk on the paper or the coordinate system by altering the current state and drawing a line. For now I'll restrict this to a two dimensional coordinate system, but it is also possible to enhance it for a three dimensional coordinate system.
+\noindent A turtle can move in the Cartesian coordinate system by altering the current state. It is possible to think of it as a real turtle with a pen attached to it, walking on a paper. While moving thourgh the coordinate system or the paper, the turtle can draw lines. Given that, the turtle can receive different commands. The commands let the turtle walk on the paper or the coordinate system by altering the current state and drawing a line. For now it will be restricted to a two dimensional coordinate system, but it is also possible to enhance it for a three dimensional coordinate system.
 
 \medskip
 
-\noindent The walking path of the turtle is controlled by commands. Therefore a defined step size \textit{d} and an angle \textit{$\theta$ } is needed to calculate the next state of the turtle. There are these general commands: \cite[Cf. Chapter 2]{goldman2004turtle}
+\noindent The walking path of the turtle is controlled by commands. Therefore, a defined step size \textit{d} and an angle \textit{$\theta$ } is needed to calculate the next state of the turtle. These general commands are offered from a turtle: \cite[Cf. Chapter 2]{goldman2004turtle}
 
 \begin{itemize}
 \item Draw: moves one step in the current facing direction drawing a line 
@@ -115,14 +115,14 @@ $\alpha$ is the direction in which a turtle is facing, called heading
 \item Left-turn: turns to the left by the angle $\theta$
 \end{itemize}
 
-\noindent Additional to the state of the turtle the state there is a state for the pen. The pen state consist of the color and its width, which will result in more colorfull or different pictures.
+\noindent Additional tothe turtle state, with postion and facing direction, there is a state for the pen. The pen state is part of a turtle and consist for example of a color and or a line width.
 
 \medskip
 
-\noindent  With the given turtle concept is it possible to interpret the result of an L-system. Therefore a mapping between the symbols in the alphabet and the commands which should be called is needed.
+\noindent  The explained turtle concept makes it possible to interpret the result of a L-system. Therefore, a mapping between the symbols in the alphabet and the commands, which should be executed, is needed.
 This could be done by an arbitrary mapping between a nonterminal or a terminal and a command. For this paper the following mapping will be used, but the concept for the architecture includes the possibility to use other mappings in the future.
 
-\noindent For the mapping alphabet V is used, which is a simple basic version of a L-system:
+\noindent Alphabet V,  a basic version of a L-system, is used for the mapping:
 
 \begin{center}
 V = (F, f, +, -)
@@ -142,11 +142,11 @@ f & Move in the facing direction  \\
 \end{tabular}
 \end{center}
 
-This interpretation enables to draw the result of the L-system by iterating over every terminal and nonterminal of the result state and calling the mapped command. If no command is mapped the symbol will be skipped.
+\noindent This interpretation enables to draw the result of the L-system by iterating over every terminal and nonterminal of the result state and calling the mapped command. If no command is mapped the symbol will be skipped.
 
 \subsection{Examples}
 \label{section:examples}
-This section will present some examples for L-system grammars which create fractals. They were created with the implementation, described in section \ref{section:impl} under the use of the command mapping from section \ref{section:turtle}. 
+This section will present some examples for L-system grammars which create fractals. They were created with the implementation described in section \ref{section:impl}, under the use of the command mapping from section \ref{section:turtle}. 
 \footnote{The grammars and further examples can be found under: \fullcite{examples1997}}
   
 \subsubsection{Hilbert curve}
@@ -158,7 +158,7 @@ This fractal will be generated with the simple axiom 'L' and tow productions:
 \end{itemize}
 
 
-\noindent The turtle will be initalized with an angle of 90° and length \textit{d} of 5 for a step. The result is displayed in figure \ref{figure:Hilbert}.
+\noindent The turtle will be initalized with an angle of 90° and length \textit{d} = 5 for a single step. The result is displayed in figure \ref{figure:Hilbert}.
 
 \begin{figure}[h!]
 	\centering
@@ -176,7 +176,7 @@ This fractal will be created with 'F' as axiom and two productions:
 \item Y\rightarrow XF-YF-X
 \end{itemize}
 
-\noindent The turtle will be initalized with an angle of 60° and length \textit{d} of 3 for a step. The result is displayed in figure \ref{figure:Sierpinski}.
+\noindent The turtle will be initalized with an angle of 60° and length \textit{d} = 3 for a single step. The result is displayed in figure \ref{figure:Sierpinski}.
  
 \begin{figure}[h!]
 	\centering
