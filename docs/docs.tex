@@ -615,29 +615,15 @@ For the introduced components there are test cases for a C0-coverage. The test c
 
 \section{Future enhancements}
 
+The implementation of the different components has the potential of further extensions. Obviously the turtle allows new implementations, for example based on other frameworks. But also the already provided implementation of the Cairo turtle can be improved. For example, it would be possible to add a new function to alter the drawing colors. Another possible enhancment is the scaling of a fractal in the Cairo turtle. At the moment the size of the picture will be determined with the bouding box, but this has the disadvantage, that it can grow to an potential endless size. In order to prevent this it would be possible to use further affine transformations on the data and scale the picture to a upper bound size.
 
-\subsection{Configuration}
-Some of the discussed components in this paper can be configured. The configuration could either be done in code, for example by setting it with constants, or in a dynamic way. A dynamic way would be possible by loading the configuration data from a stream, for example a filestream.
-For the configuration of the introduced components it is sufficient to use simple key value pairs. For example such file could contain the configuration of a L-system:
+\noindent Another part of the architecture is the L-system itself. The L-system is just a dumb data holder and therefore there is potential to provide further functionality. At the moment the L-system validates, that there is only one production for a predecessor, but it won't check if a generationwith the production is even possible. It would be possible to provide a function, which will check if the provided productions will enable a rewrite of the L-system. 
 
-\medskip
+\noindent A futher enhancement would be additonal test cases. At the moment only a C0 coverage is provided, but further test cases could provide a better testing result.
 
-generations 14
+\noindent Another possible enhancement it the configuration. At the moment the implementation only provides a configuration in the code itself. A way more flexible and convinenent way is the configuration with files. This would make it possible to configure a L-system without a change in code, only by providing such a file. A dynamic configuration can include not only the L-system grammar but also configuration of a turtle and the recursivec function. Such a complete configuration can be done with a file, but should be seperated to maintain the flexibility. A simple solution are key-value pairs, but this has the downside of a bad seperation for the different configuration aspects.
 
-axiom X
-
-rule X YF+XF+Y
-
-rule Y XF-YF-X
-
-\medskip
-
-\noindent In this example the key is seperated by the value with a space and in each row there is another key value pair. A problem is, that a value can not only consist of a single value, but can instead have of multiple values. For example a rule can consist of a precessor and a successor value. 
-A solution for the multi value problem could be the use of a JSON object. A JSON object would allow to encapsulate the values without a restriction, but for this paper a simpler approach should be sufficient. As solution for the multi value objects is a simple separation of the values with a space. This is already shown in the example above, where a rule is splitted into three values.
-When reading the data from a stream it is necessary to know what datatype the values have and therefore a mapping between the keys and the value type is needed. This can be done by a static mapping in the code, which will also allow to solve this in a flexible way. At least so flexible that the mapping can be set in a central place at the code.
-
-With this enhancement, a dynamic way of using the architecture would be possible.
-
+A solution is the use of JSON. This allows the seperation of the configuration for each component. A configuration file contains the JSON-object and allows the dynamic configuration. In order to be able to read the file the architecture can provide another component, reading an input stream and loading the configuration. Afterwards, this component provides the configuration for the other components.
 
 \section{Conclusion}
 The introduced architcture enables a flexible use of all introduced components. With the formal restrictions different L-systems can be used and calculated. The iterator supports different ways of use for the result of a L-system, like the graphic generation with a turtle. The turtle enables different implementations and supports therefore all kinds of frameworks. 
@@ -647,6 +633,7 @@ The introduced architcture enables a flexible use of all introduced components. 
 \noindent Overall the concept provides a flexible and easy extensible implementaion of L-systems.
 
 \footnote{UML DIAGRAMME NOCHMALS ÜBERARBEITEN - nicht immer wirklcihes uml sondern tw zu sehr abhängig von der Implementierung}
+\footnote{would be umformulieren}
 
 \pagebreak
 \printbibliography
