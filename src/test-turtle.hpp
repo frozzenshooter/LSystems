@@ -5,7 +5,7 @@
 #include "turtle.hpp"
 
 /*
-Implementation of the turtle ingterface, which will output the called functions via std::out
+Implementation of the turtle interface, which will output the called functions via std::out
 */
 class TestTurtle : public Turtle {
 public:

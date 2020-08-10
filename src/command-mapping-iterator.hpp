@@ -57,9 +57,7 @@ private:
         }
     }
 
-    // only save pointer to allow different turtle implementations
+    // only observing pointer -> raw pointer enough
     Turtle* turtle_;
-
-    //TODO evt einen smart pointer verwenden ?
 };
 #endif
