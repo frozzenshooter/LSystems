@@ -3,7 +3,7 @@ L-systemas are a theoretical framework introduced by Lindenmayer. Originaly desi
 
 ## General idea
 L-systems follow the simple concept of rewriting. Rewriting describes the process of successivly replacing parts of an inital object(string) with rewriting rules/productions.
-On the contrary to context-free Chomsky grammars L-systems doesn't apply productionrules sequentially. They apply it in a simulataneously way and replace all letters in a given word at once.
+They are apllied simultaneously and replace all elements in a given object.
 
 The inital object is called the axiom, which will be rewritten by the predetermined productions.
 Each complete rewrite is called generation with a new result object(string).
