@@ -7,6 +7,7 @@ Base class for a turtle, which at least supports the general commands
 class Turtle {
 public:
     virtual ~Turtle() {};
+
     /*
     Moves one step into the facing direction (without drawing)
     */
