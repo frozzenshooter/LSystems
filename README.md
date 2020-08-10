@@ -1,5 +1,5 @@
-# LSystems (Lindenmayer-Systems)
-L-systemas are a theoretical framework introduced by Lindenmayer. Originaly designed to study the development of multicellular organism, in computer graphics they can be used to visualize realistic plant structures and develpoment processes. In the following paragraphs a short overview is provided, a description with more details can be found in the provided pdf in the docs/ folder. 
+# L-systems (Lindenmayer-Systems)
+L-systems are a theoretical framework introduced by A. Lindenmayer. Originaly designed to study the development of multicellular organism, in computer graphics they can be used to visualize realistic plant structures and develpoment processes. In the following paragraphs a short overview is provided, a description with more details can be found in the provided pdf in the docs/ folder. 
 
 ## General idea
 L-systems follow the simple concept of rewriting. Rewriting describes the process of successivly replacing parts of an inital object(string) with rewriting rules/productions.
