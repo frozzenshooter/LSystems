@@ -121,6 +121,8 @@ public:
         // cairo_recording_surface_ink_extents(recording_surface_, &x0, &y0, &width, &height);
 
         // create an image surface to execute the recorded data
+
+        //TODO double to int conversion here evt explizit lösen!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         cairo_surface_t* target = cairo_image_surface_create(CAIRO_FORMAT_RGB24, bounding_box_.get_width(), bounding_box_.get_height());
         cairo_t* crt = cairo_create(target);
 
