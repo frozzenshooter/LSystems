@@ -2,9 +2,10 @@
 #define BOUNDING_BOX_HPP
 
 /*
-The bounding box represents a rectangle, build from to points.
+The bounding box represents a rectangle, build up from two points. This rectangle will receive points in a two dimensional coordinate system.
+It will strecht the rectangle to always include all of these points.
 
-It offers to calculate the needed translation values, the width and the height to center an image in it.
+The bounding box offers to calculate the needed translation values, the width and the height to center or scale the coordinate system.
 */
 class BoundingBox {
 public:

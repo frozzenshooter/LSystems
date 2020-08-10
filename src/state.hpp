@@ -1,12 +1,16 @@
 #ifndef STATE_HPP
 #define STATE_HPP
 
+/*
+The state represents the state of a turtle in a two dimensional coordinate system.
+
+The state consists of a position with x and y coordinates and the current facing direction.
+*/
 class State {
 public:
-    // === constructor ==============================================
+
     State(double x_position, double y_position, double angle) : x_position_(x_position), y_position_(y_position), angle_(angle) {};
 
-    /// === getter/setter ===========================================
     void set_x(double x) {
         x_position_ = x;
     }

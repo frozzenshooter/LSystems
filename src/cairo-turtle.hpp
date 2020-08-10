@@ -61,7 +61,7 @@ public:
     void turn_right() override {
         auto angle = current_state_.get_angle();
 
-        // No need to normalize angle because the only use is with sin/cos
+        // No need to normalize (force range between 0 -360) angle because the only use is with sin/cos
         angle += angle_;
 
         current_state_.set_angle(angle);
@@ -70,7 +70,7 @@ public:
     void turn_left() override {
         auto angle = current_state_.get_angle();
 
-        // No need to normalize angle because the only use is with sin/cos
+        // No need to normalize (force range between 0 -360) angle because the only use is with sin/cos
         angle -= angle_;
 
         current_state_.set_angle(angle);
@@ -127,7 +127,7 @@ public:
         cairo_t* crt = cairo_create(target);
 
         // Translate the surface so that the lines will be in the covered area fo the image surface
-        cairo_translate(crt, bounding_box_.get_translate_x(), bounding_box_.get_translate_y());
+        cairo_translate(crt, std::round(bounding_box_.get_translate_x()), std::round(bounding_box_.get_translate_y()));
 
         // Paint the recorded commands to the image surface
         cairo_set_source_surface(crt, recording_surface_, 0, 0);
@@ -140,7 +140,7 @@ public:
         cairo_surface_destroy(target);
 
         if (errorcode != CAIRO_STATUS_SUCCESS) {
-            throw new std::exception("Saving process failed.");
+            throw new std::runtime_error("Saving process failed.");
         }
     }
 
