@@ -6,16 +6,16 @@
 #include <memory>
 
 /*
-This class represents a L-system, consisting of the grammar(productions and axiom).
+This class represents a L-system, holding the grammar(productions and axiom).
 
 There are some formal restrictions for the templates, because otherwise it won't be useable as intended.
-Because of the self-similarity of a L-system, the axiom and the successor of the production should have the same type.
-This type consitst of smaller objects, which can be represented by the Predecessor. These objects have to offer a function to compare them to enable the rewriting.
+Because of the self-similarity of a L-system, the axiom and the successor have the same type.
 
-In conclusion a successor object consits of Predecessor objects. The rewriting will replace the Predecessor object with a Successor object and therefore with some Predecessor objects.
+The succesor should be able to containt objects of itself for this too. Additonal, the successor type has to consist of smaller objects, the predecessors.
+These objects have to offer a function to compare them to enable the rewriting.
 
 An example for this is char as Predeccesor and String as Successor. A char can be compared with another char.
-If such a char is replaced in a string with the Successor string, the result will be a string, consisting of chars.
+If such a char is replaced in a string(e.g. axiom) with a successor string, the result will be a string, consisting of chars.
 */
 template <typename Predecessor, typename Successor>
 class LSystem {
@@ -40,8 +40,7 @@ public:
             productions_.insert(std::make_pair(predeccessor, suc_ptr));
         }
         else {
-            //TODO andere Exception nicht nur die Standard exception
-            throw new std::exception("Production for the same predecessor already exists");
+            throw new std::logic_error("Production for the same predecessor already exists");
         }
     }
 
