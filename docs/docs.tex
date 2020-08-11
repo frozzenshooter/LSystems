@@ -485,7 +485,7 @@ The last parameter is the current\_value which will be used to hand over the res
 
 \subsection{CommandMappingIterator}
 
-The CommandMappingItertator is a sample for an implementation for an output itertator which interprets the result of a L-system and calls the specified commands. 
+The CommandMappingItertator is an example implementation for an output itertator, which interprets the result of a L-system and calls the mapped commands. 
 
 \medskip
 \begin{lstlisting}
@@ -537,11 +537,11 @@ private:
 
 \end{lstlisting}
 
-\noindent This iterator receives a turtle implementation in the constructor and uses it later on to call the mapped commands. The focus of this implementation is based on the simple grammar from previous sections. The implementation only allows the use of chars, because of this. The chars will be assigned and interpreted in the handle function as turtle commands. This implementation allows the use of diffferent turtle implemenntations, in order to still provide the flexibility given by the polymorphism.
+\noindent This iterator receives a turtle implementation in the constructor and uses it later to call the mapped commands. This implementation is based on the simple grammar from previous sections and allows only the use of chars. The chars will be assigned and interpreted, in the handle function, as turtle commands. The use of diffferent turtle implementations is possible, in order to still provide the flexibility given by the polymorphism.
 
 \subsection{TurtleGraphic}
 
-The central interface of the turtle is an abstract class, which provides only a minimal set of functions and is for example able to draw a fractal.
+The base for turtle implementations is an interface, which provides only a minimal set of functions. With these functions it is able to draw for example a fractal, but doesn't restrict an underlying implementation.
 
 \medskip
 \begin{lstlisting}
@@ -555,11 +555,11 @@ public:
 };
 \end{lstlisting}
 
-\noindent There will be two implementations of this interface provided in this paper. 
+\noindent Based on this interface, there will be two implementations provided in this paper. 
 
 \subsubsection{TestTurtle}
 
-The first implementation is a turtle called TestTurtle. This turtle is quiet simple and can be used to print the called functions to the console and showcase the made calls.
+The first implementation is a turtle called TestTurtle. This turtle is quiet simple and can be used to print the called functions to the console and test the made calls.
 It just implements the minimal set of functions from the interface and outputs the called command. For example, such a command is implemented like this:
 
 \medskip
@@ -571,25 +571,26 @@ void draw() override {
 ...
 \end{lstlisting}
 
+There are no further requirments, like a configuration, implemented and only the minimal functionality.
+
 \subsubsection{CairoTurtle}
-In contrast to the TestTurtle the CairoTurtle has a more complex design with additonal needed functionality. This turtle is based on the graphics library Cairo.
+In contrast to the TestTurtle, the CairoTurtle has a more complex design with additonal needed functionality. This turtle is based on the graphics library Cairo.
 
 
-\noindent ``Cairo is a 2D graphics library with support for multiple output devices. Currently supported output targets include the X Window System (via both Xlib and XCB), Quartz, Win32, image buffers, PostScript, PDF, and SVG file output. Experimental backends include OpenGL, BeOS, OS/2, and DirectFB.
+``Cairo is a 2D graphics library with support for multiple output devices. Currently supported output targets include the X Window System (via both Xlib and XCB), Quartz, Win32, image buffers, PostScript, PDF, and SVG file output. Experimental backends include OpenGL, BeOS, OS/2, and DirectFB.
+
+Cairo is designed to produce consistent output on all output media[...].''\cite[Cf.]{cairohp}
 
 
-\noindent Cairo is designed to produce consistent output on all output media[...].''\cite[Cf.]{cairohp}
+\noindent Only a small part of the Cairo library will be used for this paper. The goal is to export a L-system fractal as PNG-file. In order to define the boundries of the implementation some general requirments need to be specified.
 
+The implementation of the turtle interface is self explanatory and enables the drawing of a graphic. In the context of this paper, such a graphic can be influenced by the line length, the line width and the turning angle. The CairoTurtle should therefore provide functions to configure these values.
 
-\noindent For this paper only a small part of the Cairo library will be used, with the goal to export a L-system fractal as png-file. In order to define the boundries of the implementation some general requirments need to be specified.
+Furthermore, the turtle should be able to export a graphic as PNG-file. It would be possible to set a default size for a export file, but because of the dynamic generation is this not a good solution. In the dynamic generation can the size of the fractal vary and influence the size. There are severeal solutions for this, for example to cut off parts of the graphic to fit a certain file size. Cutting off data outside of the specified size looses data and reduces the quality of the result image. To avoid this, the size of the file is determined using a bounding box, in which case the file is dynamically larger or smaller.\newline
 
-The implementation of the turtle interface is self explanatory and enables the drawing of a graphic. In the context of this paper, such a graphic can be influenced by the line length, the line width and the turning angle and the turtle should therefore provide functions to configure these values.
+\noindent The Cairo library offers a quiet complex drawing model, but only some general concepts are needed for this paper. The first concept or component is a surface, which is the object to drawn on. For example a surface migth be tied to an image format like PNG. The process of drawing will be done with a Cairo context. The context keeps track of the rendering state, for example about the color. The Cairo library provides a special surface, called recording surface. This surface records the draw calls done by the context, without binding it to a output target like an image. The recorded draw calls can later be applied to another surface, in our case to a image surface, which can be exported as PNG.
 
-Furthermore the turtle should be able to export a graphic as png-file. It would be possible to set a default size for a export file, but because of the dynamic generation the size of the fractal can vary and would influence the size. There are severeal solutions for this, for example to cut off parts of the graphic to fit a certain file size, which would also loose data. To avoid this, the size of the file is determined using a bounding box, in which case the file is dynamically larger or smaller.\newline
-
-\noindent Cairo offers a quiet complex drawing model, but only some general concepts are needed for this paper. The first concept is a surface, which is the object which will be drawn on. For example a surface migth be tied to a image format like png. The process of drawing will be done with a Cairo context, which keeps track of the rendering state. There is a special surface, called recording surface, this surface records the draw calls done by the context. The recorded draw calls can later be applied to another surface, in our case to a image surface, which can be exported as png.
-
-The context offers different functions to draw and create a path. A path is not a drawn object, but more like a blueprint for a line, which will be drawn with the stroke call. The context offers a line\_to and a move\_to function, which only draw to coordinates and not only a step in the facing direction. The context also doesn't offer a function to turn and it is neseccary. In order to offer the turtle function ir is neseccary to hold the state of the turtle in the turtle itself. For this purpose an additonal class is introduced, the State. The current state of the turtle will be updated for each draw call and saves the current facing direction and positon. Whenever a draw call is made, the next sate will be calculated and the path extended. This results in the class illustrated in figure \ref{figure:cairoturtle}.
+The Cairo context offers different functions to draw and create a path. A path is not a drawn object, but more like a blueprint for a line, which will be drawn with the stroke call. The context offers a line\_to and a move\_to function, to draw a line to or move to coordinates. There is no turn function to change the current facing direction about an angle. Because of that, the implementation has to hold the state of the turtle, to be able to calculate the next coordinates depending on the current facing direction. For this purpose an additonal class is introduced, the State. The current state of the turtle will be updated for each draw call and saves the current facing direction and positon. Whenever a draw call is made, the next sate will be calculated and the path extended. This results in the class illustrated in figure \ref{figure:cairoturtle}.
 
 \begin{figure}[h!]
 	\centering
@@ -598,24 +599,27 @@ The context offers different functions to draw and create a path. A path is not 
 	\label{figure:cairoturtle}
 \end{figure}
 
-\noindent In this figure the the conetxt and the surface from Cairo aren't mentioned yet. These objects will be stored as raw pointers, because they will always be used as such. Addtional is the creation and destruction handled by Cairo functions and therefore smartpointers wouldn't add an advantage.\newline
+\noindent In this figure the the context and the surface from Cairo aren't mentioned yet. These objects will be stored as raw pointers, because they will always be used as such. Another reason to this, is that the creation and destruction is handled by the Cairo library and therefore smartpointers wouldn't add a real value.\newline
 
-\noindent Cairo offers a function to calculate the bounding box of a recording surface. The function should return the values of an rectangle, including the made draw calls on this surface, but the function didn't return the correct bouding box. In order to get the correct bouding box, an addtional class is introduced - the bounding box. The turtle will hold this class and update it on each draw call. When the save function is called the bounding box will return the size and the translation values to center the graphic for the output file.
+\noindent The Cairo library offers a function to calculate the bounding box of a recording surface. The function should return the values of an rectangle, including the made draw calls on this surface, but the function didn't return the correct bouding box. In order to get the correct bouding box, an addtional class is introduced - the bounding box. The turtle will hold this class and update it on each draw call. The bounding box will be used in the saving process to return the size and the translation values to center the graphic for the output file.
 
-\noindent At the moment the turtle allows to draw multiple objects, but there is no possibility to delete previous draw calls. If a second object is drawn with the same turtle instance, both objects will be included in the final image. To prevent this, the reset function is offered, which reinitializes the turtle.
+\noindent At this state the turtle allows to draw multiple objects, but there is no possibility to delete previous draw calls. If a second object is drawn with the same turtle instance, both objects will be included in the final image. To prevent this, the reset function is offered, which reinitializes the turtle.
 
-The implementation of the turtle can be found in the provided source code and at my github repository.\footnote{See https://github.com/frozzenshooter/LSystems}
+The complete implementation of the turtle can be found in the provided source code and at the github repository.\footnote{See https://github.com/frozzenshooter/LSystems}
 
 \subsubsection{Further implementations}
-The abstract turtle class allows further implementations, for example to export a svg file. This could be also done with the Cairo turtle, by including another export function, but a more lightweight solution would be also possible. For example by directly generating the svg components. Another possible enhancement would be the use of OpenGL and draw in a 3D environment. For this the turtle has to provide further functions, like the rotation around axis. For example by providing the needed transformation matrices. Overall the turtle interface should provide enough flexibility to implement an arbitrary trutle with any graphic framework.
+The turtle interface allows further implementations, for example to export a SVG-file. This could be also done with the Cairo turtle, by including another export function, but a more lightweight solution would be also possible. For example by directly generating the SVG-tags. 
+
+Another possible enhancement would be the use of OpenGL and draw in a 3D environment. For this the turtle has to provide further functions, like the rotation around axis. For example by providing the needed afffine transformation matrices.
+
+Overall the turtle interface should provide enough flexibility to implement an arbitrary turtle with any graphic framework.
 
 \section{Example usage}
-The provided sample code provides a simple example for the already shown examples in section \ref{section:examples}. The example will use the introduced architecture, consiting of the cairo turtle, the command mapping iterator and the L-system with the recursive function. 
+The sample code provides a simple example for the already shown results in section \ref{section:examples}. The example uses the introduced architecture, consiting of the CairoTurtle, the CommandMappingIterator, the L-system and the recursive function. The example can be build with CMake, resulting in an exectuable generating both images. 
 
 \section{Testing}
 \label{section:test}
-
-For the introduced components there are test cases for a C0-coverage. The test cases are defined in an additional executable. The additional executable is also defined with CMake and provides an independent usage of teh test project and the L-system project, containing the examples.
+There are test cases for the introduced components provided. The test cases provide a C0-coverage and are placed in an additional executable. The additional executable is also defined with CMake and provides an independent usage of the tests and the example usage.
 
 \section{Future enhancements}
 
