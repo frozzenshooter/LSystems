@@ -623,27 +623,27 @@ There are test cases for the introduced components provided. The test cases prov
 
 \section{Future enhancements}
 
-The implementation of the different components has the potential of further extensions. Obviously the turtle allows new implementations, for example based on other frameworks. But also the already provided implementation of the Cairo turtle can be improved. For example, it would be possible to add a new function to alter the drawing colors. Another possible enhancment is the scaling of a fractal in the Cairo turtle. At the moment the size of the picture will be determined with the bouding box, but this has the disadvantage, that it can grow to an potential endless size. In order to prevent this it would be possible to use further affine transformations on the data and scale the picture to a upper bound size.
+The implementation of the different components has the potential of further extensions. Obviously the turtle allows new implementations, for example based on other frameworks. But also the already provided implementation of the CairoTurtle can be improved. For example, it would be possible to add a new function to alter the drawing colors. Another possible enhancment is the scaling of a fractal in the Cairo turtle. At the moment the size of the picture will be determined with the bouding box, but this has the disadvantage, that it can grow to an potential endless size. In order to prevent this it would be possible to use further affine transformations on the data and scale the image down to a maximal size.
 
-\noindent Another part of the architecture is the L-system itself. The L-system is just a dumb data holder and therefore there is potential to provide further functionality. At the moment the L-system validates, that there is only one production for a predecessor, but it won't check if a generationwith the production is even possible. It would be possible to provide a function, which will check if the provided productions will enable a rewrite of the L-system. 
+\noindent Another part of the architecture is the L-system itself. The L-system implementation is just a dumb data holder and therefore, there is potential to provide further functionality. At the moment the L-system validates that there is only one production for a predecessor. The L-system doesn't check if with the given productions a generation is even possible. It would be possible to provide a function, which checks if the provided productions enable the rewriting of the L-system. 
 
-\noindent A futher enhancement would be additonal test cases. At the moment only a C0 coverage is provided, but further test cases could provide a better testing result.
+\noindent A futher enhancement would be additional test cases. At the moment only a C0 coverage is provided, but further test cases could provide a better testing result.
 
-\noindent Another possible enhancement it the configuration. At the moment the implementation only provides a configuration in the code itself. A way more flexible and convinenent way is the configuration with files. This would make it possible to configure a L-system without a change in code, only by providing such a file. A dynamic configuration can include not only the L-system grammar but also configuration of a turtle and the recursivec function. Such a complete configuration can be done with a file, but should be seperated to maintain the flexibility. A simple solution are key-value pairs, but this has the downside of a bad seperation for the different configuration aspects.
+\noindent At the moment the implementation only provides a configuration in the code itself and is more or less static. A way more flexible and convenient way is the configuration with files. This makes it possible to configure a L-system without a code change, only by providing such a file. A dynamic configuration can include not only the L-system grammar but also configuration of a turtle and the recursivec function. Such a complete configuration can be done in a single file, but should be seperated to maintain clear separation. A simple structure of such a file are key-value pairs. This has still the downside of a bad separation of the configuration from the different components.
 
-A solution is the use of JSON. This allows the seperation of the configuration for each component. A configuration file contains the JSON-object and allows the dynamic configuration. In order to be able to read the file the architecture can provide another component, reading an input stream and loading the configuration. Afterwards, this component provides the configuration for the other components.
+A solution for this is the use of JSON. This allows the seperation of the configuration for each component. A configuration file contains a JSON-object and allows the dynamic configuration. The JSON-object has several child objects containing the different component configurations. In order to be able to read the file the architecture can provide another component, reading an input stream and loading the configuration. Afterwards, this component provides the configuration datat for other components.
+
+\noindent The mentioned extensions are only a small part of the possibilites given by the architecture.
 
 \section{Conclusion}
-The introduced architcture enables a flexible use of all introduced components. With the formal restrictions different L-systems can be used and calculated. The iterator supports different ways of use for the result of a L-system, like the graphic generation with a turtle. The turtle enables different implementations and supports therefore all kinds of frameworks. 
+The introduced architecture enables a flexible use of all introduced components. Different L-systems, with the formal restrictions, can be used and generated. The Support of an output iterator allow different ways to use a L-system result, like the graphic generation with a turtle. The turtle interface enables different implementations and supports therefore all kinds of frameworks. 
 
-\noindent Even with this flexible concept, there are remaining problems. The already mentioned bounding box in the Cairo turtle is only a workaround for the not working function from the Cairo library. This bounding box also doesn't consider the width of the lines and because of that should include a dynamic padding. Another not ideal point is the static configuration of a L-system in teh code as mentioned in the further enhancements. 
+\noindent Even with this flexible concept, there are remaining problems. The already mentioned bounding box in the CairoTurtle, is only a workaround for the not working function from the Cairo library. The bounding box itself has also issues, for example it doesn't consider the line width. This would for example require an additional dynamic padding.
 
-\noindent Overall the concept provides a flexible and easy extensible implementaion of L-systems.
+Another not ideal point is the static configuration in code as mentioned in the further enhancements. 
 
-\footnote{UML DIAGRAMME NOCHMALS ÜBERARBEITEN - nicht immer wirklcihes uml sondern tw zu sehr abhängig von der Implementierung}
-\footnote{would be umformulieren}
+\noindent Even with these potential enhancements, provides the concept overall a flexible and easy extensible implementation of a L-system and corresponding components.
 
-\pagebreak
 \printbibliography
 
 \end{document}
