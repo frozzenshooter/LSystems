@@ -396,7 +396,7 @@ The CMake file includes also a definition for a test executable, further descrie
 
 \subsection{LSystem}
 \label{section:impl_l_system}
-The different variants of L-system implementations are discussed in previous sections and this chapter only focuses on the proposed concept, consisting of a L-system, holding a grammar.
+The different variants of L-system implementations are discussed in previous sections. This chapter only focuses on the proposed concept, consisting of a L-system, holding a grammar.
 
 The proposed L-system should be as flexible as possible and has therefore templates for the underlying types. The templates are for a reason called Predecessor and Successor, like the members of a production.
 
@@ -426,18 +426,18 @@ private:
 }
 \end{lstlisting}
 
-\noindent These templates have some general restrictions, because of the formal properties of a L-system, like the self-similarity. In order to enable the rewriting, the Successor type needs to be consisting of smaller parts, which also are Successors objects. A Successor object needs also to be splittable into Predecessor objects, this has the reason, that the recursive function needs to split an Successor object into parts and use a production on it.
-This might sound complex, but with the concrete example of a string as Successor and char as Predecessor it should be straightforward. A string can be splitted into smaller strings, fullfilling the first requriement. The string can be splitted into chars and therfore fullfills also the other requirment.
+\noindent There are some general restrictions for teh templates, because of the formal properties of a L-system, like the self-similarity. In order to enable the rewriting, the Successor type needs to be consisting of smaller objects of the same type. A Successor object needs also to be splittable into Predecessor objects, this has the reason, that the recursive function needs to split an Successor object into parts. These parts are the predecessor value of a production and are needed for the rewriting.
+This might sound complex, but  it should be straightforward with the concrete example of a string as Successor and char as Predecessor. A string can be splitted into smaller strings, fullfilling the first requriement. The string can be splitted into chars and therfore fullfills also the second requirment.
 
-This L-system implementation uses the production object, to handle the different rewriting rules. A production is also a templated object, but only as a simple data holder without special functionality. The productions are saved in a map th gain fast access, because the recursive function will call get\_successor() often. This will happen for each element, each Predecessor object, of a L-system generation. Because of that the amount of calls will increase enormously with every generation.
+This L-system implementation holds the productions of a grammar in a map. A production is also templated, but is only a simple data holder without special functionality. The productions are saved in a map to gain fast access, because the recursive function will call get\_successor() often. There will be a call for each element, each Predecessor object, of a L-system generation. Because of that the amount of calls will increase enormously with every generation.
 
 \subsection{Recursive function}
-The recursive function purpose is to calculate a generation of a L-system. In order to fullfill its purpose the function provides multiple template parameters.
+The purpose of the recursive function, is to calculation of a L-system generation. In order to fullfill its purpose the function provides multiple template parameters.
 
 \medskip
 \begin{lstlisting}
 template<template <typename, typename> class LSystem, typename Predecessor, typename Successor, typename OutputIterator>
-void calculate_l_system_generation(LSystem<Predecessor, Successor>& l_system, int generation, OutputIterator& output_iterator, std::shared_ptr<Successor> current_value = nullptr) {
+void calculate_l_system_generation(LSystem<Predecessor, Successor>& l_system, unsigned int generation, OutputIterator& output_iterator, std::shared_ptr<Successor> current_value = nullptr) {
     if (current_value == nullptr) {
         // inital value
         current_value = l_system.get_axiom();
@@ -445,13 +445,13 @@ void calculate_l_system_generation(LSystem<Predecessor, Successor>& l_system, in
 
     for (auto&& part : *(current_value)) {
         if (generation > 0) {
-        
             // rewrite needed - get production result
             auto successor = l_system.get_successor(part);
 
             if (successor == nullptr) {
                 // no production found, it is therefore a terminal and can be handed over directly
-                *output_iterator++ = part;
+                *output_iterator = part;
+                ++output_iterator;
             }
             else {
                 calculate_l_system_generation<LSystem, Predecessor, Successor, OutputIterator>(l_system, generation - 1, output_iterator, successor);
@@ -459,28 +459,29 @@ void calculate_l_system_generation(LSystem<Predecessor, Successor>& l_system, in
         }
         else {
             // max depth of recursion reached
-            *output_iterator++ = part;
+            *output_iterator = part;
+            ++output_iterator;
         }
     }
 }
 
 \end{lstlisting}
 
-\noindent As shown in the listing there are several parameters needed for the calculation of a  L-system. The first parameter is the L-system itself, which can be exchanged with any L-system implementation, as long as it provides general functionality. The L-system must have at least these functions:
+\noindent As shown in the listing there are several parameters needed for the calculation of a  L-system. The first parameter is the L-system itself, which can be exchanged with any L-system implementation, as long as it provides general functionality. The L-system must provide at least two functions:
 
 \begin{itemize}
 \item std::shared\_ptr<Successor> get\_axiom()
 \item std::shared\_ptr<Successor> get\_successor(const Predecessor\& predecessor)
 \end{itemize}
 
-\noindent These functions will use the grammar of an arbitrary L-system to calculate the result generation. In order to guarantee the same type for all components, both functions have the template for a Predecessor and a Successor type, which will also be used to define the L-system itself. The Successor and Predecessor type have some general restriction as described in section \ref{section:impl_l_system}.\newline
-There are additional requriements for the Successor type, because of the use in a ranged based for loop. For example, there has to be access to the begin and end of the type. The part has also to be a Predecessor object, because of the use with the get\_successor function of the L-system.
+\noindent These functions will be used in the recursion to get calculate the next generation. In order to guarantee the same type for all components, both functions are using a template. The Predecessor and Successor type are also used to specify the L-system itself. These types have some general restriction as described in section \ref{section:impl_l_system}.\newline
+Additional to requriements from the L-system, there are requirments from the recursive function itself.  The Successor type has to provide more functionality, because of the use in a ranged based for loop. For example, there has to be access to the begin and end, to iterate over the data. The part, compare line 8 in the listing, has to be a Predecessor object, because of the use with the get\_successor function of the L-system.
 
 The second parameter is the generation, which will be used to hand over the depth of the recursion. The value will be decremented and used for the next recursion step.
 
-The OutputIterator type is self explanatory and has to fullfill all the requirments of an arbitrary output iterator. If these requirements are fullfille, it is possible that the iterator can handle the L-system result in each way it needs to be used. For example to store it or to call a turtle function.
+The OutputIterator type is self explanatory and has to fullfill all the requirments of an arbitrary output iterator. The iterator handles the L-system result in the each way it needs, for example to store it or to call a turtle function.
 
-The last parameter is the current\_value which will be used to hand over the results of previous recursion steps. On default it will be initalized with a nullptr and therefore start the calculation with the axiom of the L-system grammmar. Other use cases are also fullfilled, because it is possible to start a recursivce calculation on a arbitrary generation. The current\_value could be a already stored generation of a L-system. This generation can be be handed over to the function in order to calculate more generations and get a more detailed result. As consequence it is possible to cache a generation and use it later again.
+The last parameter is the current\_value which will be used to hand over the results of previous recursion steps. On default it will be initalized with a nullptr and therefore start the calculation with the axiom of the L-system grammmar. Other use cases are also fullfilled, because it is possible to start a recursivce calculation on a arbitrary generation. The current\_value could be an already stored generation of a L-system. In order to calculate more generations and get a more detailed result, this generation can be be handed over to the function as current\_value . Therefore, it is possible to cache a generation and use it later again.
 
 \subsection{CommandMappingIterator}
 
@@ -536,7 +537,7 @@ private:
 
 \end{lstlisting}
 
-\noindent This iterator receives the obligatory turtle in the constructor and uses it later on to call the mapped commands. The focus of this implementation is based on the simple grammar from previous sections. Because of this the implementation only allows the use of chars and interprets them as turtle commands. This implementation allows the use of diffferent turtle implemenntations, in order to still provide flexibility.
+\noindent This iterator receives a turtle implementation in the constructor and uses it later on to call the mapped commands. The focus of this implementation is based on the simple grammar from previous sections. The implementation only allows the use of chars, because of this. The chars will be assigned and interpreted in the handle function as turtle commands. This implementation allows the use of diffferent turtle implemenntations, in order to still provide the flexibility given by the polymorphism.
 
 \subsection{TurtleGraphic}
 

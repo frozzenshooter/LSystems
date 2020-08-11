@@ -10,7 +10,10 @@
 constexpr double CAIRO_PI = 3.14159265358979323846;
 
 /*
-This class is a simple implementation of the turtle class using the graphics library cairo.
+This class is a simple implementation of the turtle class, using the graphics library cairo.
+
+
+TODO
 
 The reset function is provided if the turtle is used multiple types. If reset isn't called the turtle will include further draw calls in the already existing path.
 
@@ -31,6 +34,7 @@ public:
         init();
     }
 
+    // not needed, if required implementation needed!
     CairoTurtle(const CairoTurtle&) = delete;
     CairoTurtle& operator=(const CairoTurtle&) = delete;
 
@@ -118,18 +122,15 @@ public:
 
         // Normaly cairo provides a function, which will calculate the bounding box, but it returned only wrong values
         // therefore a implementation with a custom bounding box is implemented
-        //
         // double x0, y0, width, height;
         // cairo_recording_surface_ink_extents(recording_surface_, &x0, &y0, &width, &height);
 
-        // create an image surface to execute the recorded data
-
-        //TODO double to int conversion here evt explizit lösen!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        cairo_surface_t* target = cairo_image_surface_create(CAIRO_FORMAT_RGB24, bounding_box_.get_width(), bounding_box_.get_height());
+        // create an image surface to redraw the recorded data on it
+        cairo_surface_t* target = cairo_image_surface_create(CAIRO_FORMAT_RGB24, std::round(bounding_box_.get_width()), std::round(bounding_box_.get_height()));
         cairo_t* crt = cairo_create(target);
 
         // Translate the surface so that the lines will be in the covered area fo the image surface
-        cairo_translate(crt, std::round(bounding_box_.get_translate_x()), std::round(bounding_box_.get_translate_y()));
+        cairo_translate(crt, bounding_box_.get_translate_x(), bounding_box_.get_translate_y());
 
         // Paint the recorded commands to the image surface
         cairo_set_source_surface(crt, recording_surface_, 0, 0);
