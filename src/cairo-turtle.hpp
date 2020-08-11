@@ -16,8 +16,6 @@ The reset function is provided if the turtle is used multiple types. If reset is
 
     //TODO furter improvements can contain the dynamic setting of color
 
-    // TODO: ASSIGMENT / COPY CONST / ETC LÖSCHEN - nicht benötigt
-
     //FURTHER IMPROVEMENT: SCALING -> PICTURES SIZE INCREASES VERY FAST
 */
 class CairoTurtle : public Turtle {
@@ -32,6 +30,10 @@ public:
     {
         init();
     }
+
+    CairoTurtle(const CairoTurtle&) = delete;
+    CairoTurtle& operator=(const CairoTurtle&) = delete;
+
 
     ~CairoTurtle() override {
         // Cleanup cairo data
