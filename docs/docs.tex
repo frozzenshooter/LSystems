@@ -380,17 +380,19 @@ As conclusion all the components can be exchanged with other objects, as long as
 
 \section{Implementation}
 \label{section:impl}
-This section provides the in detail description of the implementation for the components discussed in the previous sections. Addtional to the components other aspects of the implementation, like the build system are discussed.
+This section provides a detailed description of the implementation for the components discussed in the previous sections. Addtional to the components other aspects of the implementation, like the build system, are discussed.
 
 \subsection{Build System}
 \label{section:buildsystem}
-The first important point for the implementation is the question what build system to choose or if a build system is even needed. A build system is needed or at least comfortable to use  because of two points. The first point is a fast way to build a complexer design and even extend it with libraries in a fast way. The second point, which also plays a big role for the question what build system to choose, is the choice of operating system.
+The question what build system to choose or if a build system is even needed, is one of the first steps to define for an implementation. A build system provides a fast way to build a complexer architecture and even extend it with libraries. A big role for the question what build system to choose, is the choice of operating system, because not all build systems work on all platforms.
  
-A typical build system for C++ projects are Makefiles, which include a description what and how to build. The problem with Makefiles is the restricted support on Windows, which results in either an inconvenient setup or to choose another build system.
+A typical build system for C++ projects are Makefiles, which include a file with what to build and how to build it. The problem with Makefiles is the restricted support on Windows, which results in either an inconvenient setup or to choose another build system.
 In this context CMake comes to mind, a generator for buildsystems. It is possible to define the project in a file and CMake can generate files for different build systems, on different operating systems. These resolves not even the problem with the use of Windows, but enables other developers to build it on the system of their choice.
 
 The project setup is straightforward and consists mainly of the C++ version and the files to build the project. A more complicated part is the setup to use a library. A library is needed for the implementation of a specilization of a turtle, the CairoTurtle. This brought up some problems, because of the devlopment on a windows machine, where the library handling is done a bit different in comparison to Unix systems. After some research, a sample from J. Preshing \cite{cairoinclude} provided a working setup for CMake and he even provided some precompiled library files \cite{cairodll}, called dll on Windows. 
 The setup can be found in the provided code and should work on different operating systems.\footnote{The build process is only tested on a windows machine with some additional setup for convenience, but should also work on Unix systems}
+
+The CMake file includes also a definition for a test executable, further descriebed in section \ref{section:test}.
 
 \subsection{LSystem}
 \label{section:impl_l_system}
@@ -610,6 +612,7 @@ The abstract turtle class allows further implementations, for example to export 
 The provided sample code provides a simple example for the already shown examples in section \ref{section:examples}. The example will use the introduced architecture, consiting of the cairo turtle, the command mapping iterator and the L-system with the recursive function. 
 
 \section{Testing}
+\label{section:test}
 
 For the introduced components there are test cases for a C0-coverage. The test cases are defined in an additional executable. The additional executable is also defined with CMake and provides an independent usage of teh test project and the L-system project, containing the examples.
 
