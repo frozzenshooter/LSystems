@@ -12,13 +12,15 @@ constexpr double CAIRO_PI = 3.14159265358979323846;
 /*
 This class is a simple implementation of the turtle class, using the graphics library cairo.
 
-TODO
+The turtle can be configured (line width, line length and turning angle) to create different images. The draw calls will record the drawing, when the save_to_png function is called,
+the recorded drawing will be saved to a file - the file size(width and height) is calculated dynamically, depending on the bounding box.
 
-The reset function is provided if the turtle is used multiple types. If reset isn't called the turtle will include further draw calls in the already existing path.
+The reset function is provided for the case, that the turtle is used multiple types. If reset isn't called after a save, the turtle will include further draw calls in the already existing drawing.
 
-    //TODO furter improvements can contain the dynamic setting of color
-
-    //FURTHER IMPROVEMENT: SCALING -> PICTURES SIZE INCREASES VERY FAST
+Further possible enhancements:
+- provide more configuration parameters, for example the color.
+- at the moment there is no max file size and a file can grow rapid depending on the drawing calls -> apply a scaling to reduce 
+- save functions for other formats, like PDF or SVG
 */
 class CairoTurtle : public Turtle {
 public:
