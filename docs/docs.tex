@@ -404,7 +404,7 @@ The proposed L-system should be as flexible as possible and has therefore templa
 \begin{lstlisting}
 template <typename Predecessor, typename Successor>
 class LSystem {
-    void set_axiom(const Successor& axiom) {
+    void set_axiom(Successor axiom) {
         ...
     }
 
@@ -412,7 +412,7 @@ class LSystem {
         ...
     }
 
-    void add_production(const Predecessor& predeccessor, const Successor& successor) {
+    void add_production(Predecessor predecessor, Successor successor) {
        ...
     }
 
@@ -426,7 +426,7 @@ private:
 }
 \end{lstlisting}
 
-\noindent There are some general restrictions for teh templates, because of the formal properties of a L-system, like the self-similarity. In order to enable the rewriting, the Successor type needs to be consisting of smaller objects of the same type. A Successor object needs also to be splittable into Predecessor objects, this has the reason, that the recursive function needs to split an Successor object into parts. These parts are the predecessor value of a production and are needed for the rewriting.
+\noindent There are some general restrictions for the templates, because of the formal properties of a L-system, like the self-similarity. In order to enable the rewriting, the Successor type needs to be consisting of smaller objects of the same type. A Successor object needs also to be splittable into Predecessor objects, this has the reason, that the recursive function needs to split an Successor object into parts. These parts are the predecessor value of a production and are needed for the rewriting.
 This might sound complex, but  it should be straightforward with the concrete example of a string as Successor and char as Predecessor. A string can be splitted into smaller strings, fullfilling the first requriement. The string can be splitted into chars and therfore fullfills also the second requirment.
 
 This L-system implementation holds the productions of a grammar in a map. A production is also templated, but is only a simple data holder without special functionality. The productions are saved in a map to gain fast access, because the recursive function will call get\_successor() often. There will be a call for each element, each Predecessor object, of a L-system generation. Because of that the amount of calls will increase enormously with every generation.

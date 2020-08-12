@@ -30,13 +30,13 @@ public:
         return axiom_;
     }
 
-    void add_production(Predecessor predeccessor, Successor successor) {
-        auto it = productions_.find(predeccessor);
+    void add_production(Predecessor predecessor, Successor successor) {
+        auto it = productions_.find(predecessor);
 
         if (it == productions_.end()) {
             auto suc_ptr = std::make_shared<Successor>(std::move(successor));
 
-            productions_.insert(std::make_pair(predeccessor, suc_ptr));
+            productions_.insert(std::make_pair(predecessor, suc_ptr));
         }
         else {
             throw new std::logic_error("Production for the same predecessor already exists");
