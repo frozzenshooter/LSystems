@@ -12,7 +12,6 @@ constexpr double CAIRO_PI = 3.14159265358979323846;
 /*
 This class is a simple implementation of the turtle class, using the graphics library cairo.
 
-
 TODO
 
 The reset function is provided if the turtle is used multiple types. If reset isn't called the turtle will include further draw calls in the already existing path.
@@ -37,7 +36,6 @@ public:
     // not needed, if required implementation needed!
     CairoTurtle(const CairoTurtle&) = delete;
     CairoTurtle& operator=(const CairoTurtle&) = delete;
-
 
     ~CairoTurtle() override {
         // Cleanup cairo data
@@ -167,10 +165,7 @@ private:
     }
 
     /*
-    Calculate the next state from a given state 
-    
-    
-    TODO: DONT CREATE A NEW STATE ALL THE TIME -> JUST SET THE VALUES
+    Calculate the next state from a given state
     */
     void calculate_next_state(State& state) {
         auto angle = state.get_angle();

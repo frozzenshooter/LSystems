@@ -7,11 +7,13 @@
 
 //TODO: exception handling
 
-
 /*
-Shows example fractal generations under the use of a L-system and a cairo turtle.
+Shows example for fractal generations (use of a L-system and a cairo turtle).
 */
 int main() {
+    
+    CairoTurtle cairo_turtle;
+    CommandMappingIterator mapit{ cairo_turtle };
 
     // Sierpinksi
     LSystem<char, std::string> l_system_sierpinksi;
@@ -19,17 +21,13 @@ int main() {
     l_system_sierpinksi.add_production('X', "YF+XF+Y");
     l_system_sierpinksi.add_production('Y', "XF-YF-X");
 
-    // setup turtle for sierpinksi triangle
-    CairoTurtle cairo_turtle_sierpinksi;
-    cairo_turtle_sierpinksi.set_turning_angle(60.0);
-    cairo_turtle_sierpinksi.set_line_lenght(3);
-
-    CommandMappingIterator mapit{ cairo_turtle_sierpinksi };
+    // Configure turtle for sierpinski
+    cairo_turtle.set_turning_angle(60.0);
+    cairo_turtle.set_line_lenght(3);
 
     // Calculate and save sierpinski
     calculate_l_system_generation<LSystem, char, std::string, CommandMappingIterator>(l_system_sierpinksi, 9, mapit);
-    cairo_turtle_sierpinksi.save_to_png("sierpinski.png");
-
+    cairo_turtle.save_to_png("sierpinski.png");
 
     // Hilbert
     LSystem<char, std::string> l_system_hilbert;
@@ -37,18 +35,14 @@ int main() {
     l_system_hilbert.add_production('L', "+RF-LFL-FR+");
     l_system_hilbert.add_production('R', "-LF+RFR+FL-");
 
-    // setup turtle for hilbert curve
-    CairoTurtle cairo_turtle_hilbert;
-    cairo_turtle_hilbert.set_turning_angle(90);
-    cairo_turtle_hilbert.set_line_lenght(5);
-
-    // Mapping iterator
-    CommandMappingIterator mapit_hilbert{ cairo_turtle_hilbert };
+    // Setup turtle for hilbert curve
+    cairo_turtle.reset();
+    cairo_turtle.set_turning_angle(90);
+    cairo_turtle.set_line_lenght(5);
 
     // Calculate and save hilbert
-    calculate_l_system_generation<LSystem, char, std::string, CommandMappingIterator>(l_system_hilbert, 7, mapit_hilbert);
-    cairo_turtle_hilbert.save_to_png("hilbert.png");
-
+    calculate_l_system_generation<LSystem, char, std::string, CommandMappingIterator>(l_system_hilbert, 7, mapit);
+    cairo_turtle.save_to_png("hilbert.png");
 
     // Example with back inserter
     //std::vector<char> result_l_system;

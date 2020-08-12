@@ -23,9 +23,8 @@ void test(unsigned int test_id, std::string description, T&& operation) {
 
 // Turtle implementation to simplify the tests
 class SaveTurtle : public Turtle {
-
 public:
-    ~SaveTurtle() override{}
+    ~SaveTurtle() override {}
 
     void move() override {
         commands.emplace_back('f');
@@ -46,19 +45,15 @@ public:
     std::vector<char> commands;
 };
 
-
-
 /*
-Testcases (only for C0 coverage)
+Test cases (C0 coverage)
 */
 int main() {
-
     unsigned int test_id = 0;
 
     // LSYSTEM TEST CASES
 
     test(++test_id, "L-system init (axiom with multiple productions)", []() {
-
         std::string axiom = "AB";
         char predecessorA = 'A';
         std::string successorAA = "AA";
@@ -66,16 +61,13 @@ int main() {
         char predecessorB = 'B';
         std::string successorBB = "BB";
 
-
         LSystem<char, std::string> test_l_system;
-    });
+        });
 
     test(++test_id, "L-system data init (two production for the same predecessor)", []() {
-
         std::string axiom = "AB";
         char predecessorA = 'A';
         std::string successorAA = "AA";
-
 
         LSystem<char, std::string> test_l_system;
         test_l_system.set_axiom(axiom);
@@ -95,14 +87,12 @@ int main() {
     );
 
     test(++test_id, "L-system data access(axiom and successor)", []() {
-
         std::string axiom = "AB";
         char predecessorA = 'A';
         std::string successorAA = "AA";
 
         char predecessorB = 'B';
         std::string successorBB = "BB";
-
 
         LSystem<char, std::string> test_l_system;
         test_l_system.set_axiom(axiom);
@@ -123,19 +113,17 @@ int main() {
         if (successorBB.compare(*retSuccessorBB) != 0) {
             throw new std::exception("Returned successorBB incorrect");
         }
-        
         }
     );
 
     test(++test_id, "L-system data access (successor not found)", []() {
-
         char predecessorA = 'A';
         std::string successorAA = "AA";
         char predecessorB = 'B';
 
         LSystem<char, std::string> test_l_system;
         test_l_system.add_production(predecessorA, successorAA);
-        
+
         auto retSuccessorBB = test_l_system.get_successor(predecessorB);
         if (retSuccessorBB != nullptr) {
             throw new std::exception("Returned successor incorrect");
@@ -143,13 +131,9 @@ int main() {
         }
     );
 
-    //testcases for wrong templates ??
-
-
     // LSYSTEM GENERATION TESTCASES
 
     test(++test_id, "L-system generation (including non terminals)", []() {
-
         // axiom
         std::string axiom = "A";
 
@@ -163,7 +147,6 @@ int main() {
 
         // result
         std::string expectedResult = "AAFAA";
-
 
         LSystem<char, std::string> test_l_system;
         test_l_system.set_axiom(axiom);
@@ -179,19 +162,16 @@ int main() {
 
         //check result
         for (std::size_t i = 0; i < result_l_system.size(); ++i) {
-            
             if (expectedResult[i] != result_l_system[i]) {
                 throw new std::exception("Generated result incorrect");
             }
         }
-
         }
     );
 
-    // COMMAND MAPPING ITERATOR TESTCASES 
+    // COMMAND MAPPING ITERATOR TESTCASES
 
     test(++test_id, "CommandMappingIterator", []() {
-
         std::vector<char> command_list = { 'f', 'F', '+', '-' };
 
         SaveTurtle save_turtle;
@@ -211,7 +191,7 @@ int main() {
         // control result
         for (std::size_t i = 0; i < size; ++i) {
             if (save_turtle.commands[i] != command_list[i]) {
-               throw new std::exception("Iterator: commands not matching");
+                throw new std::exception("Iterator: commands not matching");
             }
         }
 
@@ -220,8 +200,7 @@ int main() {
         }
     );
 
-
-    // TEST TURTLE TESTCASES 
+    // TEST TURTLE TESTCASES
 
     test(++test_id, "Test turle", []() {
         TestTurtle test_turtle;
@@ -232,7 +211,6 @@ int main() {
         test_turtle.turn_left();
         test_turtle.turn_right();
         std::cout << "----------" << std::endl << std::endl;
-
         }
     );
 
@@ -289,7 +267,6 @@ int main() {
 
         // correct save process
         cairo_turtle.save_to_png("two_rectangles.png");
-
         }
     );
 
@@ -318,8 +295,7 @@ int main() {
         }
     );
 
-
     std::cout << std::endl << "Tests completed" << std::endl;
- 
+
     return 0;
 }

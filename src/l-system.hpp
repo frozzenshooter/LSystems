@@ -20,22 +20,21 @@ If such a char is replaced in a string(e.g. axiom) with a successor string, the 
 template <typename Predecessor, typename Successor>
 class LSystem {
 public:
-    void set_axiom(const Successor& axiom) {
-        axiom_ = std::make_shared<Successor>(axiom);
+    void set_axiom(Successor axiom) {
+        axiom_ = std::make_shared<Successor>(std::move(axiom));
     }
 
     std::template shared_ptr<Successor> get_axiom() {
         // template is needed because of compiler error: https://docs.microsoft.com/en-us/cpp/error-messages/compiler-errors-1/compiler-error-c2143?f1url=https%3A%2F%2Fmsdn.microsoft.com%2Fquery%2Fdev16.query%3FappId%3DDev16IDEF1%26l%3DEN-US%26k%3Dk(C2143)%26rd%3Dtrue&view=vs-2019
-        
+
         return axiom_;
     }
 
-    void add_production(const Predecessor& predeccessor, const Successor& successor) {
+    void add_production(Predecessor predeccessor, Successor successor) {
         auto it = productions_.find(predeccessor);
 
-        //TODO ist es der beste weg das mit einem const ref into make shared zu machen ?
         if (it == productions_.end()) {
-            auto suc_ptr = std::make_shared<Successor>(successor);
+            auto suc_ptr = std::make_shared<Successor>(std::move(successor));
 
             productions_.insert(std::make_pair(predeccessor, suc_ptr));
         }
