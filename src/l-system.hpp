@@ -20,6 +20,9 @@ If such a char is replaced in a string(e.g. axiom) with a successor string, the 
 template <typename Predecessor, typename Successor>
 class LSystem {
 public:
+
+    LSystem(): axiom_(nullptr){}
+
     void set_axiom(Successor axiom) {
         axiom_ = std::make_shared<Successor>(std::move(axiom));
     }

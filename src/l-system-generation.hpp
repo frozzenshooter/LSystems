@@ -21,6 +21,10 @@ void calculate_l_system_generation(LSystem<Predecessor, Successor>& l_system, un
     if (current_value == nullptr) {
         // inital value
         current_value = l_system.get_axiom();
+        
+        if (current_value == nullptr) {
+            throw new std::runtime_error("L-system didn't return an axiom");
+        }
     }
 
     for (auto&& part : *(current_value)) {

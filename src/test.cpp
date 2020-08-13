@@ -8,7 +8,7 @@
 
 template<typename T>
 void test(unsigned int test_id, std::string description, T&& operation) {
-    std::cout << "Test-case " << test_id << ": " << std::setw(70) << std::left << std::move(description) << " ";
+    std::cout << "Test-case " << std::right << std::setw(2) << test_id << ": " << std::setw(70) << std::left << std::move(description) << " ";
     try {
         operation();
         std::cout << "ok" << std::endl;
@@ -166,6 +166,31 @@ int main() {
                 throw new std::exception("Generated result incorrect");
             }
         }
+        }
+    );
+
+    test(++test_id, "L-system generation (missing axiom)", []() {
+
+        LSystem<char, std::string> test_l_system;
+
+
+        // backinserter
+        std::vector<char> result_l_system;
+        auto backin = std::back_insert_iterator(result_l_system);
+
+        // calculate generation
+        bool exceptionThrown = false;
+        try {
+            calculate_l_system_generation<LSystem, char, std::string, std::back_insert_iterator<std::vector<char>>>(test_l_system, 2, backin);
+        }
+        catch (...) {
+            exceptionThrown = true;
+        }
+
+        if (exceptionThrown == false) {
+            throw new std::exception("Exception expected, but not thrown");
+        }
+
         }
     );
 
