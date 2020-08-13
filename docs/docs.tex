@@ -5,10 +5,10 @@
 \Homework{Lindenmayer systems - a flexible C++ implementation}{Steffen Knoblauch}
 
 \begin{abstract}
-Lindenmayer Systems, short L-systems, are the result of research from Lindenmayer et al.\cite{prusinkiewiczp.lindenmayera.2004} about the geometric features of plants.
+Lindenmayer Systems, short L-systems, are the result of research from Lindenmayer et al. about the geometric features of plants \cite{prusinkiewiczp.lindenmayera.2004}.
 L-systems are a concept to mathematicaly/formal describe and model the growth processes of plant development. They are not only restricted to the plant based developments, but can also be used to generate fractals.
 
-L-systems have an inital state and use rules, like a formal grammar, to transform or rather rewrite the current state to create the next state of the development from a plant or a fractal.
+L-systems have an inital state and use rules, like a formal grammar, to transform or rather rewrite the current state to create the next state of the plant or fractal development.
 Because of that, it is possible to successive calculate each state of the development.
 This state can be interpreted as commands for a turtle graphic, which creates the opportunity to draw the created fractals or plant states. 
 
@@ -28,7 +28,7 @@ The remainder of the paper provides some examples and a conclusion with future e
 \label{section:history}
 ''[L-systems] were introduced in 1968 by Lindenmayer as a theoretical framwork for studying the development of simple multicellular organisms [...]'\cite[Preface, p.~VI]{prusinkiewiczp.lindenmayera.2004} and were later used in computer graphics to generate visuals of organisms and fractals.
 
-In the beginning the focus of the L-system theory was based on larger plant parts and the graphical interpretation used chains of rectangles to display a L-system. Further research into L-system resulted in new interpretations and extensions. For example an interpretation of a L-system state with a LOGO-style Turtle. These extensions make it possible to model more complex plants and fractals and display them in a graphical way. \cite[Cf. Chapter 1.3, p.~6]{prusinkiewiczp.lindenmayera.2004}.
+In the beginning the focus of the L-system theory was based on larger plant parts. The graphical interpretation used chains of rectangles to display a L-system. Further research into L-system resulted in new interpretations and extensions. For example an interpretation of a L-system state with a LOGO-style Turtle. These extensions make it possible to model more complex plants and fractals and display them in a graphical way. \cite[Cf. Chapter 1.3, p.~6]{prusinkiewiczp.lindenmayera.2004}.
 
 \subsection{General idea}
 \label{section:gerneralidea}
@@ -37,7 +37,7 @@ The use of a rewriting system, based on a formal grammar, is the general idea of
 This concept can be used to rewrite an inital string, called axiom, with specific rewriting rules.
 A simple example is the following grammar, which consits of only two nonterminals, A and B, and two productions. 
 The first production is A\rightarrow AB, the second one is B\rightarrow A. The arrow '\rightarrow' symbols the replacement, the rewriting, of the object on the left with the object on the right of the arrow.
-The L-system has as axiom the value 'A' and will be expanded with these rules, creating the results in figure \ref{figure:simple_lsystem}.
+The L-system has as axiom the value 'A' and will be expanded, creating the results in figure \ref{figure:simple_lsystem}.
 
 \begin{figure}[h!]
 	\centering
@@ -60,7 +60,7 @@ The definition of an L-system can be done similar to a Chomsky grammar, but ther
 G = (V, $\omega$, P)
 \end{center}
 
-V: set of symbols as alphabet of the L-system - consisting of terminals and non terminals
+V: set of symbols as alphabet of the L-system - consisting of terminals and nonterminals
 
 $\omega$: axiom - nonempty word of the alphabet, which should contain at least one nonterminal
 
@@ -79,9 +79,9 @@ If in the process of rewriting a terminal symbol is found, there will be no expl
 \noindent As mentioned in section \ref{section:history} there are other extensions of a basic L-system. The extensions introduce more possiblities for the generation process, like a non-deterministic behaviour. These extensions result in new grammars, which can represent more complex plants or fractals:
 
 \begin{itemize}
-\item Stochastic grammars: the system isn't deterministic anymore, because there can be multiple productions with a probaility for the same nonterminal, which results in a randomisation of the generation
-\item Context senstive grammars: productions don't only look for the nonterminal, they rather look for the symbols before and after the current symbol to process, the context
-\item Parametric grammars: it is possible to set additional parameters for a symbol to influence the generation or the evaluation of the data
+\item Stochastic grammars: the system isn't deterministic anymore, because there can be multiple productions with a probaility for the same nonterminal. This results in a randomisation of a generation.
+\item Context senstive grammars: productions don't only look for the nonterminal, they rather look for the symbols before and after the current symbol (the context).
+\item Parametric grammars: it is possible to set additional parameters for a member of teh alphabet to influence the generation or the evaluation of the data
 \end{itemize}
 
 \subsection{Interpretation as turtle commands}
@@ -106,11 +106,11 @@ $\alpha$ is the direction in which a turtle is facing, called heading
 
 \medskip
 
-\noindent The walking path of the turtle is controlled by commands. Therefore, a defined step size \textit{d} and an angle \textit{$\theta$ } is needed to calculate the next state of the turtle. These values will be used by the following general commands: \cite[Cf. Chapter 2]{goldman2004turtle}
+\noindent The walking path of the turtle is controlled by commands. Therefore, a defined step size \textit{d} and an angle \textit{$\theta$ }, the difference to the current faceing direction, is needed to calculate the next state of the turtle. These values will be used by the following general commands: \cite[Cf. Chapter 2]{goldman2004turtle}
 
 \begin{itemize}
-\item Draw: moves one step in the current facing direction drawing a line 
-\item Move: moves one step in the current facing direction without drawing a line
+\item Draw: moves one step in the current facing direction, drawing a line 
+\item Move: moves one step in the current facing direction, without drawing a line
 \item Right-turn: turns to the right by the angle $\theta$
 \item Left-turn: turns to the left by the angle $\theta$
 \end{itemize}
@@ -193,11 +193,11 @@ The primary goal of this paper is an architecture and an implementation for a L-
 The architecture for a L-system, as introduced in section \ref{section:lindenmayer}, has several requirements. This section will introduce the core requirements for an architecture with a flexible L-system and a turtle.
 
 \medskip
-\noindent The core of the concept is the L-system itself, which is the base to guarantee a flexible use. The L-system holds relevant data, like the grammar, consisting of productions and an axiom. The L-system should offer a way to configure a grammar and guarantee the usage in different architectures, without hardcoded grammars. The L-system has to be able to successively generate the next states with configured grammar and grant access to this generated result.
+\noindent The core of the concept is the L-system itself, which is the base to guarantee a flexible use. The L-system holds relevant data, like the grammar, consisting of productions and an axiom. The L-system should offer a way to configure a grammar and guarantee the usage in different architectures, without hardcoded grammars. The L-system has to be able to successively generate the next states with a configured grammar and grant access to the generated result.
 
 \medskip
 
-\noindent The turtle is another key component, which will be used to interpret the result of a L-system. The turtle has to offer the typical turtle commands as introduced in section \ref{section:turtle}. In order to provide a turtle that is as extensible as possible, it should be possible to implement it flexible. Therefore, an interface should be offered, that enables a fast exchange of implementations. Depending on the implementation of a turtle, it should be possible to configure the turtle and change properties, like the color or line width.
+\noindent The turtle is another key component, which will be used to interpret the result of a L-system. The turtle has to offer the typical turtle commands as introduced in section \ref{section:turtle}. In order to provide a turtle that is as extensible as possible, it should be possible to implement it flexible. Therefore, an interface should be offered, that enables a fast exchange of implementations. Depending on the implementation of a turtle, it should be possible to configure the turtle and change properties, like the turning angle or line width.
 
 \medskip
 \noindent A mapping between the turtle commands and the L-system alphabet is an important part. Because of that, it is possible to call the correct turtle commands. In order to create an image of a plant or a fractal development state, it is required that the mapped commands get called, after interpreting the L-system result.
@@ -209,7 +209,7 @@ This section provides a dissussion of possible implementations of the L-system a
 
 \medskip
 
-\noindent A simple and rather naive idea is an object which holds the L-system generation as a string and addtional the grammar, consisting of productions and an axiom. This L-system could offer a function that calculates the next generation by iterating over every char in the string. If there is a production for the current char, the char will be replaced according to the production with the successor. This function could be called for n generations to create the n-th generation of the L-system, as show in figure \ref{figure:naive_lsystem}.
+\noindent A simple and rather naive idea is an object which holds the L-system generation as a string. Aditional it holds the grammar, consisting of productions and an axiom. This L-system could offer a function that calculates the next generation by iterating over every char in the string. If there is a production for the current char, the char will be replaced according to the production with the successor. This function could be called for n generations to create the n-th generation of the L-system, as show in figure \ref{figure:naive_lsystem}.
 
 \begin{figure}[h!]
 	\centering
@@ -219,14 +219,17 @@ This section provides a dissussion of possible implementations of the L-system a
 \end{figure}
 
 \medskip
-\noindent This idea has several design flaws resulting in a bad performance and unflexible architecture. The lack of seperation between datastructure and processing of the data defines the first flaw. It is not possible to simply exchange the datastructure or the function without the seperation, which affects the flexibility of the L-system negative. This can be solved by extracting the functionality into a seperate function and the datastructure remains as ''dumb'' object. The seperated function can be a used to manipulate the current state in the datastrutcture itself and also creates the opportunity to exchange the underlying datastructure, as long as the datastructure fullfills some formal properties, like the access to the string and grammar.\newline
+\noindent This idea has several design flaws resulting in a bad performance and unflexible architecture. The lack of seperation between datastructure and processing of the data defines the first flaw. It is not possible to simply exchange the datastructure or the function without the seperation, which negatively affects the flexibility of the L-system. This can be solved by extracting the functionality into a seperate function and the datastructure remains as ''dumb'' object. The seperated function can be a used to manipulate the current state in the datastructure itself. This also creates the opportunity to exchange the underlying datastructure, as long as the datastructure fullfills some formal properties, like the access to the string and grammar.\newline
 For a more flexible design additional changes could be done, because the current idea bases on chars as alphabet of the grammar. The L-system could be enhanced by allowing arbitrary objects as symbols of the alphabet, as long as they provide certain functions, like a operator to compare them. Instead of a string, the objects could for example be saved as a list.\newline
 A further flaw is the bad performance, because of the use of a string to save the current state/generation. There are two reasons why the performance is bad, especially for larger generations. The first reason is the size of the string itself, which will grow very fast because of the nature of a L-system. Every nonterminal will be often replaced by several symbols, which enormously increases the total size of the string for each generation. Additional to the large amount of space needed for the string, the replace in a string needs to be done for each nonterminal, which can result in a big overhead. Because of this problems, another more efficient design is needed.\newline
 Therefore, this naive concept works only for simple L-systems where only a few generations are needed.
 
 \medskip
-\noindent In order to solve these problems and to create a more efficient and flexible architecture, let's recap the nature of L-systems. The generation of a L-system is based on a rewriting process. This process iterates over every object in the current state and calcualtes the resulting generation by applying the productions. Because of the restriction to DOL-systems, the rewriting is not context-sensitive and can be done independent from other objects of the current state. If a object gets replaced by the successor of the production, the result of this replacment can be handled independent. Consequently, the calculation of the n-th generation can be done for each object on their own and can simply be done in a recursive manner.\newline
-There is only a limited number of productions in a grammar of a L-system. Each of these productions is choosen deterministic when comparing the current nonterminal with the predecessor. The next generation is created by rewriting the current state, when a nonterminal is often in the current state, the same production can be used. If the same production is used multiple times, the resulting generation has a lot of similar objects or more specific the same string muliple times. The repeating data and the recursive calculation can be used to improve the naive idea.
+\noindent In order to solve these problems and to create a more efficient and flexible architecture, let's recap the nature of L-systems. The generation of a L-system is based on a rewriting process. This process iterates over every object in the current state and calculates the resulting generation by applying the productions. Because of the restriction to DOL-systems, the rewriting is not context-sensitive and can be done independent from other objects of the current state. If a object gets replaced by the successor of the production, the result of this replacment can be handeled independent. Consequently, the calculation of the n-th generation can be done for each object on their own and can simply be done in a recursive manner.\newline
+There is only a limited number of productions in a grammar of a L-system. Each of these productions is choosen deterministic when comparing the current nonterminal with the predecessor. 
+
+
+The next generation is created by rewriting the current state, when a nonterminal is often in the current state, the same production is used often. If the same production is used multiple times, the resulting generation has a lot of similar objects or more specific the same string muliple times. The repeating data and the recursive calculation can be used to improve the naive idea.
 
 \medskip
 \begin{figure}[h!]
@@ -243,7 +246,7 @@ Axiom: A
 Production: A \rightarrow AAAAAAAAAA 
 
 \medskip
-\noindent This rather ideal example shows how it would be sufficient to save just parts of the resulting string to represent the whole generation of a L-system. For this example it could be possible to save ''AAAAAAAAAA'' and how often it is needed. Because of the repetitions, this is even for more complex grammars possible.
+\noindent This rather perfect example shows how it would be sufficient to save just parts of the resulting string to represent the whole generation of a L-system. For this example it could be possible to save ''AAAAAAAAAA'' and how often it is needed. Because of the repetitions, this is even for more complex grammars possible.
 
 \medskip
 \noindent With this knowledge multiple improvements can be discussed. The first possible improvement is storing the data not in a simple list, like a string, which is basically a list of chars, but instead in a more sophisticated datastructure. For this case a graph as datastructure is better suited. Such a graph enables a better performance for replacements and reduction of memory space.
@@ -280,8 +283,8 @@ Axiom: A
 \end{figure}
 
 \medskip
-\noindent Both of the described graphs hold every calculated generation, which allows the access to an arbitrary generation with the restriction to the deepest calculated generation. To reduce the amount of storage needed even more, it is possible to neglect if all generations are needed or only the current generation. If only the last calculated generation is needed, the graph can be simplified even more. To discuss the simplification, it is necessary to look further in the different ways to do the replacement. It  is possible to iterate over the node data and replace each symbol at a time. For example with the current grammar the data ''AAA'', could be replaced by replacing each ''A'' at a time. Because of the focus of DOL-Systems, another possible method is to replace a node with all childnodes at once and therefore, the whole node\newline
-There seems to be no difference, but in combination with the proposed next step of the graph, it is relevant. If not all generations have to be stored, it is possible to remove a completely replaced parentnode. For example in figure \ref{figure:lsystem_graph_one_generation}, it is not needed to save the crossed out nodes, because they are completely replaced. In this simple example is it already possible save only four instead of six nodes and reduce the data. This results in a flat graph with only a few nodes depth, but only the current state of a L-system. For this graph, it is  important how the replacement is done. If the replacment is done with the all at once method, the parent node can be deleted directly. If the step by step replacement is done, it is nessecary to alter the parentnode data for each replacement. Only when the complete data and the parentnode is replaced, this node can be deleted. The complete replacement is simpler to implement, because the altering of parentnode data is not needed.
+\noindent Both of the described graphs hold every calculated generation, which allows the access to an arbitrary generation, with the restriction to the deepest calculated generation. To reduce the amount of storage needed even more, it is possible to neglect if all generations are needed or only the current generation. If only the last calculated generation is needed, the graph can be simplified even more. To discuss the simplification, it is necessary to look further in the different ways to do the replacement. It  is possible to iterate over the node data and replace each symbol at a time. For example with the current grammar the data ''AAA'', could be replaced by replacing each ''A'' at a time. Because of the focus of DOL-Systems, another possible method is to replace a node with all childnodes at once and therefore, the whole node.\newline
+There seems to be no difference, but in combination with the proposed next step of the graph, it is relevant. If not all generations have to be stored, it is possible to remove a completely replaced parentnode. For example in figure \ref{figure:lsystem_graph_one_generation}, it is not needed to save the crossed out nodes, because they are completely replaced. In this simple example is it already possible save only four instead of six nodes and reduce the data. This results in a flat graph with only a few nodes depth, but only the current state of a L-system. For this graph, it is  important how the replacement is done. If the replacment is done with the all at once method, the parentnode can be deleted directly. If the step by step replacement is done, it is nessecary to alter the parentnode data for each replacement. Only when the complete data and the parentnode is replaced, this node can be deleted. The complete replacement is simpler to implement, because the altering of parentnode datacan be omitted.
 
 \begin{figure}[h!]
 	\centering
@@ -295,7 +298,8 @@ There seems to be no difference, but in combination with the proposed next step 
 
 \bigskip
 
-\noindent Another possible simplification is to neglect storing the generations of a L-system at all. Instead of saving the generation of a L-system in a datastructure, the result can be calculated on demand and never stored. The only data such a L-system would hold, would be the grammar itself. The calculation can be done with a recursive function, that will return the generation. Clearly an advantage is the reduction of needed storage space, but this reduction is only achived at the cost of recalculation for each generation. Whenever a generation is needed, it is nessecary to calculate again and it is not possible to use a previous result.
+\noindent Another possible simplification is to neglect storing the generations of a L-system at all. Instead of saving the generation of a L-system in a datastructure, the result can be calculated on demand and never stored. The only data such a L-system would hold, would be the grammar itself. The calculation can be done with an additional recursive function, that will return the generation. Clearly an advantage is the reduction of needed storage space, but this reduction is only achived at the cost of recalculation for each generation. Whenever a generation is needed, it is nessecary to calculate again and it is not possible to use a previous result.
+
 If a generation is needed multiple times or if it is needed to step forwards and backwards in the result, a solution could be to store the result in another object. This calculations also guarantees flexibility, because you can either only calculate the generation once and use the result directly, like in this case to call the turtle commands, or save it for later usage. The recursive function can be designed even more flexible by allowing a simple exchange of a L-system datastructure.
 
 This results in two main components, the L-system datastructure and the recursive function, which accepts a L-system datastructure and calculates the generation. The L-system, which the function receives, has to fullfill some requirements, like to offer access functions. This will be described in further detail in the implementation in section \ref{section:impl}.
@@ -312,18 +316,20 @@ This results in two main components, the L-system datastructure and the recursiv
 \end{figure}
 
 \medskip
-\noindent The proposed L-system,  which will be given to the recursive function, just holds the grammar. This L-system can be used in a flexible way, because it can be configured without a restriction of the grammar. Additonal, there is only a general type restriction for the axiom and the prodcutions. The types called Successor and Predeccessor can be choosen freely, but they need to fullfill formal requirements. The self-similarity and ergo the rewriting need to be represented by the types.
+\noindent The proposed L-system,  which will be given to the recursive function, just holds the grammar. This L-system can be used in a flexible way, because it can be configured without an arbitrary grammar of a DOL-system. Additional, there is only a general type restriction for the axiom and the prodcutions. The types called Successor and Predeccessor can be choosen freely, but they need to fullfill formal requirements. The self-similarity and ergo the rewriting need to be represented by these types.
 
-The Successor type must consist of Successor objects itself, which can be splitted into objects of the Predecessor type. Each Predecessor object must be comparable to another Predecessor to be able to rewrite the L-system. The axiomi has also Successor as type, in order to guarantee that it is splittable in smaller parts.
+The Successor type must consist of Successor objects itself, which can be splitted into objects of the Predecessor type. Each Predecessor object must be comparable to another Predecessor to be able to rewrite the L-system. The axiom has also from type Successor, in order to guarantee that it is splittable in smaller parts and cen be rewritten.
  
 To this point the discussion doesn't include how the turtle commands can be called. As already mentioned, there must be a mapping between the commands of a turtle and the alphabet of a L-system. The mapping will be discussed further in section \ref{section:turtle_mapping} and for now we just asume a mapping exists in some way. When using a graph, it would be possible to call the turtle commands by accessing a generation and interpret the symbols or predecessors.
 
-The implementation is based on a recursive function. This function can call the turtle commands for a generation or more specific when the recursion depth is reached. How this will be done in detail is described in section \ref{section:impl}, but is based around the idea of an output iterator. The recursive function will receive an arbitrary output iterator and instead of interpreting the data in the function itself, it will just hand over the objects of the generation to the iterator. This iterator can than interpret the objects as turtle commands and call them. The iterator has no restrictions on what to do with the data. For example the iterator may be also used to save data in an arbitrary datastructure or print it in a file.
+The implementation is based on a recursive function. This function can call the turtle commands for a generation or more specific when the recursion depth is reached. How this will be done in detail is described in section \ref{section:impl}, but is based around the idea of an output iterator.
 
-Overall this concept allows a flexible field of operation for a possible user. The recursive function and the L-system datastructure can be used completely independent. For this concept, these components will be used together, in combination with other components, like a turtle and a turtle command mapping iterator.
+The recursive function will receive an arbitrary output iterator and instead of interpreting the data in the function itself, it will just hand over the objects of the generation to the iterator. This smart iterator can then interpret the objects as turtle commands and call them. Nevertheless, the iterator has no restrictions on what to do with the data. For example the iterator may be also used to save data in an arbitrary datastructure or print it in a file.
+
+Overall this concept allows a flexible field of operation for a possible user. The recursive function and the L-system datastructure can be used completely independent. For this concept, these components will be used together, in combination with other components, like a turtle.
 
 \subsection{Turtle}
-A quiet important component of the architecture is the turtle. The turtle has to offer the typical commands as described in section \ref{section:turtle}. A turtle should be so flexible, that it is possible to implement it for different Framworks, for example OpenGL or the Cairo graphics library. An abstract interface, with a minimal set of commands, will allow to implement this. A turtle like this is not only bound to a special graphics framework, but can be even implemented for other use cases, like generating text on the console or a file.
+A quiet important component of the architecture is the turtle. The turtle has to offer the typical commands as described in section \ref{section:turtle}. A turtle should be so flexible, that it is possible to implement it for different Framworks, for example OpenGL or the Cairo graphics library. An interface, with a minimal set of commands, will allow to implement this. A turtle like this is not only bound to a special graphics framework, but can be even implemented for other use cases, like generating text on the console or a file.
 The most general or abstract version of a turtle offers the four minimal functions of a turtle, as shown in figure \ref{figure:minimal_turtle}.
 
 \begin{figure}[h!]
@@ -340,25 +346,25 @@ Consequently the general interface is not only sufficient for this paper, but al
 
 \subsection{Turtle command mapping}
 \label{section:turtle_mapping}
-In order to interpret the result of a L-system, it is nessecary to map a command to a symbol of a generation. As mentioned in section \ref{section:lsystem_discussion} a recursive function will be used to calculate the result of a L-system. Until this point, we just assumed there was a mapping between the members of the alphabet of the L-system and the commands, which will be called. In this scenario the recursive function receives anoutput  iterator, which can handle the generated data. 
+In order to interpret the result of a L-system, it is nessecary to map a command to a symbol of a generation. As mentioned in section \ref{section:lsystem_discussion} a recursive function will be used to calculate the result of a L-system. Until this point, we just assumed there was a mapping between the members of the L-system alphabet and the commands. As discussed, the recursive function receives an output  iterator, which handles the generated data. 
 
-For this paper an example output iterator is introduced, the command mapping iterator. This iterator will handle the data interpretation and calls turtle commands. In figure \ref{figure:if_command_map} is a concept of this iterator displayed, which will handle a L-system based on strings and chars. Such an iterator receives data, interprets it according to the mapping and calls the specified command.
+For this paper an example output iterator is introduced, the CommandMappingIterator. This iterator will handle the data interpretation and calls turtle commands. In figure \ref{figure:if_command_map} is the concept of this iterator displayed. It handles a L-system based on strings and chars. It receives data(chars), interprets it according to the mapping and calls the specified command.
 
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width=1\columnwidth]{../graphs/class_command_mapping_iterator.png}
-	\caption{C++ interface for the command mapping iterator}
+	\caption{C++ class for the command mapping iterator}
 	\label{figure:if_command_map}
 \end{figure}
 
-The recursive function will receive this iterator as parameter and just hands the result over to it. The command mapping iterator just has to select the mapped turtle command and call it.
+The recursive function will receive this iterator as parameter and just hands the chars of the result over. The command mapping iterator just has to select the mapped turtle command and call it.
 
-The indirection in form of an iterator offers a clear separation between the calculation of the L-system generation and the handling of the data. In order to offer different mappings, new implementations of an output iterator are nessecary. In the implementation section, section\ref{section:impl}, is an example implementation provided. This example is based on figure \ref{figure:if_command_map} and the grammar introduced in previous sections.
+The indirection, in form of an iterator, offers a clear separation between the calculation of the L-system generation and the data handling. In order to offer different mappings, new implementations of an output iterator are nessecary. In section\ref{section:impl} is the implementation for this example provided, based on figure \ref{figure:if_command_map} and the grammar introduced in previous sections.
 
-The architecture is not only restricted to iterators comparable to command mapping iterator, but every output iterator can be used to receive the data and handle it differently.
+The architecture is not restricted to iterators comparable to the CommandMappingIterator, but every output iterator can be used to receive the data and handle it differently.
 
 \subsection{Overview}
-This section will now give a short overview of the disscuessed components and their dependencies. The general approach for the design was a flexible use of the separated components. It should be possible to use each component on their own and even exchange a component and still guarantee the functionality. Under the premises, that exchanged components still offer the same functionality and data. In figure \ref{figure:overview} a simplified overview of the dataflow is illustrated. 
+This section will now give a short overview of the discuessed components and their dependencies. The general approach for the design was a flexible use with separated components. Under the premises, that exchanged components still offer the same functionality and data.  It should be possible to exchange a component and still guarantee the functionality. In figure \ref{figure:overview} a simplified overview of the dataflow is illustrated. 
 
 \begin{figure}[h!]
 	\centering
@@ -367,14 +373,17 @@ This section will now give a short overview of the disscuessed components and th
 	\label{figure:overview}
 \end{figure}
 
-At the beginning the L-system will be initalized. The L-system itself needs only to hold the grammar and and provide the access to it. The core of the L-system functionality is the recursive function, which will be used to calculate a L-system generation. This function offers a quiet flexible interface, because it should allow to use different L-system implementations, as long as the implementation provides a set of needed functions. These functions will be discussed in detail in section \ref{section:impl}. 
+\medskip
+
+\noindent At the beginning the L-system will be initalized. The L-system only holds the grammar and provides access to it. The recursive function will be used to calculate a L-system generation with the accessed data. This function offers a quiet flexible interface, because it should allow to use different L-system implementations, as long as the implementation provides a set of needed functions. These functions will be discussed in detail in section \ref{section:impl}. 
+
 Another key part of the recursive function is the support of an arbitrary output iterator to hand over the calculated generation. This introduces not only a flexible usage of the function itself, but integrates well with already existing standard components. 
 
-The CommandMappingIterator is an output iterator, which allows to use the provided interfaces to call the correct turtle command. Whenever data from the recursive function is handed over  to the iterator, the iterator interprets it and calls a turtle command. The iterator here is  implemented for a determined mappping, but can be replaced by another implementation, as long as the implementation provides the typical output iterator functionality.
+The CommandMappingIterator is an output iterator, which allows to use the provided turtle interfaces to call the correct turtle command. Whenever data from the recursive function is handed over to the iterator, it interprets it and calls a turtle command. It is implemented for a determined mapping, but can be replaced by another implementation, as long as the implementation provides the typical output iterator functionality.
 
-The final component is the turtle, which is provided as abstract interface. This interface enforces the absolut minimal set of functions a turtle has to fullfill. Each spezialisation of a turtle has to handle their configuration and additonal dependencies on their own.
+The final component is the turtle, which is provided as interface. This interface enforces the absolut minimal set of functions a turtle has to offer. Each spezialisation of a turtle has to handle their configuration and additional dependencies on their own.
 
-As conclusion all the components can be exchanged with other objects, as long as they provide the needed functionality. This functionality will be described in detail in section \ref{section:impl} and with addtional comments in the provided code.
+As conclusion all the components can be exchanged with other objects, as long as they provide the needed functionality. This functionality will be described in detail in section \ref{section:impl} and with comments in the provided code.
 
 \clearpage
 
