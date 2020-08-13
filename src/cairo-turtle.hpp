@@ -84,15 +84,15 @@ public:
 
     // Additonal functionality
 
-    void set_line_lenght(double lenght) {
+    void set_line_lenght(double lenght) noexcept {
         line_length_ = lenght;
     }
 
-    void set_line_width(double width) {
+    void set_line_width(double width) noexcept {
         line_width_ = width;
     }
 
-    void set_turning_angle(double angle) {
+    void set_turning_angle(double angle) noexcept {
         angle_ = angle;
     }
 
@@ -169,7 +169,7 @@ private:
     /*
     Calculate the next state from a given state
     */
-    void calculate_next_state(State& state) {
+    void calculate_next_state(State& state) noexcept {
         auto angle = state.get_angle();
         auto x_diff = sin(angle * CAIRO_PI / 180) * line_length_;
         auto y_diff = cos(angle * CAIRO_PI / 180) * line_length_;
@@ -186,7 +186,7 @@ private:
     /*
     Updates the values in the bouding box
     */
-    void updateBoundingValues(const State& state) {
+    void updateBoundingValues(const State& state) noexcept {
         bounding_box_.update_x(state.get_x());
         bounding_box_.update_y(state.get_y());
     };

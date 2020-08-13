@@ -27,7 +27,7 @@ public:
         axiom_ = std::make_shared<Successor>(std::move(axiom));
     }
 
-    std::template shared_ptr<Successor> get_axiom() {
+    std::template shared_ptr<Successor> get_axiom() noexcept {
         // template is needed because of compiler error: https://docs.microsoft.com/en-us/cpp/error-messages/compiler-errors-1/compiler-error-c2143?f1url=https%3A%2F%2Fmsdn.microsoft.com%2Fquery%2Fdev16.query%3FappId%3DDev16IDEF1%26l%3DEN-US%26k%3Dk(C2143)%26rd%3Dtrue&view=vs-2019
 
         return axiom_;
@@ -46,7 +46,7 @@ public:
         }
     }
 
-    std::template shared_ptr<Successor> get_successor(const Predecessor& predecessor) {
+    std::template shared_ptr<Successor> get_successor(const Predecessor& predecessor) noexcept {
         auto it = productions_.find(predecessor);
 
         if (it != productions_.end()) {

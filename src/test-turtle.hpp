@@ -15,28 +15,28 @@ public:
     /*
     Prints the move command to std::cout
     */
-    void move() override {
+    void move() noexcept override {
         std::cout << "[Draw-Call]: move" << std::endl;
     }
 
     /*
     Prints the draw command to std::cout
     */
-    void draw() override {
+    void draw() noexcept override {
         std::cout << "[Draw-Call]: draw" << std::endl;
     }
 
     /*
     Prints the turn_right command to std::cout
     */
-    void turn_right() override {
+    void turn_right() noexcept override {
         std::cout << "[Draw-Call]: turn_right" << std::endl;
     }
 
     /*
     Prints the turn_left command to std::cout
     */
-    void turn_left() override {
+    void turn_left() noexcept override {
         std::cout << "[Draw-Call]: turn_left" << std::endl;
     }
 };
