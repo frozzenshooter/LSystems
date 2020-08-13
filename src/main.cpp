@@ -5,8 +5,6 @@
 #include "test-turtle.hpp"
 #include "cairo-turtle.hpp"
 
-//TODO: exception handling
-
 /*
 Shows example for fractal generations (use of a L-system and a cairo turtle).
 */
