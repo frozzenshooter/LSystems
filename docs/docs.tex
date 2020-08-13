@@ -417,7 +417,7 @@ class LSystem {
         ...
     }
 
-    std::template shared_ptr<Successor> get_axiom() {
+    std::template shared_ptr<Successor> get_axiom() noexcept{
         ...
     }
 
@@ -425,7 +425,7 @@ class LSystem {
        ...
     }
 
-    std::template shared_ptr<Successor> get_successor(const Predecessor& predecessor) {
+    std::template shared_ptr<Successor> get_successor(const Predecessor& predecessor) noexcept{
         ...
     }
     
@@ -580,7 +580,7 @@ It just implements the minimal set of functions from the interface and outputs t
 \medskip
 \begin{lstlisting}
 ...
-void draw() override {
+void draw() noexcept override {
     std::cout << "[Draw-Call]: draw" << std::endl;
 }
 ...
