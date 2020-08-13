@@ -389,16 +389,16 @@ As conclusion all the components can be exchanged with other objects, as long as
 
 \section{Implementation}
 \label{section:impl}
-This section provides a detailed description of the implementation for the components discussed in the previous sections. Addtional to the components other aspects of the implementation, like the build system, are discussed.
+This section provides a detailed description of the implementation for the components discussed in the previous sections. Additional to the components, other aspects of the implementation, like the build system, are discussed.
 
 \subsection{Build System}
 \label{section:buildsystem}
-The question what build system to choose or if a build system is even needed, is one of the first steps to define for an implementation. A build system provides a fast way to build a complexer architecture and even extend it with libraries. A big role for the question what build system to choose, is the choice of operating system, because not all build systems work on all platforms.
+The question, what build system to choose or if a build system is even needed, is one of the first steps to answer for an implementation. A build system provides a fast way to build a complexer architecture and even extend it with libraries. A big role for the question what build system to choose, is the choice of operating system, because not all build systems work on all platforms.
  
 A typical build system for C++ projects are Makefiles, which include a file with what to build and how to build it. The problem with Makefiles is the restricted support on Windows, which results in either an inconvenient setup or to choose another build system.
 In this context CMake comes to mind, a generator for buildsystems. It is possible to define the project in a file and CMake can generate files for different build systems, on different operating systems. These resolves not even the problem with the use of Windows, but enables other developers to build it on the system of their choice.
 
-The project setup is straightforward and consists mainly of the C++ version and the files to build the project. A more complicated part is the setup to use a library. A library is needed for the implementation of a specilization of a turtle, the CairoTurtle. This brought up some problems, because of the devlopment on a windows machine, where the library handling is done a bit different in comparison to Unix systems. After some research, a sample from J. Preshing \cite{cairoinclude} provided a working setup for CMake and he even provided some precompiled library files \cite{cairodll}, called dll on Windows. 
+The project setup is straightforward and consists mainly of the C++ version and the files to build the project. A more complicated part is the setup to use a library. A library is needed for the implementation of a specilization of a turtle, the CairoTurtle. This brought up some problems, because of the development on a windows machine, where the library handling is done a bit different in comparison to Unix systems. After some research, a sample from J. Preshing \cite{cairoinclude} provided a working setup for CMake and he even provided some precompiled library files \cite{cairodll}, called dll on Windows. 
 The setup can be found in the provided code and should work on different operating systems.\footnote{The build process is only tested on a windows machine with some additional setup for convenience, but should also work on Unix systems}
 
 The CMake file includes also a definition for a test executable, further descriebed in section \ref{section:test}.
@@ -438,10 +438,10 @@ private:
 \noindent There are some general restrictions for the templates, because of the formal properties of a L-system, like the self-similarity. In order to enable the rewriting, the Successor type needs to be consisting of smaller objects of the same type. A Successor object needs also to be splittable into Predecessor objects, this has the reason, that the recursive function needs to split an Successor object into parts. These parts are the predecessor value of a production and are needed for the rewriting.
 This might sound complex, but  it should be straightforward with the concrete example of a string as Successor and char as Predecessor. A string can be splitted into smaller strings, fullfilling the first requriement. The string can be splitted into chars and therfore fullfills also the second requirment.
 
-This L-system implementation holds the productions of a grammar in a map. A production is also templated, but is only a simple data holder without special functionality. The productions are saved in a map to gain fast access, because the recursive function will call get\_successor() often. There will be a call for each element, each Predecessor object, of a L-system generation. Because of that the amount of calls will increase enormously with every generation.
+This L-system implementation holds the productions of a grammar in a map. A production is also templated and saved as simple data without special functionality. The productions are saved in a map to gain fast access, because the recursive function will call get\_successor() often. There will be a call for each element, each Predecessor object, of a L-system generation. Because of that, the amount of calls increase enormously with every generation.
 
 \subsection{Recursive function}
-The purpose of the recursive function, is to calculation of a L-system generation. In order to fullfill its purpose the function provides multiple template parameters.
+The purpose of the recursive function, is the calculation of a L-system generation. In order to fullfill its purpose the function provides multiple template parameters.
 
 \medskip
 \begin{lstlisting}
@@ -450,6 +450,10 @@ void calculate_l_system_generation(LSystem<Predecessor, Successor>& l_system, un
     if (current_value == nullptr) {
         // inital value
         current_value = l_system.get_axiom();
+        
+        if (current_value == nullptr) {
+            throw new std::runtime_error("L-system didn't return an axiom");
+        }
     }
 
     for (auto&& part : *(current_value)) {
@@ -483,14 +487,16 @@ void calculate_l_system_generation(LSystem<Predecessor, Successor>& l_system, un
 \item std::shared\_ptr<Successor> get\_successor(const Predecessor\& predecessor)
 \end{itemize}
 
-\noindent These functions will be used in the recursion to get calculate the next generation. In order to guarantee the same type for all components, both functions are using a template. The Predecessor and Successor type are also used to specify the L-system itself. These types have some general restriction as described in section \ref{section:impl_l_system}.\newline
+\noindent These functions will be used in the recursion to calculate the next generation. In order to guarantee the same type for all components, both functions are using a template. The Predecessor and Successor type are also used to specify the L-system itself. These types have some general restriction as described in section \ref{section:impl_l_system}.\newline
 Additional to requriements from the L-system, there are requirments from the recursive function itself.  The Successor type has to provide more functionality, because of the use in a ranged based for loop. For example, there has to be access to the begin and end, to iterate over the data. The part, compare line 8 in the listing, has to be a Predecessor object, because of the use with the get\_successor function of the L-system.
 
 The second parameter is the generation, which will be used to hand over the depth of the recursion. The value will be decremented and used for the next recursion step.
 
-The OutputIterator type is self explanatory and has to fullfill all the requirments of an arbitrary output iterator. The iterator handles the L-system result in the each way it needs, for example to store it or to call a turtle function.
+The OutputIterator type is self explanatory and has to fullfill all the requirments of an arbitrary output iterator. The iterator handles the L-system result in the way it needs to, for example to store it or to call a turtle function.
 
-The last parameter is the current\_value which will be used to hand over the results of previous recursion steps. On default it will be initalized with a nullptr and therefore start the calculation with the axiom of the L-system grammmar. Other use cases are also fullfilled, because it is possible to start a recursivce calculation on a arbitrary generation. The current\_value could be an already stored generation of a L-system. In order to calculate more generations and get a more detailed result, this generation can be be handed over to the function as current\_value . Therefore, it is possible to cache a generation and use it later again.
+The last parameter is the current\_value which will be used to hand over the results of previous recursion steps. On default it will be initalized with a nullptr and therefore start the calculation with the axiom of the L-system grammmar.
+
+Other use cases are also fullfilled, because it is possible to start a recursive calculation on an arbitrary generation. The current\_value could be an already stored generation of a L-system. In order to calculate more generations and get a more detailed result, this generation can be handed over to the function as current\_value. Therefore, it is possible to cache a generation and use it later again.
 
 \subsection{CommandMappingIterator}
 
@@ -546,7 +552,7 @@ private:
 
 \end{lstlisting}
 
-\noindent This iterator receives a turtle implementation in the constructor and uses it later to call the mapped commands. This implementation is based on the simple grammar from previous sections and allows only the use of chars. The chars will be assigned and interpreted, in the handle function, as turtle commands. The use of diffferent turtle implementations is possible, in order to still provide the flexibility given by the polymorphism.
+\noindent This iterator receives a turtle implementation in the constructor and uses it later to call the mapped commands. This implementation is based on the simple grammar from previous sections and allows only the use of chars. The chars will be assigned and interpreted as turtle commands. The use of diffferent turtle implementations is possible, in order to still provide the flexibility given by the polymorphism.
 
 \subsection{TurtleGraphic}
 
@@ -595,11 +601,13 @@ Cairo is designed to produce consistent output on all output media[...].''\cite[
 
 The implementation of the turtle interface is self explanatory and enables the drawing of a graphic. In the context of this paper, such a graphic can be influenced by the line length, the line width and the turning angle. The CairoTurtle should therefore provide functions to configure these values.
 
-Furthermore, the turtle should be able to export a graphic as PNG-file. It would be possible to set a default size for a export file, but because of the dynamic generation is this not a good solution. In the dynamic generation can the size of the fractal vary and influence the size. There are severeal solutions for this, for example to cut off parts of the graphic to fit a certain file size. Cutting off data outside of the specified size looses data and reduces the quality of the result image. To avoid this, the size of the file is determined using a bounding box, in which case the file is dynamically larger or smaller.\newline
+Furthermore, the turtle should be able to export a graphic as PNG-file. It would be possible to set a default size for an export file, but because of the dynamic generation, this is not a good solution. Because of the dynamic generation, the size of the fractal can vary and influence the height and width of the file. There are several solutions for this, for example to cut off parts of the graphic to fit a certain file size. Cutting off data outside of the specified size looses data and reduces the quality of the result image. To avoid this, the size of the file is determined using a bounding box, in which case the file is dynamically larger or smaller.\newline
 
-\noindent The Cairo library offers a quiet complex drawing model, but only some general concepts are needed for this paper. The first concept or component is a surface, which is the object to drawn on. For example a surface migth be tied to an image format like PNG. The process of drawing will be done with a Cairo context. The context keeps track of the rendering state, for example about the color. The Cairo library provides a special surface, called recording surface. This surface records the draw calls done by the context, without binding it to a output target like an image. The recorded draw calls can later be applied to another surface, in our case to a image surface, which can be exported as PNG.
+\noindent The Cairo library offers a quiet complex drawing model, but only some general concepts are needed for this paper. The first concept or component is a surface, which is the object to drawn on. For example a surface migth be tied to an image format like PNG. The process of drawing will be done with a Cairo context. The context keeps track of the rendering state, for example about the color.
 
-The Cairo context offers different functions to draw and create a path. A path is not a drawn object, but more like a blueprint for a line, which will be drawn with the stroke call. The context offers a line\_to and a move\_to function, to draw a line to or move to coordinates. There is no turn function to change the current facing direction about an angle. Because of that, the implementation has to hold the state of the turtle, to be able to calculate the next coordinates depending on the current facing direction. For this purpose an additonal class is introduced, the State. The current state of the turtle will be updated for each draw call and saves the current facing direction and positon. Whenever a draw call is made, the next sate will be calculated and the path extended. This results in the class illustrated in figure \ref{figure:cairoturtle}.
+The Cairo library provides a special surface, called recording surface. This surface records the draw calls done by the context, without binding it to a output target like an image. The recorded draw calls can later be applied to another surface, in this case to an image surface, which can be exported as PNG.
+
+The Cairo context offers different functions to draw and create a path. A path is not a drawn object, but more like a blueprint for a line, which will be drawn with the stroke call. The context offers a line\_to and a move\_to function, to draw a line to or move to coordinates. There is no turn function to change the current facing direction about an angle. Because of that, the implementation has to hold the state of the turtle, to be able to calculate the next coordinates depending on the current facing direction. For this purpose an additonal class is introduced, the State. The current state of the turtle will be updated for each draw call and saves the current facing direction and position. Whenever a draw call is made, the next sate will be calculated and the path extended. This results in the class illustrated in figure \ref{figure:cairoturtle}.
 
 \begin{figure}[h!]
 	\centering
@@ -610,7 +618,7 @@ The Cairo context offers different functions to draw and create a path. A path i
 
 \noindent In this figure the the context and the surface from Cairo aren't mentioned yet. These objects will be stored as raw pointers, because they will always be used as such. Another reason to this, is that the creation and destruction is handled by the Cairo library and therefore smartpointers wouldn't add a real value.\newline
 
-\noindent The Cairo library offers a function to calculate the bounding box of a recording surface. The function should return the values of an rectangle, including the made draw calls on this surface, but the function didn't return the correct bouding box. In order to get the correct bouding box, an addtional class is introduced - the bounding box. The turtle will hold this class and update it on each draw call. The bounding box will be used in the saving process to return the size and the translation values to center the graphic for the output file.
+\noindent The Cairo library offers a function to calculate the bounding box of a recording surface. The function should return the values of an rectangle, including the made draw calls on this surface. Even after severall configurations didn't the function return the correct bouding box. In order to get the correct bouding box, an additional class is introduced - the BoundingBox. The turtle will hold this class and update it on each draw call. The bounding box will be used in the saving process to return the size and the translation values to center the graphic for the output file.
 
 \noindent At this state the turtle allows to draw multiple objects, but there is no possibility to delete previous draw calls. If a second object is drawn with the same turtle instance, both objects will be included in the final image. To prevent this, the reset function is offered, which reinitializes the turtle.
 
@@ -632,17 +640,17 @@ There are test cases for the introduced components provided. The test cases prov
 
 \section{Future enhancements}
 
-The implementation of the different components has the potential of further extensions. Obviously the turtle allows new implementations, for example based on other frameworks. But also the already provided implementation of the CairoTurtle can be improved. For example, it would be possible to add a new function to alter the drawing colors. Another possible enhancment is the scaling of a fractal in the Cairo turtle. At the moment the size of the picture will be determined with the bouding box, but this has the disadvantage, that it can grow to an potential endless size. In order to prevent this it would be possible to use further affine transformations on the data and scale the image down to a maximal size.
+The implementation of the different components has the potential for further extensions. Obviously the turtle allows new implementations, for example based on other frameworks. But also the already provided implementation of the CairoTurtle can be improved. For example, it would be possible to add a new function to alter the drawing colors. Another possible enhancment is the scaling of a fractal in the Cairo turtle. At the moment the size of the picture will be determined with the bounding box, but this has the disadvantage, that it can grow to an potential endless size. In order to prevent this it would be possible to use further affine transformations on the data and scale the image down to a maximal size.
 
 \noindent Another part of the architecture is the L-system itself. The L-system implementation is just a dumb data holder and therefore, there is potential to provide further functionality. At the moment the L-system validates that there is only one production for a predecessor. The L-system doesn't check if with the given productions a generation is even possible. It would be possible to provide a function, which checks if the provided productions enable the rewriting of the L-system. 
 
 \noindent A futher enhancement would be additional test cases. At the moment only a C0 coverage is provided, but further test cases could provide a better testing result.
 
-\noindent At the moment the implementation only provides a configuration in the code itself and is more or less static. A way more flexible and convenient way is the configuration with files. This makes it possible to configure a L-system without a code change, only by providing such a file. A dynamic configuration can include not only the L-system grammar but also configuration of a turtle and the recursivec function. Such a complete configuration can be done in a single file, but should be seperated to maintain clear separation. A simple structure of such a file are key-value pairs. This has still the downside of a bad separation of the configuration from the different components.
+\noindent The implementation only provides a configuration in the code itself and is more or less static. A way more flexible and convenient way is the configuration with files. This makes it possible to configure a L-system without a code change, only by providing such a file. A dynamic configuration can include not only the L-system grammar but also configuration of a turtle and the recursivec function. Such a complete configuration can be done in a single file, but should be seperated to maintain clear separation. A simple structure of such a file are key-value pairs. This has still the downside of a bad separation of the configuration from the different components.
 
 A solution for this is the use of JSON. This allows the seperation of the configuration for each component. A configuration file contains a JSON-object and allows the dynamic configuration. The JSON-object has several child objects containing the different component configurations. In order to be able to read the file the architecture can provide another component, reading an input stream and loading the configuration. Afterwards, this component provides the configuration datat for other components.
 
-\noindent The mentioned extensions are only a small part of the possibilites given by the architecture.
+\noindent The mentioned extensions are only a small part of the possibilites given by the architecture and there can be added future functionality.
 
 \section{Conclusion}
 The introduced architecture enables a flexible use of all introduced components. Different L-systems, with the formal restrictions, can be used and generated. The Support of an output iterator allow different ways to use a L-system result, like the graphic generation with a turtle. The turtle interface enables different implementations and supports therefore all kinds of frameworks. 
