@@ -126,7 +126,7 @@ public:
         // cairo_recording_surface_ink_extents(recording_surface_, &x0, &y0, &width, &height);
 
         // create an image surface to redraw the recorded data on it
-        cairo_surface_t* target = cairo_image_surface_create(CAIRO_FORMAT_RGB24, std::round(bounding_box_.get_width()), std::round(bounding_box_.get_height()));
+        cairo_surface_t* target = cairo_image_surface_create(CAIRO_FORMAT_RGB24, (int)std::round(bounding_box_.get_width()), (int)std::round(bounding_box_.get_height()));
         cairo_t* crt = cairo_create(target);
 
         // Translate the surface so that the lines will be in the covered area fo the image surface
